@@ -1,14 +1,18 @@
+import { LayoutGroup, useReducedMotion } from 'motion/react';
+import * as m from 'motion/react-m';
 import type { Key, ReactElement, ReactNode } from 'react';
-import { Children, isValidElement } from 'react';
+import { Children, isValidElement, useId } from 'react';
 import { Button } from 'react-aria-components/Button';
 import { Link } from 'react-aria-components/Link';
 import { VisuallyHidden } from 'react-aria-components/VisuallyHidden';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useControlledState } from '@react-stately/utils';
-import { useClassNames } from '@marigold/system';
+import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { Check } from '../icons/Check';
 import { TriangleAlert } from '../icons/TriangleAlert';
 import { intlMessages } from '../intl/messages';
+import { MotionFeatures } from '../lazyMotion';
+import { INDICATOR_TRANSITION } from '../motionTransitions';
 import { StepperItem, type StepperItemProps } from './StepperItem';
 
 type StepState = 'completed' | 'current' | 'error' | 'disabled' | 'upcoming';
@@ -69,7 +73,8 @@ export interface StepperProps {
 
   /**
    * Renders markers only, keeping the labels for screen readers. Use it when
-   * there are too many steps for labels to fit.
+   * there are too many steps for labels to fit. Has no visible effect on small
+   * screens, where only the current step's label is shown anyway.
    * @default false
    */
   hideLabels?: boolean;
@@ -156,6 +161,13 @@ const Stepper = ({
 }: StepperProps) => {
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
   const classNames = useClassNames({ component: 'Stepper', variant, size });
+  const layoutGroupId = useId();
+  const reducedMotion = useReducedMotion();
+  // Picks the indicator's placement, since motion can't measure a hidden one.
+  const isSmallScreen = useSmallScreen();
+  const indicatorTransition = reducedMotion
+    ? { duration: 0 }
+    : INDICATOR_TRANSITION;
 
   const items = Children.toArray(children).filter(
     (child): child is ReactElement<StepperItemProps> =>
@@ -189,86 +201,165 @@ const Stepper = ({
   };
 
   const currentIndex = items.findIndex(item => item.props.id === selectedKey);
-
+  const currentItem = items[currentIndex];
+  const currentState = currentItem ? getState(currentItem.props.id) : undefined;
   if (items.length === 0) return null;
 
-  return (
-    <nav
-      aria-label={ariaLabel ?? stringFormatter.format('progress')}
-      className="flex items-center gap-3"
-    >
-      {hideLabels && currentIndex >= 0 && (
-        <span aria-hidden="true" className={classNames.count}>
-          {stringFormatter.format('stepPosition', {
-            current: currentIndex + 1,
-            total: items.length,
-          })}
-        </span>
+  const progressFill = (
+    <span
+      className={cn(
+        'absolute inset-0 origin-left rounded-[inherit] rtl:origin-right',
+        classNames.progressFill
       )}
-      <ol role="list" className={classNames.container}>
-        {items.map((item, index) => {
-          const { id, children: label, href } = item.props;
-          const state = getState(id);
-          const position = stringFormatter.format('stepPosition', {
-            current: index + 1,
-            total: items.length,
-          });
-          // A disabled step that was done keeps its check, so say both.
-          const isLockedDone = state === 'disabled' && completed.has(id);
-          const stateText = (
-            isLockedDone ? (['completed', 'disabled'] as const) : [state]
-          )
-            .map(key => stringFormatter.format(STATE_MESSAGE[key]))
-            .join(', ');
+    />
+  );
 
-          return (
-            <li
-              key={id}
-              className={classNames.item}
-              data-state={state}
-              data-current={id === selectedKey || undefined}
-              data-completed={
-                (completed.has(id) && !disabled.has(id) && !errors.has(id)) ||
-                undefined
-              }
-            >
-              <StepContent
-                className={classNames.link}
-                isCurrent={id === selectedKey}
-                isSelectable={isSelectable(id)}
-                href={href}
-                onSelect={() => setSelectedKey(id)}
+  // Only the visible placement mounts, so motion never measures a hidden one.
+  const indicator = (placement: 'marker' | 'segment') => (
+    <m.span
+      layoutId={`stepper-${placement}-indicator`}
+      className={cn(
+        // The marker's border is transparent, so cover it too.
+        'absolute rounded-[inherit]',
+        placement === 'marker' ? '-inset-px' : 'inset-0',
+        classNames.currentIndicator
+      )}
+      // Lets the theme outline the marker but fill the segment.
+      data-placement={placement}
+      transition={indicatorTransition}
+      // Re-measure only when the step changes, not on every parent render.
+      layoutDependency={selectedKey}
+    />
+  );
+
+  return (
+    <MotionFeatures>
+      <LayoutGroup id={layoutGroupId}>
+        <nav
+          aria-label={ariaLabel ?? stringFormatter.format('progress')}
+          className={cn('flex items-center gap-3', classNames.root)}
+          data-hide-labels={hideLabels || undefined}
+        >
+          {/* Repeats what every step announces, so hidden from assistive tech. */}
+          {currentItem && (
+            <div className={cn('hidden', classNames.summary)}>
+              <span aria-hidden="true" className={classNames.count}>
+                {stringFormatter.format('stepPosition', {
+                  current: currentIndex + 1,
+                  total: items.length,
+                })}
+              </span>
+              <span
+                aria-hidden="true"
+                className={cn('hidden', classNames.currentLabel)}
+                data-state={currentState}
               >
-                <span aria-hidden="true" className={classNames.marker}>
-                  {state === 'completed' || isLockedDone ? (
-                    <Check />
-                  ) : state === 'error' ? (
+                {/* Centred on the first line, however long the label wraps. */}
+                {currentState === 'error' && (
+                  <span className="inline-flex h-lh shrink-0 items-center">
                     <TriangleAlert />
-                  ) : (
-                    index + 1
-                  )}
-                </span>
-                {hideLabels ? (
-                  <VisuallyHidden elementType="span">{label}</VisuallyHidden>
-                ) : (
-                  <span className={classNames.label}>{label}</span>
+                  </span>
                 )}
-                <VisuallyHidden elementType="span">
-                  {`${position}, ${stateText}`}
-                </VisuallyHidden>
-              </StepContent>
-              {index < items.length - 1 && (
-                <span
-                  aria-hidden="true"
-                  data-testid="stepper-connector"
-                  className={classNames.connector}
-                />
-              )}
-            </li>
-          );
-        })}
-      </ol>
-    </nav>
+                {/* Baseline-aligned, so the text, not the icon, sets the baseline. */}
+                <span className="self-baseline">
+                  {currentItem.props.children}
+                </span>
+              </span>
+            </div>
+          )}
+          <ol role="list" className={classNames.container}>
+            {items.map((item, index) => {
+              const { id, children: label, href } = item.props;
+              const state = getState(id);
+              const position = stringFormatter.format('stepPosition', {
+                current: index + 1,
+                total: items.length,
+              });
+              // A disabled step that was done keeps its check, so say both.
+              const isLockedDone = state === 'disabled' && completed.has(id);
+              const stateText = (
+                isLockedDone ? (['completed', 'disabled'] as const) : [state]
+              )
+                .map(key => stringFormatter.format(STATE_MESSAGE[key]))
+                .join(', ');
+              // Not `state === 'current'`: a failed step can be current too.
+              const isCurrent = id === selectedKey;
+              // A disabled step keeps its dashed look, even when current.
+              const hasIndicator = isCurrent && state !== 'disabled';
+
+              return (
+                <li
+                  key={id}
+                  className={classNames.item}
+                  data-state={state}
+                  data-current={isCurrent || undefined}
+                  data-completed={
+                    (completed.has(id) &&
+                      !disabled.has(id) &&
+                      !errors.has(id)) ||
+                    undefined
+                  }
+                >
+                  <StepContent
+                    className={classNames.link}
+                    isCurrent={isCurrent}
+                    isSelectable={isSelectable(id)}
+                    href={href}
+                    onSelect={() => setSelectedKey(id)}
+                  >
+                    <span className={cn('relative', classNames.marker)}>
+                      {hasIndicator && !isSmallScreen && indicator('marker')}
+                      {/* Positioned, so it paints above the indicator. */}
+                      <span aria-hidden="true" className="relative">
+                        {state === 'completed' || isLockedDone ? (
+                          <Check />
+                        ) : state === 'error' ? (
+                          <TriangleAlert />
+                        ) : (
+                          index + 1
+                        )}
+                      </span>
+                    </span>
+                    {hideLabels ? (
+                      <VisuallyHidden elementType="span">
+                        {label}
+                      </VisuallyHidden>
+                    ) : (
+                      <span className={classNames.label}>{label}</span>
+                    )}
+                    <VisuallyHidden elementType="span">
+                      {`${position}, ${stateText}`}
+                    </VisuallyHidden>
+                    {/* Inside the step, so tapping the segment activates it. */}
+                    <span
+                      aria-hidden="true"
+                      className={cn('relative hidden', classNames.segment)}
+                    >
+                      {progressFill}
+                      {hasIndicator && isSmallScreen && indicator('segment')}
+                      {/* Marks the failed step without relying on colour. The
+                          current one carries it on its label instead. */}
+                      {state === 'error' && !isCurrent && (
+                        <TriangleAlert className="absolute bottom-full left-1/2 mb-1 -translate-x-1/2" />
+                      )}
+                    </span>
+                  </StepContent>
+                  {index < items.length - 1 && (
+                    <span
+                      aria-hidden="true"
+                      data-testid="stepper-connector"
+                      className={cn('relative', classNames.connector)}
+                    >
+                      {progressFill}
+                    </span>
+                  )}
+                </li>
+              );
+            })}
+          </ol>
+        </nav>
+      </LayoutGroup>
+    </MotionFeatures>
   );
 };
 
