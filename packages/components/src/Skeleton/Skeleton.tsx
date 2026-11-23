@@ -1,3 +1,4 @@
+import type { Ref } from 'react';
 import type { HeightProp, WidthProp } from '@marigold/system';
 import {
   cn,
@@ -38,11 +39,14 @@ export interface SkeletonProps {
    * and listed in the "Appearance" section of the component's documentation.
    */
   size?: string & {};
+  /** Ref to the DOM element the component renders. */
+  ref?: Ref<HTMLDivElement>;
 }
 
 // Component
 // ---------------
 export const Skeleton = ({
+  ref,
   width = 'full',
   height = 4,
   variant,
@@ -53,13 +57,14 @@ export const Skeleton = ({
   return (
     // Decorative only: the loading region announces, not each placeholder.
     <div
+      ref={ref}
       aria-hidden="true"
       className={cn(
         'h-(--height) w-(--width)',
         // An empty box has no min-content, so a flex row would squeeze a fixed size.
         width !== 'full' && !isFraction(`${width}`) && 'shrink-0',
         // A block ignores text-align, so follow an aligned table cell by margin.
-        '[[data-cell-content].text-center_&]:mx-auto [[data-cell-content].text-right_&]:ms-auto',
+        '[[data-cell-content].text-center_&]:mx-auto [[data-cell-content].text-right_&]:ml-auto',
         classNames
       )}
       style={{

@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import { createRef } from 'react';
 import { Basic, Rounded, Sizes } from './Skeleton.stories';
 
 // Placeholders are aria-hidden, so they only show up with `hidden: true`.
@@ -60,4 +61,13 @@ test('styles the rounded variant differently from the default', () => {
   const [avatar, line] = getSkeletons();
 
   expect(avatar.className).not.toBe(line.className);
+});
+
+test('forwards the ref to the placeholder', () => {
+  const ref = createRef<HTMLDivElement>();
+  render(<Basic.Component ref={ref} />);
+
+  const [skeleton] = getSkeletons();
+
+  expect(ref.current).toBe(skeleton);
 });
