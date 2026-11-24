@@ -1407,7 +1407,8 @@ ServerResultsInOneGroup.test(
 // TanStack Query's `keepPreviousData` does, so the list doesn't flash empty.
 // This one searches on every keystroke and lists its group first, so the
 // previous rows sit on top for a moment and then go away. The row that
-// takes over the top must be the one Enter runs.
+// takes over the top must be the one Enter runs. `CommandPalette.test.tsx`
+// tests this with real events: user-event breaks it, see there.
 export const PreviousResultsWhileLoading = meta.story({
   ...noSnapshot,
   args: { onAction: fn() },
@@ -1456,40 +1457,6 @@ export const PreviousResultsWhileLoading = meta.story({
     );
   },
 });
-
-PreviousResultsWhileLoading.test(
-  'Keeps the row Enter runs when previous rows go away',
-  async ({ args, canvas, step, userEvent }) => {
-    await step('A first search leaves its rows behind', async () => {
-      await openPalette({ canvas, userEvent });
-      await canvas.findByRole('searchbox');
-      await userEvent.keyboard('jazz');
-      await expectFirstRowActive(canvas, 'Jazz Night');
-      await userEvent.keyboard('{Enter}');
-      await waitFor(() =>
-        expect(args.onAction).toHaveBeenCalledWith('event-42')
-      );
-      await waitFor(() => expect(canvas.queryByRole('dialog')).toBeNull());
-    });
-
-    await step('The next search shows them until its answer', async () => {
-      await openPalette({ canvas, userEvent });
-      await canvas.findByRole('searchbox');
-      await userEvent.keyboard('ord');
-      await waitFor(() =>
-        expect(canvas.queryByRole('menuitem', { name: /Jazz/ })).toBeNull()
-      );
-    });
-
-    await step('Enter runs Orders, the row now on top', async () => {
-      // RAC points the input at a row 500ms after a keystroke.
-      await pause(800);
-      await expectFirstRowActive(canvas, 'Orders');
-      await userEvent.keyboard('{Enter}');
-      await expect(args.onAction).toHaveBeenLastCalledWith('orders');
-    });
-  }
-);
 
 // Loading that starts late
 // ---------------
