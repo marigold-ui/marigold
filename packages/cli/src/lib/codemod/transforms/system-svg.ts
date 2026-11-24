@@ -41,11 +41,70 @@ const staticString = (value: AnyNode | undefined): string | null => {
   return null;
 };
 
+// CSS named colors pass `TOKEN` too, but Tailwind has no `text-red`, and
+// `ensureCssVar` fell back to the plain color: `var(--color-red, red)`.
+// `black`, `white` and `transparent` are left out because Tailwind generates
+// those classes itself.
+const CSS_NAMED_COLORS = new Set(
+  (
+    'aliceblue antiquewhite aqua aquamarine azure beige bisque blanchedalmond ' +
+    'blue blueviolet brown burlywood cadetblue chartreuse chocolate coral ' +
+    'cornflowerblue cornsilk crimson cyan darkblue darkcyan darkgoldenrod ' +
+    'darkgray darkgreen darkgrey darkkhaki darkmagenta darkolivegreen ' +
+    'darkorange darkorchid darkred darksalmon darkseagreen darkslateblue ' +
+    'darkslategray darkslategrey darkturquoise darkviolet deeppink deepskyblue ' +
+    'dimgray dimgrey dodgerblue firebrick floralwhite forestgreen fuchsia ' +
+    'gainsboro ghostwhite gold goldenrod gray green greenyellow grey honeydew ' +
+    'hotpink indianred indigo ivory khaki lavender lavenderblush lawngreen ' +
+    'lemonchiffon lightblue lightcoral lightcyan lightgoldenrodyellow lightgray ' +
+    'lightgreen lightgrey lightpink lightsalmon lightseagreen lightskyblue ' +
+    'lightslategray lightslategrey lightsteelblue lightyellow lime limegreen ' +
+    'linen magenta maroon mediumaquamarine mediumblue mediumorchid ' +
+    'mediumpurple mediumseagreen mediumslateblue mediumspringgreen ' +
+    'mediumturquoise mediumvioletred midnightblue mintcream mistyrose moccasin ' +
+    'navajowhite navy oldlace olive olivedrab orange orangered orchid ' +
+    'palegoldenrod palegreen paleturquoise palevioletred papayawhip peachpuff ' +
+    'peru pink plum powderblue purple rebeccapurple red rosybrown royalblue ' +
+    'saddlebrown salmon sandybrown seagreen seashell sienna silver skyblue ' +
+    'slateblue slategray slategrey snow springgreen steelblue tan teal thistle ' +
+    'tomato turquoise violet wheat whitesmoke yellow yellowgreen'
+  ).split(' ')
+);
+
 /** the class `<SVG>`'s `color` resolved to, or null when there is none */
 const colorClass = (color: string): string | null => {
   if (color === 'currentColor' || color === 'currentcolor') return null;
+  if (CSS_NAMED_COLORS.has(color.toLowerCase())) {
+    return `text-[var(--color-${color},${color})]`;
+  }
   if (TOKEN.test(color)) return `text-${color}`;
   return `text-[${color.replace(/\s+/g, '_')}]`;
+};
+
+// `text-*` utilities that set something other than the color
+const TEXT_NOT_COLOR =
+  /(^|:)text-(xs|sm|base|lg|[2-9]?xl|left|center|right|justify|start|end|wrap|nowrap|balance|pretty|ellipsis|clip)(\/|$)/;
+
+/** the consumer's classes that set a text color, which `color` used to beat */
+const textColorClasses = (own: string) =>
+  own.split(/\s+/).filter(c => /(^|:)text-/.test(c) && !TEXT_NOT_COLOR.test(c));
+
+/** an identifier in a position that names a property rather than reading `SVG` */
+const isPropertyName = (n: AnyNode, parent: AnyNode | null) => {
+  if (!parent || parent.computed) return false;
+  switch (parent.type) {
+    case 'MemberExpression':
+    case 'OptionalMemberExpression':
+      return parent.property === n;
+    case 'ObjectProperty':
+    case 'ObjectMethod':
+    case 'ClassProperty':
+    case 'ClassMethod':
+    case 'TSPropertySignature':
+      return parent.key === n;
+    default:
+      return false;
+  }
 };
 
 const BASE = ['flex-none', 'fill-current'];
@@ -164,7 +223,7 @@ export const systemSvg: Codemod = {
         );
         if (spread) {
           warnings.push(
-            `<${local}> with spread props: if they carry \`size\` or \`color\`, set \`width\`/\`height\` and a \`text-*\` class on the \`<svg>\` instead, they are not SVG attributes`
+            `<${local}> with spread props: if they carry \`size\` or \`color\`, set \`width\`/\`height\` and a \`text-*\` class on the \`<svg>\` instead, they are not SVG attributes. A \`className\` in them replaces \`flex-none fill-current\` rather than merging with it, so combine them with \`cn()\``
           );
         }
 
@@ -235,6 +294,12 @@ export const systemSvg: Codemod = {
             `className={\`${prefix} \${${source.slice(expr.start as number, expr.end as number)}}\`}`
           );
         } else {
+          const competing = extra ? textColorClasses(own) : [];
+          if (competing.length > 0) {
+            warnings.push(
+              `<${local} color className="${competing.join(' ')}">: \`color\` was an inline style and always won, now stylesheet order decides between \`${extra}\` and these. Keep one of them`
+            );
+          }
           const classes = [...baseClasses(own), extra, own]
             .filter(Boolean)
             .join(' ');
@@ -263,8 +328,13 @@ export const systemSvg: Codemod = {
         (n.start as number) >= (spec.start as number) &&
         (n.end as number) <= (spec.end as number);
       let otherUses = 0;
-      walk(file, n => {
-        if (n.type === 'Identifier' && n.name === local && !inSpec(n)) {
+      walk(file, (n, parent) => {
+        if (
+          n.type === 'Identifier' &&
+          n.name === local &&
+          !inSpec(n) &&
+          !isPropertyName(n, parent)
+        ) {
           otherUses++;
         }
       });

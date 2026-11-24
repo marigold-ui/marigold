@@ -82,6 +82,44 @@ export const A = () => <SVG viewBox="0 0 24 24" />;
     expect(result.output).toContain(expected);
   });
 
+  test.each([
+    ['red', 'text-[var(--color-red,red)]'],
+    ['orange', 'text-[var(--color-orange,orange)]'],
+    ['Gray', 'text-[var(--color-Gray,Gray)]'],
+    ['black', 'text-black'],
+    ['white', 'text-white'],
+  ])('keeps the CSS fallback for the named color "%s"', (color, expected) => {
+    const result = systemSvg.apply(
+      `import { SVG } from '@marigold/system';\nconst a = <SVG color="${color}" />;\n`
+    );
+
+    assertEdited(result);
+    expect(result.output).toContain(
+      `className="flex-none fill-current ${expected}"`
+    );
+  });
+
+  test('warns when color competes with a text color class', () => {
+    const result = systemSvg.apply(
+      `import { SVG } from '@marigold/system';\nconst a = <SVG color="info-accent" className="text-gray-500" />;\n`
+    );
+
+    assertEdited(result);
+    expect(result.output).toContain(
+      'className="flex-none fill-current text-info-accent text-gray-500"'
+    );
+    expect(result.warnings).toEqual([expect.stringContaining('text-gray-500')]);
+  });
+
+  test('does not warn about text classes that are not colors', () => {
+    const result = systemSvg.apply(
+      `import { SVG } from '@marigold/system';\nconst a = <SVG color="info-accent" className="text-sm md:text-lg/6 text-center" />;\n`
+    );
+
+    assertEdited(result);
+    expect(result.warnings).toEqual([]);
+  });
+
   test('leaves out base classes the consumer already decides', () => {
     const result = systemSvg.apply(
       `import { SVG } from '@marigold/system';\nconst a = <SVG size={24} className="size-4 shrink-0" stroke="#ef4444" fill="none" />;\n`
@@ -116,7 +154,11 @@ export const SVGIcon = (props: any) => (
 
     assertEdited(result);
     expect(result.output).toContain('<svg width={24} height={24} className=');
-    expect(result.warnings).toEqual([expect.stringContaining('spread props')]);
+    expect(result.warnings).toEqual([
+      expect.stringMatching(
+        /spread props.*`className`.*flex-none fill-current/
+      ),
+    ]);
   });
 
   test('moves a dynamic color to style and warns', () => {
@@ -151,6 +193,32 @@ export const SVGIcon = (props: any) => (
     assertEdited(result);
     expect(result.output).toContain("import { SVG } from '@marigold/system';");
     expect(result.output).toContain('<svg ');
+    expect(result.warnings).toEqual([
+      expect.stringContaining('used as a value'),
+    ]);
+  });
+
+  test.each([
+    ['an object key', 'const m = { SVG: 1 };'],
+    ['a member property', 'const i = icons.SVG;'],
+    ['an optional member property', 'const i = icons?.SVG;'],
+  ])('does not count %s as a use of the import', (_, line) => {
+    const result = systemSvg.apply(
+      `import { SVG } from '@marigold/system';\n${line}\nconst a = <SVG />;\n`
+    );
+
+    assertEdited(result);
+    expect(result.output).not.toContain('import { SVG }');
+    expect(result.warnings).toEqual([]);
+  });
+
+  test('still counts a shorthand property as a use of the import', () => {
+    const result = systemSvg.apply(
+      `import { SVG } from '@marigold/system';\nconst m = { SVG };\nconst a = <SVG />;\n`
+    );
+
+    assertEdited(result);
+    expect(result.output).toContain("import { SVG } from '@marigold/system';");
     expect(result.warnings).toEqual([
       expect.stringContaining('used as a value'),
     ]);
