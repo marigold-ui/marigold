@@ -1,5 +1,38 @@
 # @marigold/cli
 
+## 3.0.2
+
+### Patch Changes
+
+- 04f4206: fix(DST-1981): write the whole output before the CLI exits
+
+  Output larger than 64 KB was cut off when it was piped or captured, for example by an AI agent, `$(...)` or `| jq`. `marigold docs Table --format json` then returned truncated JSON that could not be parsed. The CLI now waits until its output has been written. Nothing to change on your side.
+
+- 04f4206: docs(DST-1981): document `marigold search` and `marigold validate` for agents
+
+  The CLI page of the docs had no section for `marigold search` and `marigold validate`, and the README pointed AI agents at a file that no longer has the section it named. Both now describe the commands and the loop an agent should follow: search for the component, read its props, write the code, then run `marigold validate --checks technical` until it passes.
+
+- 04f4206: fix(DST-1981): stop `marigold validate` from rejecting valid props such as `dateStyle`
+
+  In a project without `@types/node`, `marigold validate` reported `dateStyle` and `timeStyle` on `<DateFormat>` as props that do not exist, although they work and TypeScript accepts them. The check read the prop types against an outdated set of built-in types. It now uses the same ones in every project, so valid props are no longer reported as errors.
+
+- 04f4206: fix(DST-1981): fail `marigold validate` for a directory or an unsupported file
+
+  `marigold validate src/` and `marigold validate styles.css` used to exit `0` with a list of "check failed" warnings, which reads as a clean result in an automatic fix loop. Both now exit `1` and say what to pass instead: one `.ts`, `.tsx`, `.js` or `.jsx` file per run.
+
+- Updated dependencies [04f4206]
+- Updated dependencies [04f4206]
+- Updated dependencies [923cef8]
+- Updated dependencies [05e61f3]
+- Updated dependencies [898ad53]
+- Updated dependencies [36e9ad5]
+- Updated dependencies [224aca7]
+- Updated dependencies [4c5665a]
+- Updated dependencies [47f2879]
+- Updated dependencies [fb9256b]
+  - @marigold/components@18.5.0
+  - @marigold/theme-rui@6.4.0
+
 ## 3.0.1
 
 ### Patch Changes
