@@ -66,6 +66,13 @@ jobs:
           webhook: ${{ secrets.SLACK_HOOK }}
           webhook-type: incoming-webhook
 
+      # The embeddings index the docs' generated props tables, which read
+      # docs/.registry/props.json. `pnpm build` leaves only an empty `{}`
+      # placeholder there, so without this step every props table is dropped.
+      - name: Build props tables
+        if: steps.changesets.outputs.published == 'true'
+        run: pnpm --filter @marigold/docs build:types
+
       # Rebuild search embeddings when docs content changed
       - name: Rebuild search embeddings
         if: steps.changesets.outputs.published == 'true'
