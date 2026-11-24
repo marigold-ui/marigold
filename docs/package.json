@@ -23,7 +23,7 @@
     "build:embeddings": "zx ./scripts/build-embeddings.mjs"
   },
   "dependencies": {
-    "@aws-sdk/client-bedrock-runtime": "3.1169.0",
+    "@aws-sdk/client-bedrock-runtime": "3.1173.0",
     "@internationalized/date": "^3.12.4",
     "@marigold/components": "workspace:*",
     "@marigold/eslint-config": "workspace:*",
@@ -75,7 +75,7 @@
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.4",
     "@types/unist": "^3.0.3",
-    "eslint": "10.13.0",
+    "eslint": "10.15.0",
     "eslint-config-next": "16.4.6",
     "fumadocs-typescript": "^5.3.0",
     "next-validate-link": "^1.6.7",
