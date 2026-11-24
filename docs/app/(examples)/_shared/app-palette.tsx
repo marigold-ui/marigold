@@ -93,7 +93,8 @@ const collectPages = (config: ShellConfig): PageEntry[] => {
 // first few. While people keep typing the same term ("har", "harb"), the
 // last results stay in place until the next ones arrive, so the group
 // doesn't flash empty. Results for another term would be wrong, so they
-// don't stay.
+// don't stay. Neither do the results for the empty term (`v:` alone), which
+// are the first venues of the list and match nothing people type next.
 const useVenueSearch = ({ term, prefix }: CommandPaletteSearchState) => {
   const searching =
     prefix === PREFIXES.venues || (prefix === null && term !== '');
@@ -112,7 +113,7 @@ const useVenueSearch = ({ term, prefix }: CommandPaletteSearchState) => {
     enabled: searching,
     staleTime: Infinity,
     placeholderData: previous =>
-      previous && term.startsWith(previous.term) ? previous : undefined,
+      previous?.term && term.startsWith(previous.term) ? previous : undefined,
   });
   const data = searching ? query.data : undefined;
   return {
@@ -160,6 +161,26 @@ export const AppPalette = ({ config, docsHref }: AppPaletteProps) => {
   const shownPeople = typing ? people : [];
   const shownPages = typing ? pages : [];
 
+  // The toast follows how the write settles. Outside a secure context there
+  // is no `navigator.clipboard`, and without permission the write is refused.
+  // Both end in the `catch`.
+  const copyLink = async () => {
+    try {
+      await navigator.clipboard.writeText(window.location.href);
+      addToast({
+        title: 'Link copied',
+        description: 'The link to this page is on your clipboard.',
+        variant: 'success',
+      });
+    } catch {
+      addToast({
+        title: 'Link not copied',
+        description: 'Copy the address from the address bar instead.',
+        variant: 'error',
+      });
+    }
+  };
+
   const handleAction = (key: Key) => {
     const id = String(key);
     if (id.startsWith('organizer:')) {
@@ -172,12 +193,7 @@ export const AppPalette = ({ config, docsHref }: AppPaletteProps) => {
         variant: 'success',
       });
     } else if (id === 'copy-link') {
-      void navigator.clipboard?.writeText(window.location.href);
-      addToast({
-        title: 'Link copied',
-        description: 'The link to this page is on your clipboard.',
-        variant: 'success',
-      });
+      void copyLink();
     }
   };
 

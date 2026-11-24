@@ -34,8 +34,9 @@ export const useWorkspace = (): WorkspaceValue => {
 };
 
 // Newest first, each id once, at most `RECENT_LIMIT`. A list that already
-// starts with the id stays the same list, so nothing re-renders.
-const pushRecent = (list: string[], id: string) =>
+// starts with the id stays the same list, so nothing re-renders. Exported
+// for its test.
+export const pushRecent = (list: string[], id: string) =>
   list[0] === id
     ? list
     : [id, ...list.filter(item => item !== id)].slice(0, RECENT_LIMIT);

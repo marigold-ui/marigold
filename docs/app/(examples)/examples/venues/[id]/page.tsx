@@ -31,7 +31,6 @@ import {
   Button,
   ButtonGroup,
   Columns,
-  DateFormat,
   Description,
   Divider,
   Inline,
@@ -285,12 +284,6 @@ const VenueDetailPage = () => {
                     {venue.indoor ? 'Indoor' : 'Outdoor'}
                   </Badge>
                 </Inline>
-                <Field label="Next available">
-                  <DateFormat
-                    value={new Date(venue.nextAvailable)}
-                    dateStyle="medium"
-                  />
-                </Field>
                 <Field label="Price range">
                   <Price value={venue.price.from} />
                   {' – '}
