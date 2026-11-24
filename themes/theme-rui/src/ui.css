@@ -152,16 +152,74 @@
  * `background` is excluded from the transition so state bg flips feel instant.
  */
 @utility ui-soft {
-  @apply rounded-surface relative transition-[box-shadow];
+  @apply rounded-surface relative;
   @apply text-foreground;
-  @apply ring-1 ring-[var(--ui-border-color,oklch(from_var(--soft-edge,var(--color-soft-edge))_calc(l_-_0.12)_c_h))];
-  @apply inset-shadow-[0_1px_1.5px_-1px_oklch(from_var(--soft-edge,var(--color-soft-edge))_calc(l_+_0.2)_c_h_/_0.9)];
-  /* prettier-ignore */
-  background: linear-gradient(
-    to bottom,
-    oklch(from var(--ui-background-color, var(--color-soft)) calc(l + 0.005) c h),
-    oklch(from var(--ui-background-color, var(--color-soft)) calc(l - 0.02) c h)
+  isolation: isolate;
+  --soft-ring: var(
+    --ui-border-color,
+    oklch(from var(--soft-edge, var(--color-soft-edge)) calc(l - 0.12) c h)
   );
+
+  /* The cap (fill, ring, glint) is painted on a pseudo-element, not on the
+     element itself, so ui-soft-pressed can scale the element (and its label)
+     while cancelling the scale on the cap. A scaled 1px ring blurs whenever an
+     edge lands between device pixels; an unscaled one never does. The local
+     z-index only puts the cap behind the label inside this isolated element,
+     it is not a page layer. */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    /* prettier-ignore */
+    background: linear-gradient(
+      to bottom,
+      oklch(from var(--ui-background-color, var(--color-soft)) calc(l + 0.005) c h),
+      oklch(from var(--ui-background-color, var(--color-soft)) calc(l - 0.02) c h)
+    );
+    box-shadow:
+      inset 0 1px 1.5px -1px
+        oklch(
+          from var(--soft-edge, var(--color-soft-edge)) calc(l + 0.2) c h / 0.9
+        ),
+      0 0 0 1px var(--soft-ring);
+    /* Follows the element's timing, so cap and label stay in step.
+       `background` is left out so state flips feel instant. */
+    transition-property: inset, scale, box-shadow;
+    transition-duration: inherit;
+    transition-timing-function: inherit;
+  }
+
+  /* ui-state-disabled paints its own fill on the element: let it show. */
+  &:where(:disabled, [data-disabled], [data-pending])::before {
+    background: none;
+  }
+}
+
+/*
+ * Pressed state for ui-soft. The element (and its label) scales like every
+ * other button, but the cap cancels that scale and instead shrinks by exactly
+ * 1px on every side, so its ring stays on whole pixels at any pixel ratio.
+ * The top glint turns into a faint inner shade, so the cap looks pushed in.
+ *
+ * Use with the pressed variants: `active:ui-soft-pressed pressed:ui-soft-pressed`.
+ */
+@utility ui-soft-pressed {
+  --soft-press-scale: 0.97;
+  scale: var(--soft-press-scale);
+
+  &::before {
+    inset: 1px;
+    scale: calc(1 / var(--soft-press-scale));
+    box-shadow:
+      inset 0 1px 2px 0
+        oklch(
+          from var(--soft-edge, var(--color-soft-edge)) calc(l - 0.3) c h / 0.25
+        ),
+      0 0 0 1px var(--soft-ring);
+  }
 }
 
 /*

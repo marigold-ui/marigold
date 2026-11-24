@@ -17,6 +17,12 @@ export const Button: ThemeComponent<'Button'> = cva({
         'ui-soft',
         'hover:[--ui-background-color:var(--color-soft-hover)] hover:[--soft-edge:var(--color-soft-edge-hover)]',
         'expanded:[--ui-background-color:var(--color-soft-hover)] expanded:[--soft-edge:var(--color-soft-edge-hover)]',
+        // Pressed: the button and label scale, the outline does not (see
+        // ui-soft-pressed), so it stays sharp at any pixel ratio. Fast in, a
+        // touch slower out, both on a strong ease-out.
+        'transition-[color,box-shadow,scale] ease-out-quint duration-180',
+        'active:ui-soft-pressed active:duration-90',
+        'pressed:not-aria-expanded:ui-soft-pressed pressed:not-aria-expanded:duration-90',
       ],
       ghost: 'hover:ui-state-hover-ghost',
       destructive: [
