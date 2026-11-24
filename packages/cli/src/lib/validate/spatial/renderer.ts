@@ -10,6 +10,7 @@ import fs from 'node:fs';
 import { copyFile, mkdir, mkdtemp, rm } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { renderBudgetError } from '../types.js';
 import { buildInstallScript } from './browser-helpers.js';
 import { createCleanupStack } from './cleanup-stack.js';
 
@@ -172,6 +173,10 @@ const startViteServer = async (workDir: string): Promise<ViteDevServer> => {
       port: 0,
       strictPort: false,
       host: '127.0.0.1',
+      // The client's WebSocket is let through below so compile errors reach
+      // the page. With HMR off, Vite still sends those errors over it, but no
+      // `full-reload` or `update` that could reload the page mid-check.
+      hmr: false,
       // Defense-in-depth for untrusted generated code; the route filter below
       // is the primary control, aborting every non-same-origin request.
       //
@@ -256,7 +261,10 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
     let budgetTimer: ReturnType<typeof setTimeout> | undefined;
     const budget = new Promise<never>((_, reject) => {
       budgetTimer = setTimeout(
-        () => reject(new Error(`Render exceeded ${RENDER_BUDGET_MS}ms budget`)),
+        () =>
+          reject(
+            renderBudgetError(`Render exceeded ${RENDER_BUDGET_MS}ms budget`)
+          ),
         RENDER_BUDGET_MS
       );
     });
@@ -278,8 +286,16 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
       });
       cleanup.push(() => context.close());
 
-      // A WebSocket would bypass an HTTP-only filter entirely.
-      await context.routeWebSocket('**/*', ws => ws.close());
+      // A WebSocket would bypass an HTTP-only filter entirely, so every one is
+      // closed except the Vite client's own socket to this local dev server.
+      // Vite reports a compile or resolve error over that socket, and the
+      // error overlay the fail-fast below waits for only appears through it.
+      // Closing it too made a broken import wait out the whole render budget.
+      const serverHost = new URL(serverOrigin).host;
+      await context.routeWebSocket('**/*', ws => {
+        if (new URL(ws.url()).host === serverHost) ws.connectToServer();
+        else ws.close();
+      });
 
       // RTCPeerConnection and Workers are egress paths the route filters
       // cannot see: a peer connection leaks the host IP over UDP/STUN even
@@ -342,10 +358,11 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
         // Blocked or missing external resources are network noise, not React
         // errors — real crashes arrive via pageerror or the error boundary.
         if (/Failed to load resource|net::ERR_/i.test(text)) return;
-        // Closing Vite's HMR WebSocket above costs three console errors on
-        // every render regardless of the user's code: the client's reconnect
-        // failure, the browser's connection failure, and the client's failure
-        // to forward page errors over the dead transport.
+        // Vite's client reports these three when its WebSocket is closed: the
+        // reconnect failure, the browser's connection failure, and the failed
+        // forward of a page error. The socket to this server is let through
+        // above, so they no longer appear on a healthy render. The filter stays
+        // so a closed socket can never turn into a false error on the file.
         if (
           /^\[vite\] failed to connect to websocket/i.test(text) ||
           /^WebSocket connection to .* failed/i.test(text) ||
@@ -360,8 +377,8 @@ export const createRenderer = async (): Promise<SharedRenderer> => {
 
       const url = `${serverOrigin}/`;
       // 'commit', not 'networkidle': the ready-marker wait below is the real
-      // readiness signal, and networkidle never settles here because the
-      // closed HMR WebSocket keeps the client retrying.
+      // readiness signal, and the open Vite client WebSocket can keep the
+      // network from ever counting as idle.
       //
       // This and the two waits below use RENDER_BUDGET_MS rather than a
       // tighter value: the `budget` race already bounds build() as a whole, so
