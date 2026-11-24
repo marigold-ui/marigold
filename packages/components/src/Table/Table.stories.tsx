@@ -4315,6 +4315,8 @@ ExpandableRows.test(
 
     await userEvent.pointer({ keys: '[MouseLeft>]', target: chevron });
 
+    await waitFor(() => expect(chevron).toHaveAttribute('data-pressed'));
+
     const { scale, translate } = getComputedStyle(chevron);
 
     expect(scale).toBe('none');
