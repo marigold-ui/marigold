@@ -11,7 +11,9 @@ export interface MenuSectionProps extends Omit<
   RAC.SectionProps<object>,
   RemovedProps
 > {
+  /** Heading shown above the items of the section. */
   title?: string;
+  /** Children of the component. */
   children: ReactNode;
 }
 

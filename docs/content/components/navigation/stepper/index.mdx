@@ -5,6 +5,7 @@ badge: beta
 ---
 
 import { StepperAnatomy } from './stepper-anatomy';
+import { StepperSmallScreenAnatomy } from './stepper-small-screen-anatomy';
 
 The `<Stepper>` component shows where a user stands in a task that spans several steps, such as a checkout, an onboarding flow, or a multi-page form. Each step reports whether it is done, current, failed, or still ahead, so the progress is visible at a glance and announced to screen readers.
 
@@ -16,7 +17,7 @@ The `<Stepper>` component shows where a user stands in a task that spans several
 
 ## Anatomy
 
-A `<Stepper>` is a navigation landmark wrapping an ordered list. Each step carries a marker, a label, and a connector running to the next step.
+A `<Stepper>` is a navigation landmark wrapping an ordered list. Each step carries a marker, a label, and a connector running to the next step. On small screens the same steps are drawn as a compact track instead.
 
 <StepperAnatomy />
 
@@ -38,6 +39,30 @@ A `<Stepper>` is a navigation landmark wrapping an ordered list. Each step carri
     <b>Connector:</b> The line running to the next step. It takes the done
     colour once the step before it is complete, which is what makes progress
     readable as a filled trail rather than as four separate circles.
+  </li>
+</ul>
+
+### Compact layout
+
+A row of markers and labels does not fit a phone. Below the small-screen breakpoint the stepper switches to a compact layout by itself: a track with one segment per step, and below it a "Step 2 of 4" counter followed by the name of the current step.
+
+<StepperSmallScreenAnatomy />
+
+<ul>
+  <li>
+    <b>Segment:</b> One bar per step, taking over from the marker and the
+    connector. It fills once the step is done, turns red with a warning icon
+    above it when the step failed, and stays the step's button or link, so a
+    finished step can be tapped.
+  </li>
+  <li>
+    <b>Counter:</b> Where the user stands, as "Step 2 of 4". It is hidden from
+    screen readers, because every step already announces its own position.
+  </li>
+  <li>
+    <b>Current label:</b> The name of the step the user is on, the only label
+    shown on small screens. It wraps onto a second line instead of being cut
+    off.
   </li>
 </ul>
 
@@ -88,6 +113,8 @@ A step is in exactly one state, resolved in this order: `disabled`, then `error`
 
 An errored step stays clickable on purpose. A user who is told a step failed needs a way back to it.
 
+A step that is both completed and disabled keeps its check, and screen readers hear it as completed and not available. Locking a step should never hide that the work on it was done.
+
 The connector is the one part not driven by that single state. It reads completion directly, so a completed step the user has come back to keeps its filled line while its marker shows `current`. An `error` or `disabled` state still clears the line, because a step you have to return to has not cleared the run to the next one.
 
 ### Driving a multi-step form
@@ -95,6 +122,8 @@ The connector is the one part not driven by that single state. It reads completi
 Split a form into steps when one page of it would be discouraging, when the fields fall into groups that stand on their own, or when later fields depend on earlier answers. Splitting costs the user a click per step, so a short form is better off on one page. Once it is split, the stepper is what tells people how many steps are left and lets them get back to one they have already filled.
 
 The stepper reports progress, it does not drive it. Your "Continue" button owns both the panel that is shown and the keys handed back to `<Stepper>`: it adds the step being left to `completedKeys` and moves `selectedKey` on. Because completed steps stay clickable, the user can jump back to anything they have already finished without losing it.
+
+Put Back on the far left and Continue on the far right, so each button sits on the side it moves the user towards. Neither button needs an icon, because the position and the button's emphasis already show the direction. On the last step, name the button after what it does, such as "Place order", because that press commits rather than moves on.
 
 <ComponentDemo name="stepper-multi-step-form" />
 
@@ -114,7 +143,7 @@ Two things are worth copying from the example. Clear the step's key as soon as t
 
 ### Which steps can be clicked
 
-By default a user can return to any step they have completed, any step that failed, and the step they are on. Steps still ahead are inert text, not disabled buttons, because they are not controls yet.
+By default a user can return to any step they have completed, any step that failed, and the step they are on. Steps still ahead are inert text rather than disabled buttons, because they are not controls yet. Like every step that cannot be clicked, they show a not-allowed cursor on hover.
 
 Two props change this:
 
@@ -150,11 +179,20 @@ Modifier clicks are deliberately left alone. Cmd-click and middle-click still op
 
 ### Long flows
 
-When there are more steps than labels will fit, the row overflows its container and the labels become unreadable anyway. `hideLabels` drops them visually while keeping them for screen readers. Do not remove the labels from your JSX to achieve this: an unlabelled step has no accessible name.
+When there are more steps than labels will fit, the row overflows its container and the labels become unreadable anyway. `hideLabels` drops them visually while keeping them for screen readers. It only affects large screens, because on [small screens](#small-screens) the stepper shows just the current step's label already. Do not remove the labels from your JSX to achieve this: an unlabelled step has no accessible name.
 
 Hiding the labels also takes away a sighted user's sense of how far along they are, so `hideLabels` adds a visible "Step 3 of 5" counter in exchange. The counter is hidden from assistive technology, because every step already announces its own position and the counter would only repeat it.
 
 <ComponentDemo name="stepper-hide-labels" />
+
+### Small screens
+
+The stepper switches to its [compact layout](#compact-layout) below the small-screen breakpoint without any change to your code. A few choices in your flow decide how well it reads on a phone.
+
+- **Keep step names short.** The current label is the only step name a user sees, so name each step after what they do there, such as "Tickets", "Price" or "Payout". A long name wraps onto a second line instead of being cut off, but one or two words read best.
+- **Let users go back.** Finished steps stay buttons or links, so a user can tap a segment to return to it, and screen readers announce every step the same way they do on a large screen. The touch target is the full height of the step, not only the thin bar.
+- **Stay at ten steps or fewer.** The segments share the width equally. Up to ten steps, each one keeps a touch target at least 24 pixels wide on the narrowest phones, even inside a padded card. Beyond ten the targets shrink, so split such a flow into stages instead of adding steps. `hideLabels` changes nothing here, because small screens show only the current label anyway.
+- **Mark failed steps with `errorKeys`.** With only one step named, an error further back would go unnoticed. A failed step's segment turns red and gets a warning icon above it, so the error does not rest on colour alone and the user sees which step to return to. The step stays selectable, so they can tap it and fix it. When the current step is the one that failed, its name shows the warning icon instead.
 
 ### Accessibility
 
@@ -163,7 +201,7 @@ Hiding the labels also takes away a sighted user's sense of how far along they a
 - Each step announces its label, its position, and its state, for example "Choose plan Step 2 of 4, current step".
 - Activation follows the element: Enter on a link step, Enter or Space on a button step.
 - Move focus into the new panel after a step change, to its heading for example. Activating a step swaps the content but leaves focus on the stepper, so without this nothing tells a keyboard or screen reader user that the page moved on.
-- Colour transitions are removed when the user prefers reduced motion.
+- Moving to another step fills the line toward it and glides the highlight to the new step. All of this motion is removed when the user prefers reduced motion.
 
 ## Props
 

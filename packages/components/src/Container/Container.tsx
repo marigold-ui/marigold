@@ -29,6 +29,7 @@ export interface ContainerProps extends AriaRegionProps {
    * Set the spacing between child elements.
    */
   space?: SpaceProp<SpacingTokens>['space'];
+  /** Children of the component. */
   children?: ReactNode;
   /**
    * Width of the container.

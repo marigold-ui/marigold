@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { expect, spyOn, userEvent, waitFor } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview, { smallScreenWidth } from '.storybook/preview';
 import { Key } from '@react-types/shared';
 import { ClipboardPaste, Copy, Delete, Scissors } from '@marigold/icons';
@@ -619,6 +620,7 @@ DisabledWithDescription.test(
 );
 
 export const Mobile = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   // Chromatic ignores the viewport global, so pin its capture to phone width.
   parameters: {
@@ -786,3 +788,17 @@ Advanced.test(
     expect(copyItem.getAttribute('aria-describedby')).toContain(shortcut.id);
   }
 );
+
+export const LabelledByActionMenu = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { 'aria-labelledby': 'offer-label' },
+  render: args => (
+    <div className="flex items-center gap-2">
+      <span id="offer-label">Angebot 42</span>
+      <ActionMenu aria-labelledby={args['aria-labelledby']}>
+        <ActionMenu.Item id="edit">Bearbeiten</ActionMenu.Item>
+        <ActionMenu.Item id="withdraw">Zurückziehen</ActionMenu.Item>
+      </ActionMenu>
+    </div>
+  ),
+});

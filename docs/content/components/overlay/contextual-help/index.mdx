@@ -79,6 +79,10 @@ Use `<ContextualHelp.Description>` for a short summary directly below the title,
 
 The position of the popover can be customized using the placement prop. Available options include `top`, `bottom`, `left`, `right`, and aligned variants like `bottom start`.
 
+On small screens there is rarely room beside the button, so `left` and `right` open at the `bottom` instead. The popover also keeps a small distance to both edges of the screen and gets narrower when it would not fit.
+
+The popover is layered above the page, so it can extend past the container the button sits in, such as a panel or a card. That is intended and keeps its content readable.
+
 <ComponentDemo name="contextual-help-placement" />
 
 ### Interactive content

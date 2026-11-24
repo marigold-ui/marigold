@@ -8,7 +8,7 @@ import {
 import { TextContext } from 'react-aria-components/Text';
 import { Provider } from 'react-aria-components/slots';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { cn, useClassNames } from '@marigold/system';
+import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { ButtonContext, RESET_BUTTON_CONTEXT } from '../Button/Context';
 import { Popover } from '../Overlay/Popover';
 import { CircleQuestionMark } from '../icons/CircleQuestionMark';
@@ -55,7 +55,10 @@ export interface ContextualHelpProps {
   /** Visual variant of the icon (e.g. info or help). */
   variant?: keyof typeof icons;
 
-  /** Placement of the popover relative to the button. */
+  /**
+   * Placement of the popover relative to the button. On small screens
+   * `left` and `right` open at the `bottom`, as there is no room beside it.
+   */
   placement?: Placement;
 
   /** Optional width size for the popover */
@@ -97,6 +100,11 @@ const ContextualHelpBase = ({
     size,
   });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const isSmallScreen = useSmallScreen();
+  const popoverPlacement =
+    isSmallScreen && (placement === 'left' || placement === 'right')
+      ? 'bottom'
+      : placement;
   const { described } = use(AddonContext);
   // In an effect, so a controlled field doesn't warn on every keystroke.
   useEffect(() => {
@@ -144,7 +152,7 @@ const ContextualHelpBase = ({
         <Icon size={20} />
       </Button>
 
-      <Popover placement={placement} offset={offset}>
+      <Popover placement={popoverPlacement} offset={offset}>
         <Dialog
           className={cn(
             "grid [grid-template-areas:'title'_'description'_'content']",

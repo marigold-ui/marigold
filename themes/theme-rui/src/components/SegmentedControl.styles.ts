@@ -59,21 +59,17 @@ export const SegmentedControl: ThemeComponent<'SegmentedControl'> = {
       // convention, DST-1436). No press scale — the sliding indicator is the feedback.
       'cursor-pointer outline-none transition-[color]',
       'text-secondary selected:text-foreground',
-      // Keyboard focus ring, inset 2px. This is the ghost variant's ring: no thumb,
-      // so it hugs the cell. See `indicator` for where the default variant puts it.
-      'focus-visible:outline-3 focus-visible:outline-solid focus-visible:outline-ring/50 focus-visible:-outline-offset-2',
       'disabled:cursor-not-allowed disabled:text-disabled',
     ],
     variants: {
       variant: {
         // Hover only brightens the label; the moving indicator is the background
-        // affordance, and carries the focus ring too, so the cell suppresses its
-        // own outline here. (Ghost keeps it, having no thumb.)
-        default:
-          'not-selected:hover:text-foreground focus-visible:outline-none',
+        // affordance and carries the focus ring, see `indicator`.
+        default: 'not-selected:hover:text-foreground',
         // Track-less: hover is a translucent overlay, applied on the selected item
         // too so it stays covered while the indicator slides in (matches Tabs).
-        ghost: 'hover:ui-state-hover-ghost',
+        // No thumb, so the cell carries the focus ring itself, as a Tab does.
+        ghost: 'hover:ui-state-hover-ghost focus-visible:ui-state-focus-item',
       },
       size: {
         // The thumb fills the segment, so px is the label's padding inside it.

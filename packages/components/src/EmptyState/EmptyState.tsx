@@ -31,7 +31,15 @@ export interface EmptyStateProps {
    * @default 3
    */
   headingLevel?: 2 | 3 | 4 | 5 | 6;
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
 }
 

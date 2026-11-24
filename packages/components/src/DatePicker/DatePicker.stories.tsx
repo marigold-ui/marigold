@@ -8,6 +8,7 @@ import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, fn, spyOn, waitFor, within } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview, { smallScreenWidth } from '.storybook/preview';
 import { theme } from '../../../../themes/theme-rui/src/index.js';
 import { Stack } from '../Stack/Stack';
@@ -239,6 +240,7 @@ export const WithError = meta.story({
 });
 
 export const Mobile = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   // Chromatic ignores the viewport global, so pin its capture to phone width.
   parameters: {
@@ -415,6 +417,7 @@ Presets.test(
 // built-ins) keep the resolved-date sublabels and the visible month stable,
 // so Chromatic can snapshot the open preset view without daily diffs.
 export const PresetsMobile = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   globals: {
     viewport: { value: 'extraSmallScreen' },

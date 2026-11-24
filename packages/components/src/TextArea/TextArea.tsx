@@ -26,7 +26,15 @@ export interface TextAreaProps
       FieldBaseProps<'label'>,
       'label' | 'addon' | 'description' | 'errorMessage'
     > {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
 
   /**
@@ -85,6 +93,7 @@ export interface TextAreaProps
    * @default none
    */
   rows?: number;
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLTextAreaElement>;
 }
 

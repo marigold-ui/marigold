@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview, { smallScreenWidth } from '.storybook/preview';
 import type { Key } from '@react-types/shared';
 import { Button } from '../Button/Button';
@@ -474,6 +475,7 @@ LargeDataset.test(
 );
 
 export const Mobile = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   // Chromatic ignores the viewport global, so pin its capture to phone width.
   parameters: {
@@ -537,6 +539,7 @@ Mobile.test('Mobile ComboBox interaction', async ({ canvas, step }) => {
     const input = await canvas.findByRole('combobox');
 
     await waitFor(() => expect(input).toBeVisible());
+    await waitFor(() => expect(input).toHaveFocus());
   });
 
   await step('Select option from list', async () => {

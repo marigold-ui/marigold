@@ -20,7 +20,15 @@ export interface BreadcrumbsProps extends Omit<
   RACBreadcrumbsProps<object>,
   RemovedProps
 > {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: 'default' | (string & {});
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: 'small' | 'default' | 'large' | (string & {});
 
   /**

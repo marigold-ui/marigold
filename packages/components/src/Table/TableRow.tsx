@@ -28,7 +28,15 @@ export interface TableRowProps<T extends object = object> extends Omit<
   RAC.RowProps<T>,
   RemovedProps | 'hasChildItems'
 > {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: 'grid' | 'default' | 'muted' | (string & {});
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: 'compact' | 'default' | 'spacious' | (string & {});
   /**
    * Whether the row can be expanded even though its nested rows are not there
