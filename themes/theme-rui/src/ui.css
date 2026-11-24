@@ -66,6 +66,11 @@
   syntax: '*';
   inherits: false;
 }
+/* Non-inheriting so a pill cap (ActionBar) does not round the buttons inside it. */
+@property --cap-radius {
+  syntax: '*';
+  inherits: false;
+}
 
 /*
  * ui-frame — the role-neutral primitive every raised element is built on: a
@@ -106,6 +111,8 @@
  */
 @utility ui-cap {
   @apply relative isolate;
+  /* Resolved here, since ::before cannot read the non-inheriting --cap-radius. */
+  --cap-r: var(--cap-radius, var(--radius-surface));
 
   /* Below the content, inside the isolated element: paint order, not page stacking. */
   &::before {
@@ -114,7 +121,7 @@
     inset: -1px;
     z-index: -1;
     border: 1px solid var(--cap-ring);
-    border-radius: calc(var(--cap-radius, var(--radius-surface)) + 1px);
+    border-radius: calc(var(--cap-r) + 1px);
     pointer-events: none;
     /* Runs under the ring too, so no seam shows between them. */
     background: var(--cap-fill);
