@@ -138,6 +138,10 @@ For options that need a primary label and a secondary line, compose with `<TextV
   </Dont>
 </GuidelineTiles>
 
+### Controlled usage
+
+An `<Autocomplete>` holds two values, and each can be controlled on its own. `inputValue`, `defaultInputValue` and `onInputChange` hold the text in the search field. `value`, `defaultValue` and `onChange` hold the `id` of the selected option, the same as on `<Select>`. Use `onSubmit` to react to both a picked option and a custom search.
+
 ### Async Loading
 
 - Large datasets that would be inefficient to load all at once
@@ -187,6 +191,11 @@ This can be achieved by wrapping the options in the `<Autocomplete.Section>` com
   <li>
     [Select](/components/form/select): A component with which you can choose
     exactly one option from a list with predefined options.
+  </li>
+  <li>
+    [Popover](/components/overlay/popover): Opens the same kind of floating
+    panel. Use it when people act on the results in place, like managing team
+    members, rather than picking one value.
   </li>
 </ul>
 

@@ -95,6 +95,11 @@ describe('intl messages', () => {
       ) => string;
       expect(fn({ current: 2, total: 4 })).toBe('Schritt 2 von 4');
     });
+
+    test('ofMaxValue interpolates max', () => {
+      const fn = de.ofMaxValue as (vars: Record<string, string>) => string;
+      expect(fn({ max: '2' })).toBe('von 2');
+    });
   });
 
   describe('en-US', () => {
@@ -159,6 +164,11 @@ describe('intl messages', () => {
         vars: Record<string, string | number>
       ) => string;
       expect(fn({ current: 2, total: 4 })).toBe('Step 2 of 4');
+    });
+
+    test('ofMaxValue interpolates max', () => {
+      const fn = en.ofMaxValue as (vars: Record<string, string>) => string;
+      expect(fn({ max: '2' })).toBe('of 2');
     });
   });
 });

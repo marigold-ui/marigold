@@ -11,6 +11,10 @@ export interface BadgeProps {
    * Children of the component.
    */
   children?: ReactNode;
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?:
     | 'default'
     | 'primary'

@@ -95,8 +95,8 @@ export const WithAutocompleteAndData = meta.story({
       <Autocomplete
         label="Search Characters"
         items={filteredItems}
-        value={inputValue}
-        onChange={setInputValue}
+        inputValue={inputValue}
+        onInputChange={setInputValue}
         allowsEmptyCollection
         emptyState={
           <EmptyState description="Try adjusting your search terms" {...args} />

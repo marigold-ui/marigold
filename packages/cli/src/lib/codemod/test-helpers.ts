@@ -8,3 +8,7 @@ export function assertEdited(
     throw new Error(`expected edited, got ${result.kind}`);
   }
 }
+
+/** test-only: the warnings of an outcome, none for a skipped file */
+export const warningsOf = (result: CodemodOutcome): string[] =>
+  result.kind === 'skipped' ? [] : result.warnings;

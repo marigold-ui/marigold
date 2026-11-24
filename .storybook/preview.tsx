@@ -3,23 +3,37 @@ import addonDocs from '@storybook/addon-docs';
 import { definePreview } from '@storybook/react-vite';
 import addonTestCodegen from 'storybook-addon-test-codegen';
 import { MINIMAL_VIEWPORTS } from 'storybook/viewport';
+import { isChromatic } from './chromatic.js';
 import withMarigoldProviders from './decorators.js';
 // @ts-expect-error - CSS side-effect import handled by Vite bundler
 import './styles.css';
 
 // Chromatic freezes animations at their last frame, which would pin scroll-driven
 // styles, such as the Dialog's seams, whatever the scroll position. `styles.css`
-// swaps them for their fallback under this flag, set like Chromatic's `isChromatic()`.
-if (
-  /Chromatic/.test(navigator.userAgent) ||
-  /chromatic=true/.test(location.href)
-) {
+// swaps them for their fallback under this flag.
+if (isChromatic) {
   document.documentElement.dataset.chromatic = '';
+
+  // RAC's Sheet slides in with a JS smooth scroll that the `prefersReducedMotion`
+  // parameter below doesn't stop, so a tray is captured below the screen. Forcing
+  // the query makes it jump into place. Only RAC's Sheet asks for this exact query.
+  const matchMedia = window.matchMedia.bind(window);
+  window.matchMedia = query => {
+    const list = matchMedia(query);
+    if (query === '(prefers-reduced-motion: reduce)') {
+      Object.defineProperty(list, 'matches', { value: true });
+    }
+
+    return list;
+  };
 }
 
 // Storybook viewports only accept fixed pixel values, so we can't use the
 // theme's rem-based `sm` breakpoint directly. 639px = 40rem - 1px (at the
 // default 16px root font size), ensuring this viewport triggers `(width < 40rem)`.
+/** Phone width for Chromatic's `viewports`, which ignores the viewport global. */
+export const smallScreenWidth = 639;
+
 const customViewports = {
   extraSmallScreen: {
     name: 'Extra Small Screen (320px)',
@@ -30,9 +44,9 @@ const customViewports = {
     type: 'mobile' as const,
   },
   smallScreen: {
-    name: 'Small Screen (639px)',
+    name: `Small Screen (${smallScreenWidth}px)`,
     styles: {
-      width: '639px',
+      width: `${smallScreenWidth}px`,
       height: '900px',
     },
     type: 'mobile' as const,

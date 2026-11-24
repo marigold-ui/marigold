@@ -72,6 +72,7 @@ export interface ActionMenuProps
    */
   disabled?: boolean;
 
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLButtonElement>;
 }
 

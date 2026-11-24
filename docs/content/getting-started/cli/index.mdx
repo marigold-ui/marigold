@@ -63,8 +63,14 @@ AI coding agents are the CLI's primary audience. Agents capture the CLI's output
 marigold docs Select --section props --format json
 
 # Discover components before writing code
+marigold search "date range"
 marigold list --category form
-marigold list --search date
+```
+
+After writing or changing a file, check it with [`marigold validate`](#marigold-validate). The `technical` checks need no browser and catch what a compiler can't: a component or prop that does not exist, a missing compound part, raw HTML where a component exists, and a control without an accessible name. The command exits `1` only on an error, so an agent can run it in a loop until it passes:
+
+```bash
+marigold validate src/EventList.tsx --checks technical
 ```
 
 To adopt a whole feature pattern rather than a single component, use `marigold examples` to discover and retrieve application-level patterns, then read the framework-transformation note once:
@@ -124,6 +130,25 @@ Pass a component name (case-insensitive, so `Button`, `button`, and `BUTTON` all
   non-trivial docs prefer `--format json` (a structured payload) or `--format
   plain` (ANSI-stripped, ideal for piping into other tools).
 </Callout>
+
+### marigold search
+
+Find components by what their docs say: title, description, section headings and section prose, not just the name. Use it when you know the job but not the component.
+
+```bash
+marigold search "field validation"
+marigold search "date picker" --limit 10
+marigold search modal --format json
+```
+
+| Flag              | Description                                        |
+| ----------------- | -------------------------------------------------- |
+| `--limit <n>`     | Maximum number of results (default: `5`)           |
+| `--format <name>` | `markdown`, `json` or `plain`                      |
+| `--fresh`         | Bypass the local cache                             |
+| `--offline`       | Use only the local cache, failing if it is missing |
+
+Each result carries the component name, its slug, a score and the best matching section. A query without matches exits `0`. The index covers component pages only, so use `marigold examples list` to browse patterns and `marigold list --category foundations` to browse foundations.
 
 ### marigold list
 
@@ -249,9 +274,30 @@ It checks, against the current working directory:
   health from `errors.length === 0` and act on each `suggestion`.
 </Callout>
 
+### marigold validate
+
+Check one component file against the rules of the design system. It finds what a compiler can't: a component or prop that does not exist, a required compound part that is missing, raw HTML where a component exists, a control without an accessible name, overlapping elements and more.
+
+```bash
+marigold validate src/components/EventList.tsx
+marigold validate src/components/EventList.tsx --checks technical --format json
+```
+
+| Flag              | Description                                              |
+| ----------------- | -------------------------------------------------------- |
+| `--checks <name>` | `technical`, `spatial`, `a11y` or `all` (default: `all`) |
+| `--format <name>` | `text` or `json`                                         |
+
+Validation runs in two passes:
+
+- **Static** (`technical`): reads the source of a single `.tsx` file and needs no browser. It reports compiler errors, invalid props and event handlers, compound composition, raw HTML where a component exists, section headers, collection ids and component conventions.
+- **Rendered** (`spatial`, `a11y`): renders the file in a headless browser and checks overlap, token usage, responsive width, keyboard access, contrast, focus visibility and runs an axe audit. It needs a file that imports only from packages such as `@marigold/components` and `react`, plus `playwright`, `vite`, `@vitejs/plugin-react` and `@axe-core/playwright` in the project with Chromium installed. For a file that imports local modules, run `--checks technical`.
+
+A finding is an **error** only when it is certain, such as a component that does not exist or a missing required part. Everything else is a **warning**. The command exits `1` only on an error, which makes it safe to run in an automatic fix loop. Set `MARIGOLD_VALIDATE_DISABLED=1` to skip validation where no browser is available.
+
 ### marigold migrate
 
-Apply codemods for a breaking Marigold release, to your theme files and your application code. Run it after upgrading `@marigold/components`, from your project root.
+Apply codemods for a breaking Marigold release, to your theme files and your application code. Run it after upgrading `@marigold/components`, from the package that declares it.
 
 ```bash
 marigold migrate v18                          # migrate the current directory
@@ -265,7 +311,14 @@ marigold migrate v18 --only rename-imports    # apply a subset, non-interactivel
 | `--dry-run`      | Report what would change without writing files                          |         |
 | `--only <names>` | Apply only these changes (comma-separated), skipping the selection step |         |
 
-Both positionals are optional. Without a version, the installed `@marigold/components` is detected and the applicable migration is proposed for confirmation. Without a path, the current directory is used.
+Both positionals are optional. Without a version, the installed `@marigold/components` is detected, or `@marigold/system` in a standalone theme package, and the pending migrations are proposed for confirmation. Without a path, the current directory is used.
+
+After an applied run, `marigold migrate` records the last migration in the `package.json` that declares `@marigold/components`, or `@marigold/system` for a standalone theme package, as `"marigold": { "migrated": "v19" }`. Commit this field with the migrated code. It is how the CLI knows what is pending:
+
+- Without a version, only migrations newer than the recorded one are proposed, and only once their major version is installed. Upgrade first, then migrate.
+- A migration named explicitly that is already recorded prints a warning, changes nothing and exits with code `1`, so a script that chains a commit after it stops.
+
+Because the record belongs to a package, an applied run has to target that package's folder, the one with the `package.json` that declares `@marigold/components` or `@marigold/system`. A subfolder or a monorepo root is refused with the command to run instead. In a monorepo, migrate each package that declares one of them. A run on a package leaves out nested packages that declare one of them, since each records its own run, and names them in the output. A dry run works on any path.
 
 It anchors on imports rather than on file names or directory layout, so it works whatever your project structure is:
 
@@ -278,10 +331,10 @@ Anything that cannot be decided from the source, a spread that hides slots, a cu
 <Callout title="Dry run first">
   `--dry-run` prints the full report and writes nothing. Interactive runs
   pre-analyze the project and list the changes that actually fire, so you can
-  deselect any of them before applying. Report-only checks always run. Applying
-  twice is a no-op, so a partial run can be completed later. After an applied
-  run, your typechecker is the completeness check: the slot `Record`s in
-  `@marigold/system` are exhaustive.
+  deselect any of them before applying. Report-only checks always run. A partial
+  run lists what it skipped, with the `--only` command that applies it later.
+  After an applied run, your typechecker is the completeness check: the slot
+  `Record`s in `@marigold/system` are exhaustive.
 </Callout>
 
 ### marigold completion

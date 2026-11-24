@@ -27,6 +27,7 @@ import { Tag } from '../TagGroup/Tag';
 import { Tray } from '../Tray/Tray';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { intlMessages } from '../intl/messages';
+import { useAutoFocus } from '../utils/useAutoFocus';
 
 // Props
 // ---------------
@@ -42,7 +43,15 @@ type RemovedProps =
 
 export interface TagFieldProps<T extends object>
   extends Omit<RAC.SelectProps<T, 'multiple'>, RemovedProps>, WidthProp {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
 
   /**
@@ -194,11 +203,14 @@ const TagFieldDropdown = ({
 }: TagFieldDropdownProps) => {
   const { contains } = useFilter({ sensitivity: 'base' });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const inputRef = useRef<HTMLInputElement>(null);
+  // Not a native `autoFocus`, see `useAutoFocus`.
+  useAutoFocus(inputRef);
 
   return (
     <Autocomplete filter={contains}>
-      <SearchField aria-label={stringFormatter.format('search')} autoFocus>
-        <SearchInput placeholder={placeholder} />
+      <SearchField aria-label={stringFormatter.format('search')}>
+        <SearchInput ref={inputRef} placeholder={placeholder} />
       </SearchField>
       <ListBox
         items={items}

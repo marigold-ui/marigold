@@ -1,7 +1,9 @@
-import { Key, useState } from 'react';
+import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, userEvent, waitFor, within } from 'storybook/test';
-import preview from '.storybook/preview';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
+import preview, { smallScreenWidth } from '.storybook/preview';
+import type { Key } from '@react-types/shared';
 import { Button } from '../Button/Button';
 import { Description } from '../Description/Description';
 import { Stack } from '../Stack/Stack';
@@ -312,7 +314,7 @@ export const Controlled = meta.story({
     const [id, setId] = useState<Key | null>(null);
     return (
       <Stack>
-        <ComboBox {...args} onSelectionChange={setId} label="Animals">
+        <ComboBox {...args} value={id} onChange={setId} label="Animals">
           <ComboBox.Option id="red panda">Red Panda</ComboBox.Option>
           <ComboBox.Option id="cat">Cat</ComboBox.Option>
           <ComboBox.Option id="dog">Dog</ComboBox.Option>
@@ -473,8 +475,16 @@ LargeDataset.test(
 );
 
 export const Mobile = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true } },
+  // Chromatic ignores the viewport global, so pin its capture to phone width.
+  parameters: {
+    chromatic: {
+      disableSnapshot: true,
+      viewports: [smallScreenWidth],
+      cropToViewport: true,
+    },
+  },
   globals: {
     viewport: { value: 'smallScreen' },
   },
@@ -518,44 +528,39 @@ Mobile.test(
   }
 );
 
-Mobile.test(
-  'Mobile ComboBox interaction',
-  {
-    parameters: { chromatic: { disableSnapshot: false } },
-  },
-  async ({ canvas, step }) => {
-    const trigger = await canvas.findByRole('button');
+Mobile.test('Mobile ComboBox interaction', async ({ canvas, step }) => {
+  const trigger = await canvas.findByRole('button');
 
-    await step('Open tray by clicking trigger', async () => {
-      await userEvent.click(trigger);
+  await step('Open tray by clicking trigger', async () => {
+    await userEvent.click(trigger);
+  });
+
+  await step('Verify tray content is visible', async () => {
+    const input = await canvas.findByRole('combobox');
+
+    await waitFor(() => expect(input).toBeVisible());
+    await waitFor(() => expect(input).toHaveFocus());
+  });
+
+  await step('Select option from list', async () => {
+    const option = await canvas.findByText('Dog');
+
+    await userEvent.click(option);
+  });
+
+  await step('Close select with Escape key', async () => {
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() => {
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
+      expect(trigger).toHaveAttribute('aria-expanded', 'false');
     });
+  });
 
-    await step('Verify tray content is visible', async () => {
-      const input = await canvas.findByRole('combobox');
-
-      await waitFor(() => expect(input).toBeVisible());
-    });
-
-    await step('Select option from list', async () => {
-      const option = await canvas.findByText('Dog');
-
-      await userEvent.click(option);
-    });
-
-    await step('Close select with Escape key', async () => {
-      await userEvent.keyboard('{Escape}');
-
-      await waitFor(() => {
-        expect(canvas.queryByRole('dialog')).not.toBeInTheDocument();
-        expect(trigger).toHaveAttribute('aria-expanded', 'false');
-      });
-    });
-
-    await step('Verify selection is displayed in trigger', async () => {
-      await waitFor(() => expect(trigger).toHaveTextContent('Dog'));
-    });
-  }
-);
+  await step('Verify selection is displayed in trigger', async () => {
+    await waitFor(() => expect(trigger).toHaveTextContent('Dog'));
+  });
+});
 
 Mobile.test('Mobile ComboBox keyboard navigation', async ({ canvas, step }) => {
   const trigger = await canvas.findByRole('button');
@@ -573,6 +578,13 @@ Mobile.test('Mobile ComboBox keyboard navigation', async ({ canvas, step }) => {
   });
 
   await step('Filter options by typing', async () => {
+    // Let the tray finish sliding in before typing.
+    await waitFor(() =>
+      expect(
+        canvas.getByRole('dialog').getBoundingClientRect().bottom
+      ).toBeLessThanOrEqual(window.innerHeight + 1)
+    );
+
     await userEvent.keyboard('cat');
 
     await waitFor(() => {
@@ -713,6 +725,12 @@ Basic.test(
     // The tray's underlay swallows clicks until it is gone, so wait it out
     // before touching anything behind it.
     const close = async () => {
+      // Escape reaches the tray once focus has moved in, after the slide-in.
+      await waitFor(() =>
+        expect(canvas.getByRole('dialog')).toContainElement(
+          document.activeElement as HTMLElement
+        )
+      );
       await userEvent.keyboard('{Escape}');
 
       return waitFor(() =>
@@ -735,5 +753,19 @@ Basic.test(
 
       expect(await optionFor('late')).toBeInTheDocument();
     });
+  }
+);
+
+Mobile.test(
+  'Uses 16px text in the tray input, so iOS does not zoom in on focus',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(await canvas.findByRole('button'));
+    await canvas.findByRole('dialog');
+
+    await waitFor(() => expect(document.activeElement?.tagName).toBe('INPUT'));
+    const input = document.activeElement as HTMLElement;
+    expect(parseFloat(getComputedStyle(input).fontSize)).toBeGreaterThanOrEqual(
+      16
+    );
   }
 );

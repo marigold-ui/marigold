@@ -2,6 +2,7 @@ import { objectProperties, propertyName } from '../anchor.js';
 import {
   codeList,
   lineIndentAt,
+  reindent,
   stubSlotLine,
   stylesReference,
   themeCodemod,
@@ -10,9 +11,9 @@ import type { Codemod, MigrationManifest } from '../types.js';
 
 /**
  * Adds slot keys the target version requires but the consumer theme lacks,
- * as `cva({})` stubs — never touching existing slots. Slot keys the target
- * version dropped are reported as warnings (they fail the exhaustive-Record
- * typecheck and are dead weight).
+ * as `cva({})` stubs or the manifest's `slotDefaults` — never touching
+ * existing slots. Slot keys the target version dropped are reported as
+ * warnings (they fail the exhaustive-Record typecheck and are dead weight).
  */
 export const stubMissingSlots = (manifest: MigrationManifest): Codemod =>
   themeCodemod(
@@ -56,8 +57,16 @@ export const stubMissingSlots = (manifest: MigrationManifest): Codemod =>
 
       const base = lineIndentAt(source, init.start as number);
       const inner = base + unit;
+      const defaults = manifest.slotDefaults?.[component] ?? {};
       const stubs = missing
-        .map(slot => stubSlotLine(slot, inner, cva))
+        .map(slot =>
+          stubSlotLine(
+            slot,
+            inner,
+            cva,
+            defaults[slot] ? reindent(defaults[slot], unit, inner) : undefined
+          )
+        )
         .join('\n');
 
       if (props.length === 0) {

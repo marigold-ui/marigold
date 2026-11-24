@@ -24,10 +24,7 @@ type RemovedProps =
   | 'isDisabled'
   | 'isRequired'
   | 'isInvalid'
-  | 'isReadOnly'
-  | 'defaultInputValue'
-  | 'inputValue'
-  | 'onInputChange';
+  | 'isReadOnly';
 
 export interface ComboBoxProps
   extends
@@ -36,7 +33,15 @@ export interface ComboBoxProps
       FieldBaseProps<'label'>,
       'label' | 'addon' | 'description' | 'errorMessage'
     > {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
 
   /**
@@ -67,21 +72,6 @@ export interface ComboBoxProps
    * @default false
    */
   error?: RAC.ComboBoxProps<any>['isInvalid'];
-
-  /**
-   * The value of the input (uncontrolled).
-   */
-  defaultValue?: RAC.ComboBoxProps<any>['defaultInputValue'];
-
-  /**
-   * The value of the input (controlled).
-   */
-  value?: RAC.ComboBoxProps<any>['inputValue'];
-
-  /**
-   * Called when the input value changes.
-   */
-  onChange?: RAC.ComboBoxProps<any>['onInputChange'];
 
   /**
    * ReactNode or function to render the list of items.
@@ -121,10 +111,7 @@ const ComboBoxBase = ({
   disabled,
   readOnly,
   error,
-  defaultValue,
-  value,
   emptyState,
-  onChange,
   children,
   dependencies,
   loading,
@@ -136,9 +123,6 @@ const ComboBoxBase = ({
     isReadOnly: readOnly,
     isRequired: required,
     isInvalid: error,
-    defaultInputValue: defaultValue,
-    inputValue: value,
-    onInputChange: onChange,
     ...rest,
   };
 

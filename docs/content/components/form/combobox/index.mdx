@@ -15,11 +15,16 @@ Its purpose is to make interaction with software more intuitive by presenting op
 
 ## Usage
 
-### Controlled Usage with custom Filter
+### Controlled usage
 
-If you want to listen or act while the user is typing into the `ComboBox` field, you can switch to controlled mode by adding an `onChange` handler and setting the `value` manually.
+A `<ComboBox>` holds two values: the selected option and the text in the input. Each can be controlled on its own.
 
-This is especially helpful if you need to customize the filtering. For example, you may only want to show suggestions when the user has typed at least two characters. Furthermore, you can improve the matching, as shown in the example below. In the demo, the user would not receive a suggestion if they typed "ssp" without the custom filter.
+- `value`, `defaultValue` and `onChange` hold the `id` of the selected option, the same as on `<Select>`.
+- `inputValue`, `defaultInputValue` and `onInputChange` hold the text the user has typed.
+
+Control `inputValue` when you need to act while the user is typing, for example to load suggestions from a server. Control `value` when you need to know which option was picked. The demo controls `value` and only listens to the text through `onInputChange`, so the input still updates on its own.
+
+If you control both, the `<ComboBox>` no longer syncs them for you. Set `inputValue` to the picked option's text in your `onChange` handler, or the input keeps showing what the user typed.
 
 <ComponentDemo name="combobox-controlled" />
 
@@ -66,10 +71,10 @@ The below examples will display the suggestions when the input field is focused.
 
 The `<ComboBox.Option>` component supports an `onAction` prop that triggers a callback when the user performs an action on an item. This is useful for triggering side effects such as navigating to a detail view or opening an edit modal.
 
-By combining controlled input (`value`/`onChange`) with `allowsCustomValue` and a conditional `<ComboBox.Option>`, you can offer a dynamic "Create new" option that reflects what the user has typed. This is a common pattern for comboboxes that allow creating new entries inline.
+By combining controlled input (`inputValue`/`onInputChange`) with `allowsCustomValue` and a conditional `<ComboBox.Option>`, you can offer a dynamic "Create new" option that reflects what the user has typed. This is a common pattern for comboboxes that allow creating new entries inline.
 
-<Callout title="`onAction` vs `onSelectionChange`" type="info">
-  The `onAction` prop on individual options differs from the `onSelectionChange` prop on the `<ComboBox>` itself. Use `onSelectionChange` when you need to track and manage the selected value. Use `onAction` when you need to perform a side effect when an item is activated, regardless of selection state. Note that `onAction` should not replace the primary selection behavior - it is intended for supplementary actions.
+<Callout title="`onAction` vs `onChange`" type="info">
+  The `onAction` prop on individual options differs from the `onChange` prop on the `<ComboBox>` itself. Use `onChange` when you need to track and manage the selected value. Use `onAction` when you need to perform a side effect when an item is activated, regardless of selection state. Note that `onAction` should not replace the primary selection behavior - it is intended for supplementary actions.
 </Callout>
 
 <ComponentDemo name="combobox-action" />
@@ -89,3 +94,9 @@ By combining controlled input (`value`/`onChange`) with `allowsCustomValue` and 
 ### ComboBox.Section
 
 <AutoTypeTable path="ListBox/ListBoxSection" name="SectionProps" />
+
+## Alternative components
+
+- [Autocomplete](/components/form/autocomplete): Use for a search field that suggests matches but doesn't restrict the value to them.
+- [Select](/components/form/select): Use when there are few enough options to choose from without typing.
+- [Popover](/components/overlay/popover): Opens the same kind of floating panel. Use it when people act on a list in place, like managing team members, rather than picking one value.

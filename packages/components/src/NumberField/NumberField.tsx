@@ -1,10 +1,18 @@
-import type { Ref } from 'react';
+import { type Ref, useId } from 'react';
 import type RAC from 'react-aria-components';
 import { Group } from 'react-aria-components/Group';
 import { Input } from 'react-aria-components/Input';
 import { NumberField as RACNumberField } from 'react-aria-components/NumberField';
+import { VisuallyHidden } from 'react-aria-components/VisuallyHidden';
+import {
+  useLocalizedStringFormatter,
+  useNumberFormatter,
+} from '@react-aria/i18n';
+import { useObjectRef } from '@react-aria/utils';
 import { WidthProp, cn, useClassNames } from '@marigold/system';
 import { FieldBase, FieldBaseProps } from '../FieldBase/FieldBase';
+import { intlMessages } from '../intl/messages';
+import { joinIds } from '../utils/useLabelAddon';
 import { StepButton } from './StepButton';
 
 // Props
@@ -26,7 +34,15 @@ export interface NumberFieldProps
       FieldBaseProps<'label'>,
       'label' | 'addon' | 'description' | 'errorMessage'
     > {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
 
   /**
@@ -69,10 +85,19 @@ export interface NumberFieldProps
   hideStepper?: boolean;
 
   /**
+   * Shows the `maxValue` next to the value, e.g. "1 / 2", and adds "of 2" to
+   * the field's accessible description. Needs a finite `maxValue`. The label
+   * should name the counted unit, because the maximum has none of its own.
+   * @default false
+   */
+  showMaxValue?: boolean;
+
+  /**
    * Placeholder text for the input field.
    * @default none
    */
   placeholder?: string;
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLInputElement>;
 }
 
@@ -86,6 +111,7 @@ const NumberField = ({
   readOnly,
   error,
   hideStepper,
+  showMaxValue,
   ref,
   ...rest
 }: NumberFieldProps) => {
@@ -95,12 +121,26 @@ const NumberField = ({
     variant,
   });
 
+  const numberFormatter = useNumberFormatter(rest.formatOptions);
+  const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const maxValueId = useId();
+  const inputRef = useObjectRef(ref);
+  const { maxValue } = rest;
+  const formattedMaxValue =
+    showMaxValue && maxValue !== undefined && Number.isFinite(maxValue)
+      ? numberFormatter.format(maxValue)
+      : undefined;
+
   const props: RAC.NumberFieldProps = {
     isDisabled: disabled,
     isReadOnly: readOnly,
     isInvalid: error,
     isRequired: required,
     ...rest,
+    'aria-describedby': joinIds(
+      rest['aria-describedby'],
+      formattedMaxValue && maxValueId
+    ),
   };
 
   const showStepper = !hideStepper && !readOnly;
@@ -111,6 +151,7 @@ const NumberField = ({
       {...props}
       data-readonly={readOnly ? 'true' : undefined}
       data-stepper={showStepper ? 'true' : undefined}
+      data-max-value={formattedMaxValue ? 'true' : undefined}
     >
       <Group
         className={cn(
@@ -126,10 +167,30 @@ const NumberField = ({
           />
         )}
         <Input
-          ref={ref}
+          ref={inputRef}
           className={cn('h-full flex-1 outline-none', classNames.input)}
           onFocus={e => e.currentTarget.select()}
         />
+        {formattedMaxValue && (
+          <>
+            <span
+              aria-hidden="true"
+              onPointerDown={e => {
+                e.preventDefault();
+                inputRef.current?.focus();
+              }}
+              className={cn(
+                'flex flex-1 items-center select-none',
+                classNames.maxValue
+              )}
+            >
+              / {formattedMaxValue}
+            </span>
+            <VisuallyHidden elementType="span" id={maxValueId}>
+              {stringFormatter.format('ofMaxValue', { max: formattedMaxValue })}
+            </VisuallyHidden>
+          </>
+        )}
         {showStepper && (
           <StepButton
             className={classNames.stepper}
