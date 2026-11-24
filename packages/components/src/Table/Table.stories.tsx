@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { useDragAndDrop } from 'react-aria-components/useDragAndDrop';
-import { expect, screen, waitFor, within } from 'storybook/test';
+import { expect, fn, mocked, screen, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
@@ -10,6 +10,7 @@ import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { Columns } from '../Columns/Columns';
+import { Dialog } from '../Dialog/Dialog';
 import { EmptyState } from '../EmptyState/EmptyState';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { NumberField } from '../NumberField/NumberField';
@@ -22,7 +23,11 @@ import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { Title } from '../Title/Title';
-import { expectFocusRingContrast } from '../contrast.utils';
+import {
+  expectFocusRingContrast,
+  expectInsetFocusRingContrast,
+  expectRowRingContrast,
+} from '../contrast.utils';
 import { useListData } from '../hooks';
 import type { Selection } from '../types';
 import type { TableProps } from './Table';
@@ -429,6 +434,63 @@ Basic.test(
   }
 );
 
+Basic.test(
+  'Keyboard focus on a row, cell and column header clears 3:1',
+  {
+    // Only selectable rows hover.
+    args: { selectionMode: 'multiple' },
+    parameters: { chromatic: { disableSnapshot: false } },
+  },
+  async ({ canvas, userEvent, step }) => {
+    const [header, first, second, third] = canvas.getAllByRole('row');
+    const firstCell = (row: HTMLElement) => within(row).getByRole('rowheader');
+
+    await step('row at rest', async () => {
+      first!.focus();
+
+      await userEvent.keyboard('{ArrowDown}');
+
+      await expect(second).toHaveFocus();
+      await waitFor(() => expectRowRingContrast(firstCell(second!)));
+    });
+
+    await step('row hovered', async () => {
+      await userEvent.hover(third!);
+
+      await userEvent.keyboard('{ArrowDown}');
+
+      await expect(third).toHaveAttribute('data-hovered', 'true');
+      await waitFor(() => expectRowRingContrast(firstCell(third!)));
+    });
+
+    await step('cell hovered', async () => {
+      // Past the checkbox cell.
+      await userEvent.keyboard('{ArrowRight}{ArrowRight}');
+
+      await expect(firstCell(third!)).toHaveFocus();
+      await waitFor(() => expectInsetFocusRingContrast(firstCell(third!)));
+    });
+
+    await step('cell at rest', async () => {
+      await userEvent.keyboard('{ArrowUp}{ArrowUp}');
+
+      await expect(firstCell(first!)).toHaveFocus();
+      await waitFor(() => expectInsetFocusRingContrast(firstCell(first!)));
+    });
+
+    // Focus lands on the header's content, not the header, so this covers
+    // `has-focus-visible:`. Only the empty drag header takes focus itself.
+    await step('column header', async () => {
+      await userEvent.keyboard('{ArrowUp}');
+
+      const name = within(header!).getByRole('columnheader', { name: 'Name' });
+      await expect(name).not.toHaveFocus();
+      await expect(name.contains(document.activeElement)).toBe(true);
+      await waitFor(() => expectInsetFocusRingContrast(name));
+    });
+  }
+);
+
 /**
  * A row's `textValue` comes from its `rowHeader` cell, and it is what type to
  * select matches and what selection announcements read. Plain string and number
@@ -546,7 +608,9 @@ export const DynamicData = meta.story({
       },
     ] as const;
 
-    const [selectedKeys, setSelectedKeys] = useState<Selection>(new Set(['2']));
+    const [selectedKeys, setSelectedKeys] = useState<Selection>(
+      () => new Set(['2'])
+    );
 
     return (
       <Stack space={3}>
@@ -1156,10 +1220,12 @@ export const ScrollableAndSticky = meta.story({
         <Scrollable height="400px">
           <Table aria-label="Todos Table" selectionMode="multiple" {...args}>
             <Table.Header sticky>
-              <Table.Column rowHeader>ID</Table.Column>
-              <Table.Column>Title</Table.Column>
-              <Table.Column>User</Table.Column>
-              <Table.Column>Completed</Table.Column>
+              <Table.Column rowHeader minWidth={80}>
+                ID
+              </Table.Column>
+              <Table.Column minWidth={200}>Title</Table.Column>
+              <Table.Column minWidth={100}>User</Table.Column>
+              <Table.Column minWidth={100}>Completed</Table.Column>
             </Table.Header>
             <Table.Body>
               {todos.map(todo => (
@@ -1210,6 +1276,58 @@ ScrollableAndSticky.test(
       const headerTop = thead.getBoundingClientRect().top;
       const containerTop = scrollContainer.getBoundingClientRect().top;
       expect(Math.abs(headerTop - containerTop)).toBeLessThan(5);
+    });
+  }
+);
+
+ScrollableAndSticky.test(
+  'Keeps the header sticky where the Scrollable takes the overflow',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    decorators: [
+      Story => (
+        <div className="w-[360px]">
+          <Story />
+        </div>
+      ),
+    ],
+  },
+  async ({ canvas, step }) => {
+    const table = canvas.getByRole('grid');
+    const scroll = table.closest<HTMLElement>('[data-scrollable]')!;
+    const header = canvas
+      .getByRole('columnheader', { name: 'ID' })
+      .closest('thead')!;
+
+    await step('the Table adds no scroll area of its own', async () => {
+      await waitFor(() =>
+        // A couple of pixels of slack, so a vertical scrollbar on its own
+        // doesn't read as sideways overflow.
+        expect(scroll.scrollWidth).toBeGreaterThan(scroll.clientWidth + 2)
+      );
+      // The `Scrollable` already contains the table and has a height for the
+      // header to pin to. A second scroll area here would become the
+      // scrollport instead, and the header would pin to that.
+      expect(table.closest('[data-scrolls]')).toBeNull();
+    });
+
+    await step('the header stays pinned through both axes', async () => {
+      scroll.scrollLeft = scroll.scrollWidth;
+      scroll.scrollTop = 150;
+
+      await waitFor(() => {
+        expect(scroll.scrollLeft).toBeGreaterThan(0);
+        expect(scroll.scrollTop).toBeGreaterThan(0);
+      });
+
+      // Sideways scrolling moves the header with the rows, downwards
+      // scrolling leaves it at the top edge of the `Scrollable`.
+      await waitFor(() =>
+        expect(header.getBoundingClientRect().top).toBeCloseTo(
+          scroll.getBoundingClientRect().top,
+          0
+        )
+      );
     });
   }
 );
@@ -1926,6 +2044,326 @@ FollowsParentWidth.test(
     } finally {
       await page.viewport(1280, 720);
     }
+  }
+);
+
+const OrganizersTable = ({
+  rows = 3,
+  ...props
+}: TableProps & { rows?: number }) => (
+  <Table {...props}>
+    {/* Sticky, to show what the scroll area costs: a table that fits keeps
+        its header following the page, one that scrolls has nothing to pin to. */}
+    <Table.Header sticky>
+      <Table.Column rowHeader minWidth={160}>
+        Name
+      </Table.Column>
+      <Table.Column minWidth={140}>City</Table.Column>
+      <Table.Column minWidth={180}>Email</Table.Column>
+    </Table.Header>
+    <Table.Body>
+      {Array.from({ length: rows }, (_, i) => i + 1).map(id => (
+        <Table.Row key={id}>
+          <Table.Cell>{`Organizer ${id}`}</Table.Cell>
+          <Table.Cell>Freiburg im Breisgau</Table.Cell>
+          <Table.Cell>{`contact${id}@example.com`}</Table.Cell>
+        </Table.Row>
+      ))}
+    </Table.Body>
+  </Table>
+);
+
+export const NarrowContainer = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false },
+  render: function Render(args) {
+    const table = (label: string) => (
+      <OrganizersTable aria-label={label} {...args} />
+    );
+
+    return (
+      <Stack space={6}>
+        <div className="w-[320px]">
+          <Panel>
+            <Panel.Header>
+              <Title>320px</Title>
+            </Panel.Header>
+            <Panel.Content bleed>{table('Organizers at 320px')}</Panel.Content>
+          </Panel>
+        </div>
+        <Panel>
+          <Panel.Header>
+            <Title>Full width</Title>
+          </Panel.Header>
+          <Panel.Content bleed>
+            {table('Organizers at full width')}
+          </Panel.Content>
+        </Panel>
+      </Stack>
+    );
+  },
+});
+
+NarrowContainer.test(
+  'Scrolls inside a 320px container instead of painting over it',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const table = canvas.getByRole('grid', { name: 'Organizers at 320px' });
+    const panel = table.closest<HTMLElement>('[data-panel]')!;
+    const scrollArea = () => table.closest<HTMLElement>('[data-scrolls]');
+
+    await step('the scroll area stays inside the panel', async () => {
+      await waitFor(() =>
+        expect(table.getBoundingClientRect().width).toBeGreaterThan(0)
+      );
+      // The table's own box is wider than the panel, which is the point: the
+      // scroll area clips it, so nothing paints past the panel's edge.
+      await waitFor(() => expect(scrollArea()).not.toBeNull());
+      expect(scrollArea()!.getBoundingClientRect().right).toBeLessThanOrEqual(
+        // 1px absorbs subpixel rounding.
+        panel.getBoundingClientRect().right + 1
+      );
+    });
+
+    await step('the hidden columns stay reachable by scrolling', () => {
+      const scroll = scrollArea()!;
+      expect(scroll.scrollWidth).toBeGreaterThan(scroll.clientWidth);
+
+      scroll.scrollLeft = scroll.scrollWidth;
+      expect(scroll.scrollLeft).toBeGreaterThan(0);
+    });
+
+    await step('the last column ends where the scroll area ends', async () => {
+      const scroll = scrollArea()!;
+      const lastColumn = within(table).getByRole('columnheader', {
+        name: 'Email',
+      });
+
+      // At the end of the scroll there is nothing left to reveal, so the last
+      // column's edge and the scroll area's edge are the same edge. A table
+      // that overflowed its area instead would leave the column past it.
+      await waitFor(() =>
+        expect(lastColumn.getBoundingClientRect().right).toBeCloseTo(
+          scroll.getBoundingClientRect().right,
+          0
+        )
+      );
+    });
+  }
+);
+
+NarrowContainer.test(
+  'Leaves a container that fits without a scroll area',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const narrow = canvas.getByRole('grid', { name: 'Organizers at 320px' });
+    const wide = canvas.getByRole('grid', {
+      name: 'Organizers at full width',
+    });
+
+    // Waiting for the narrow table to gain its scroll area is what proves the
+    // measurement has run. Both tables measure in the same commit, so by then
+    // the absence below is a decision rather than the initial render, where
+    // no table carries a scroll area yet.
+    await waitFor(() =>
+      expect(narrow.closest('[data-scrolls]')).not.toBeNull()
+    );
+
+    // A scroll container here would become the scrollport a `sticky` header
+    // and the ActionBar pin to, and stop both from following the page.
+    expect(wide.closest('[data-scrolls]')).toBeNull();
+  }
+);
+
+NarrowContainer.test(
+  'Costs a sticky header its anchor while the scroll area is on',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, step }) => {
+    const narrow = canvas.getByRole('grid', { name: 'Organizers at 320px' });
+    const wide = canvas.getByRole('grid', { name: 'Organizers at full width' });
+    const headerOf = (table: HTMLElement) =>
+      within(table)
+        .getByRole('columnheader', { name: 'Name' })
+        .closest('thead')!;
+
+    await waitFor(() =>
+      expect(narrow.closest('[data-scrolls]')).not.toBeNull()
+    );
+
+    await step('both headers still ask to stick', () => {
+      expect(headerOf(narrow)).toHaveClass('sticky');
+      expect(headerOf(wide)).toHaveClass('sticky');
+    });
+
+    await step('the narrow one has nothing left to pin to', () => {
+      const scroll = narrow.closest<HTMLElement>('[data-scrolls]')!;
+
+      // `overflow-x: auto` forces the used `overflow-y` to `auto`, so this box
+      // is the header's scrollport now. It is exactly as tall as its content,
+      // so the header has no travel and stops following the page. That is the
+      // documented cost of the scroll area, and a fix for it should land here
+      // as a failure rather than quietly.
+      expect(scroll.scrollHeight).toBe(scroll.clientHeight);
+    });
+  }
+);
+
+/**
+ * The `NarrowContainer` case in a real phone frame: the Storybook 320px
+ * viewport rather than a fixed box inside a wide canvas. The page is the width
+ * of the screen here, so the `Panel`, the scroll area and the `actionBar` sit
+ * where a phone puts them. The three columns need 480px, so the table scrolls
+ * sideways and the sticky header has nothing left to pin to.
+ */
+export const Mobile = meta.story({
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  // The story brings its own panel, and the decorator's would nest.
+  parameters: { surface: false },
+  render: args => (
+    <Panel>
+      <Panel.Header>
+        <Title>Organizers</Title>
+      </Panel.Header>
+      <Panel.Content bleed>
+        <OrganizersTable
+          aria-label="Organizers on a phone"
+          rows={6}
+          selectionMode="multiple"
+          actionBar={() => (
+            <ActionBar>
+              <Button>Delete</Button>
+            </ActionBar>
+          )}
+          {...args}
+        />
+      </Panel.Content>
+    </Panel>
+  ),
+});
+
+/**
+ * A long table in a narrow box with a fixed height, so it scrolls both ways.
+ * Which box scrolls on which axis depends on who holds the height. A box that
+ * only scrolls vertically leaves the sideways scroll to the table, which fades
+ * its edge and puts its scrollbar under the last row, while the box's own
+ * scrollbar runs down the side. A `Scrollable` scrolls both axes itself, so
+ * both scrollbars and their corner share one box and the table adds no fade.
+ */
+export const ScrollsBothWays = meta.story({
+  parameters: { surface: false },
+  render: args => (
+    <Stack space={6}>
+      <div className="h-80 w-[320px] overflow-y-auto">
+        <Panel>
+          <Panel.Header>
+            <Title>Fixed height</Title>
+          </Panel.Header>
+          <Panel.Content bleed>
+            <OrganizersTable
+              aria-label="Organizers in a fixed-height box"
+              rows={20}
+              {...args}
+            />
+          </Panel.Content>
+        </Panel>
+      </div>
+      <div className="w-[320px]">
+        <Panel>
+          <Panel.Header>
+            <Title>Scrollable</Title>
+          </Panel.Header>
+          <Panel.Content bleed>
+            <Scrollable height="320px">
+              <OrganizersTable
+                aria-label="Organizers in a Scrollable"
+                rows={20}
+                {...args}
+              />
+            </Scrollable>
+          </Panel.Content>
+        </Panel>
+      </div>
+    </Stack>
+  ),
+});
+
+/**
+ * Regression story for the scroll guard. `DialogContent` scrolls vertically,
+ * and CSS computes its `overflow-x` to `auto` along with it, so a guard that
+ * read the style alone took the dialog for a sideways scroll area and left the
+ * table to overflow the panel, which is the bug this ticket is about.
+ */
+export const InsideDialog = meta.story({
+  tags: ['component-test'],
+  parameters: { surface: false },
+  render: args => (
+    <Dialog.Trigger>
+      <Button variant="primary">Open</Button>
+      <Dialog size="xsmall" closeButton>
+        <Dialog.Title>Organizers</Dialog.Title>
+        <Dialog.Content>
+          <Panel>
+            <Panel.Content bleed>
+              <Table aria-label="Organizers in a dialog" {...args}>
+                {/* 600px of columns in a 480px dialog, so the table has to
+                    take the overflow somewhere. */}
+                <Table.Header>
+                  <Table.Column rowHeader minWidth={160}>
+                    Name
+                  </Table.Column>
+                  <Table.Column minWidth={140}>City</Table.Column>
+                  <Table.Column minWidth={180}>Email</Table.Column>
+                  <Table.Column minWidth={120}>Role</Table.Column>
+                </Table.Header>
+                <Table.Body>
+                  {[1, 2, 3].map(id => (
+                    <Table.Row key={id}>
+                      <Table.Cell>{`Organizer ${id}`}</Table.Cell>
+                      <Table.Cell>Freiburg im Breisgau</Table.Cell>
+                      <Table.Cell>{`contact${id}@example.com`}</Table.Cell>
+                      <Table.Cell>Owner</Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+            </Panel.Content>
+          </Panel>
+        </Dialog.Content>
+      </Dialog>
+    </Dialog.Trigger>
+  ),
+});
+
+InsideDialog.test(
+  'Scrolls inside the panel rather than sliding the dialog sideways',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Open' }));
+
+    const table = await waitFor(() =>
+      canvas.getByRole('grid', { name: 'Organizers in a dialog' })
+    );
+    const panel = table.closest<HTMLElement>('[data-panel]')!;
+
+    await step('the Table takes the overflow itself', async () => {
+      // The dialog reports `overflow-x: auto` without being a sideways scroll
+      // area, so the table cannot hand its overflow over to it.
+      await waitFor(() =>
+        expect(table.closest('[data-scrolls]')).not.toBeNull()
+      );
+    });
+
+    await step('nothing paints across the panel', () => {
+      const scroll = table.closest<HTMLElement>('[data-scrolls]')!;
+
+      expect(scroll.scrollWidth).toBeGreaterThan(scroll.clientWidth);
+      expect(scroll.getBoundingClientRect().right).toBeLessThanOrEqual(
+        // 1px absorbs subpixel rounding.
+        panel.getBoundingClientRect().right + 1
+      );
+    });
   }
 );
 
@@ -3969,6 +4407,231 @@ ExpandableRowsDynamic.test(
 );
 
 /**
+ * Modelled on managing packages: a price level bundles the articles linked to
+ * it. Bulk actions act on price levels, so only they can be selected. The
+ * articles are the price level's contents, not records of their own.
+ */
+interface PriceLevelRow {
+  id: string;
+  name: string;
+  articles?: PriceLevelRow[];
+}
+
+const priceLevels: PriceLevelRow[] = [
+  {
+    id: 'level-0',
+    name: 'Standard price',
+    articles: [
+      { id: 'article-79104', name: 'Dinner menu (79104)' },
+      { id: 'article-79105', name: 'Welcome drink (79105)' },
+    ],
+  },
+  {
+    id: 'level-1',
+    name: 'Reduced',
+    articles: [{ id: 'article-79106', name: 'Kids menu (79106)' }],
+  },
+  // A price level without articles is still a price level, so it stays
+  // selectable: the level decides, not whether the row has children.
+  { id: 'level-2', name: 'Staff' },
+];
+
+export const ExpandableRowsSelectableLevel = meta.story({
+  tags: ['component-test'],
+  args: {
+    treeColumn: 'name',
+    selectionMode: 'multiple',
+    selectableRows: 'top-level',
+  },
+  argTypes: {
+    selectableRows: {
+      control: { type: 'select' },
+      options: ['all', 'top-level', 'nested'],
+    },
+    treeIndent: {
+      control: { type: 'select' },
+      options: ['default', 'aligned'],
+    },
+  },
+  render: args => (
+    <Table
+      aria-label="Packages"
+      defaultExpandedKeys={['level-0', 'level-1']}
+      {...args}
+    >
+      <Table.Header>
+        <Table.Column id="name" rowHeader>
+          Price level
+        </Table.Column>
+        <Table.Column id="articles">Articles</Table.Column>
+      </Table.Header>
+      <Table.Body items={priceLevels}>
+        {function renderRow(row: PriceLevelRow) {
+          return (
+            <Table.Row id={row.id}>
+              <Table.Cell>{row.name}</Table.Cell>
+              <Table.Cell>
+                {row.articles ? row.articles.length : '—'}
+              </Table.Cell>
+              <Table.ExpandableRows items={row.articles}>
+                {renderRow}
+              </Table.ExpandableRows>
+            </Table.Row>
+          );
+        }}
+      </Table.Body>
+    </Table>
+  ),
+});
+
+ExpandableRowsSelectableLevel.test(
+  'Only rows on the selectable level carry a checkbox',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const level = rowByName(canvas, 'Standard price');
+    const article = rowByName(canvas, 'Dinner menu (79104)');
+
+    await step('A price level has a checkbox, an article has none', () => {
+      expect(within(level).getByRole('checkbox')).toBeInTheDocument();
+      expect(within(article).queryByRole('checkbox')).not.toBeInTheDocument();
+    });
+
+    await step('Clicking an article selects nothing', async () => {
+      await userEvent.click(canvas.getByText('Dinner menu (79104)'));
+
+      // `aria-selected` is never on such a row, so check the selection state.
+      expect(article).not.toHaveAttribute('data-selected');
+    });
+
+    await step('Select all selects every price level only', async () => {
+      await userEvent.click(
+        canvas.getByRole('checkbox', { name: /select all/i })
+      );
+
+      expect(level).toHaveAttribute('aria-selected', 'true');
+      expect(rowByName(canvas, 'Staff')).toHaveAttribute(
+        'aria-selected',
+        'true'
+      );
+      expect(article).not.toHaveAttribute('data-selected');
+    });
+  }
+);
+
+ExpandableRowsSelectableLevel.test(
+  'Clicking or pressing Space on a row outside the level selects nothing',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onSelectionChange: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByText('Dinner menu (79104)'));
+    await userEvent.keyboard(' ');
+
+    await expect(args.onSelectionChange).not.toHaveBeenCalled();
+  }
+);
+
+ExpandableRowsSelectableLevel.test(
+  'A Shift+click range skips rows outside the level',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onSelectionChange: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    const checkboxOf = (name: string) =>
+      within(rowByName(canvas, name)).getByRole('checkbox');
+
+    await userEvent.click(checkboxOf('Standard price'));
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(checkboxOf('Staff'));
+    await userEvent.keyboard('{/Shift}');
+
+    const selection = mocked(args.onSelectionChange!).mock.lastCall![0];
+    await expect([...selection].sort()).toEqual([
+      'level-0',
+      'level-1',
+      'level-2',
+    ]);
+  }
+);
+
+ExpandableRowsSelectableLevel.test(
+  'Rows outside the level keep row actions and keyboard focus',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onRowAction: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByText('Dinner menu (79104)'));
+    await expect(args.onRowAction).toHaveBeenCalledWith('article-79104');
+
+    // A click focuses the cell, so arrow keys move cell by cell, as in any row.
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(
+      within(rowByName(canvas, 'Welcome drink (79105)')).getByRole('rowheader')
+    ).toHaveFocus();
+  }
+);
+
+ExpandableRowsSelectableLevel.test(
+  '"nested" select-all reaches the children of unselectable groups',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectableRows: 'nested', onSelectionChange: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('checkbox', { name: /select all/i })
+    );
+    await expect(rowByName(canvas, 'Dinner menu (79104)')).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+    await expect(rowByName(canvas, 'Standard price')).not.toHaveAttribute(
+      'aria-selected'
+    );
+
+    // Materialising the `all` sentinel must not drop the other children.
+    await userEvent.click(
+      within(rowByName(canvas, 'Dinner menu (79104)')).getByRole('checkbox')
+    );
+    const selection = mocked(args.onSelectionChange!).mock.lastCall![0];
+    await expect([...selection].sort()).toEqual([
+      'article-79105',
+      'article-79106',
+    ]);
+  }
+);
+
+ExpandableRowsSelectableLevel.test(
+  '"nested": deselecting after select-all drops the children of a collapsed group',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      selectableRows: 'nested',
+      defaultExpandedKeys: ['level-0'],
+      onSelectionChange: fn(),
+    },
+  },
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('checkbox', { name: /select all/i })
+    );
+    await expect(args.onSelectionChange).toHaveBeenLastCalledWith('all');
+
+    // A known React Aria limitation, not a design decision: deselecting one
+    // child turns `all` into the keys of the rendered rows only. The collapsed
+    // group's "Kids menu (79106)" was never deselected, yet it drops out.
+    await userEvent.click(
+      within(rowByName(canvas, 'Dinner menu (79104)')).getByRole('checkbox')
+    );
+    const selection = mocked(args.onSelectionChange!).mock.lastCall![0];
+    await expect([...selection].sort()).toEqual(['article-79105']);
+  }
+);
+
+/**
  * When nested rows are fetched on demand they don't exist yet, so the row has to
  * declare itself `expandable` to get a control at all — otherwise there is
  * nothing to press that could start the fetch.
@@ -4364,6 +5027,22 @@ DragAndDrop.test(
 
     await expect(handle).toHaveFocus();
     await waitFor(() => expectFocusRingContrast(handle));
+  }
+);
+
+// The drag column's header is empty, so it takes focus itself (`focus-visible:`).
+DragAndDrop.test(
+  'Keyboard focus on the empty drag header clears 3:1',
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    canvas.getByRole('row', { name: /Hans Müller/ }).focus();
+
+    await userEvent.keyboard('{ArrowRight}{ArrowUp}');
+
+    const header = document.activeElement as HTMLElement;
+    await expect(header).toHaveAttribute('role', 'columnheader');
+    await expect(header).toHaveTextContent('');
+    await waitFor(() => expectInsetFocusRingContrast(header));
   }
 );
 

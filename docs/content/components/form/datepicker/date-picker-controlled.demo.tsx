@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { DatePicker, Stack } from '@marigold/components';
 
 export default () => {
-  const [value, setValue] = useState<DateValue>(parseDate('2023-10-29'));
+  const [value, setValue] = useState<DateValue>(() => parseDate('2023-10-29'));
 
   return (
     <Stack space={3}>

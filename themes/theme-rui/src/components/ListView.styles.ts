@@ -51,8 +51,7 @@ export const ListView: ThemeComponent<'ListView'> = {
       'transition-[border,color]',
       'selected:bg-selected',
       'hover:ui-state-hover',
-      // Inline, not `ui-state-focus-item`: `/50` matches SelectList (DST-1590/1662).
-      'focus-visible:inset-ring-2 focus-visible:inset-ring-ring/50',
+      'focus-visible:ui-state-focus-item',
       'not-disabled:data-selection-mode:cursor-pointer',
       'disabled:cursor-not-allowed disabled:text-disabled',
     ],

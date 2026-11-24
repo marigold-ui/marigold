@@ -1,4 +1,4 @@
-import { KeyboardEvent, useEffect, useRef } from 'react';
+import { FocusEvent, KeyboardEvent, useEffect, useRef } from 'react';
 import { FocusScope, useFocusManager } from '@react-aria/focus';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { useControlledState } from '@react-stately/utils';
@@ -9,7 +9,7 @@ import { intlMessages } from '../intl/messages';
 import { Ellipsis } from './Ellipsis';
 import { NavigationButton } from './NavigationButton';
 import { PageButton } from './PageButton';
-import { usePageRange } from './usePageRange';
+import { calculatePageRange } from './pageRange';
 
 /*
 TODO:
@@ -65,18 +65,72 @@ const InnerPagination = ({
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 
   const isFirstPage = currentPage === 1;
-  const isLastPage = currentPage === totalPages || totalPages === 0;
-  const prevPageSize = useRef(pageSize);
+  // `>=` also covers 0 pages and a current page the result set shrank below
+  const isLastPage = currentPage >= totalPages;
+  const prevPageSizeRef = useRef(pageSize);
+
+  /* Previous/Next stay focusable at the ends (aria-disabled), so they have to
+  ignore presses themselves instead of relying on the native `disabled`. */
+  const goToPrevious = () => {
+    if (isFirstPage) return;
+    setCurrentPage(currentPage - 1);
+  };
+  const goToNext = () => {
+    if (isLastPage) return;
+    setCurrentPage(currentPage + 1);
+  };
 
   useEffect(() => {
     /* Only reset to page 1 when the page size actually changed, so neither
     mounting (e.g. with the page prop) nor an unstable setter triggers it */
-    if (prevPageSize.current === pageSize) {
+    if (prevPageSizeRef.current === pageSize) {
       return;
     }
-    prevPageSize.current = pageSize;
+    prevPageSizeRef.current = pageSize;
     setCurrentPage(1);
   }, [pageSize, setCurrentPage]);
+
+  /* When the focused page button is removed (e.g. `totalItems` shrank), the
+  browser drops focus to <body>. Move it to the current page's button, the
+  pager's tab stop, so keyboard users keep their place. Only when the last
+  focused button is gone, so focus is never pulled back after the user left. */
+  const pagesRef = useRef<HTMLDivElement>(null);
+  const lastFocusedRef = useRef<HTMLElement | null>(null);
+
+  // No deps on purpose: any commit can remove the focused button, and the
+  // early return keeps the check cheap.
+  useEffect(() => {
+    const focusLost =
+      document.activeElement === null ||
+      document.activeElement === document.body;
+    if (
+      !focusLost ||
+      !lastFocusedRef.current ||
+      lastFocusedRef.current.isConnected
+    ) {
+      return;
+    }
+    const pages = pagesRef.current;
+    // The current page's button, or the last page when the current page no
+    // longer exists because the app has not moved `page` back into range yet.
+    const target =
+      pages?.querySelector<HTMLElement>('[tabindex="0"]') ??
+      pages?.querySelector<HTMLElement>('button:last-of-type');
+    target?.focus();
+  });
+
+  const trackFocus = (e: FocusEvent<HTMLDivElement>) => {
+    lastFocusedRef.current = e.target;
+  };
+  const untrackFocus = (e: FocusEvent<HTMLDivElement>) => {
+    // Focus left the page buttons on purpose; a removed button is not connected.
+    if (
+      e.target.isConnected &&
+      !e.currentTarget.contains(e.relatedTarget as Node | null)
+    ) {
+      lastFocusedRef.current = null;
+    }
+  };
 
   const { icon, container } = useClassNames({
     component: 'Pagination',
@@ -100,23 +154,26 @@ const InnerPagination = ({
   return (
     <>
       <NavigationButton
-        onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+        onClick={goToPrevious}
         aria-label={stringFormatter.format('pagePrevious')}
-        isDisabled={isFirstPage}
+        disabled={isFirstPage}
         controlLabel={controlLabels?.[0]}
         position="left"
-        onKeyDown={handleKeyDown(() =>
-          setCurrentPage(Math.max(1, currentPage - 1))
-        )}
+        onKeyDown={handleKeyDown(goToPrevious)}
       >
         <ChevronLeft className={icon} />
       </NavigationButton>
 
-      <div className={cn(container, 'max-sm:hidden')}>
+      <div
+        ref={pagesRef}
+        className={cn(container, 'max-sm:hidden')}
+        onFocus={trackFocus}
+        onBlur={untrackFocus}
+      >
         {totalPages > 0 ? (
           pageRange.map((pageNumber, index) =>
             pageNumber === 'ellipsis' ? (
-              <Ellipsis key={`ellipsis-${index}`} />
+              <Ellipsis key={`ellipsis-after-${pageRange[index - 1]}`} />
             ) : (
               <PageButton
                 key={pageNumber}
@@ -128,19 +185,22 @@ const InnerPagination = ({
             )
           )
         ) : (
-          <PageButton key={1} page={1} isDisabled />
+          <PageButton
+            key={1}
+            page={1}
+            disabled
+            onKeyDown={handleKeyDown(() => {})}
+          />
         )}
       </div>
 
       <NavigationButton
-        onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+        onClick={goToNext}
         aria-label={stringFormatter.format('pageNext')}
-        isDisabled={isLastPage}
+        disabled={isLastPage}
         controlLabel={controlLabels?.[1]}
         position="right"
-        onKeyDown={handleKeyDown(() =>
-          setCurrentPage(Math.min(totalPages, currentPage + 1))
-        )}
+        onKeyDown={handleKeyDown(goToNext)}
       >
         <ChevronRight className={icon} />
       </NavigationButton>
@@ -162,7 +222,7 @@ const Pagination = ({
     onChange
   );
   const totalPages = Math.ceil(totalItems / pageSize);
-  const pageRange = usePageRange({ currentPage, totalPages });
+  const pageRange = calculatePageRange({ currentPage, totalPages });
   const { container } = useClassNames({ component: 'Pagination' });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
 

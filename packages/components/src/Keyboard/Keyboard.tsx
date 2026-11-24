@@ -12,6 +12,7 @@ export interface KeyboardProps extends Omit<
   ComponentPropsWithoutRef<typeof RACKeyboard>,
   RemovedProps
 > {
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLElement>;
 }
 

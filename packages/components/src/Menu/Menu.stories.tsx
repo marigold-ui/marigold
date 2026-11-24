@@ -402,7 +402,7 @@ export const MultiSelection = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: function Render() {
-    const [selectedKeys, setSelected] = useState(new Set());
+    const [selectedKeys, setSelectedKeys] = useState(() => new Set());
     const selected = Array.from(selectedKeys);
 
     return (
@@ -411,7 +411,7 @@ export const MultiSelection = meta.story({
           label="Choose"
           selectionMode="multiple"
           selectedKeys={selectedKeys as Iterable<Key>}
-          onSelectionChange={key => setSelected(new Set(key))}
+          onSelectionChange={key => setSelectedKeys(new Set(key))}
         >
           <Menu.Item id="burger">🍔 Burger</Menu.Item>
           <Menu.Item id="pizza">🍕 Pizza</Menu.Item>
@@ -779,3 +779,17 @@ Advanced.test(
     expect(copyItem.getAttribute('aria-describedby')).toContain(shortcut.id);
   }
 );
+
+export const LabelledByActionMenu = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { 'aria-labelledby': 'offer-label' },
+  render: args => (
+    <div className="flex items-center gap-2">
+      <span id="offer-label">Angebot 42</span>
+      <ActionMenu aria-labelledby={args['aria-labelledby']}>
+        <ActionMenu.Item id="edit">Bearbeiten</ActionMenu.Item>
+        <ActionMenu.Item id="withdraw">Zurückziehen</ActionMenu.Item>
+      </ActionMenu>
+    </div>
+  ),
+});

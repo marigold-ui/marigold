@@ -20,7 +20,15 @@ export interface BreadcrumbsProps extends Omit<
   RACBreadcrumbsProps<object>,
   RemovedProps
 > {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: 'default' | (string & {});
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: 'small' | 'default' | 'large' | (string & {});
 
   /**
@@ -114,7 +122,7 @@ const BreadcrumbsBase = ({
         isAuto && 'flex-nowrap overflow-hidden whitespace-nowrap'
       )}
     >
-      {displayedItems.map((item, index) => {
+      {displayedItems.map(item => {
         if (item === null) {
           return (
             <RACBreadcrumb key="ellipsis" className={breadcrumbsItem}>
@@ -136,7 +144,7 @@ const BreadcrumbsBase = ({
 
         return (
           <RACBreadcrumb
-            key={`${href}-${index}`}
+            key={item.key}
             {...ariaProps}
             // Collapsing stops at [ellipsis, current]; if the current crumb
             // still does not fit, it truncates instead of being clipped.

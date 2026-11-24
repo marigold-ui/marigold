@@ -8,7 +8,7 @@ import {
 import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
 import { I18nProvider, useLocale } from 'react-aria-components/I18nProvider';
-import { expect, fn, within } from 'storybook/test';
+import { expect, fn, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import type { RangeValue } from '@react-types/shared';
 import { RangeCalendar } from './RangeCalendar';
@@ -367,10 +367,10 @@ export const NonContiguous = meta.story({
   },
   render: function Render(args) {
     const { locale } = useLocale();
-    const [value, setValue] = useState<RangeValue<DateValue> | null>({
+    const [value, setValue] = useState<RangeValue<DateValue> | null>(() => ({
       start: new CalendarDate(2025, 8, 4),
       end: new CalendarDate(2025, 8, 15),
-    });
+    }));
 
     const isUnavailable = (date: DateValue) => isWeekend(date, locale);
 
@@ -728,9 +728,12 @@ PresetsMobile.test(
     );
     const tray = await canvas.findByRole('dialog');
 
-    await expect(
-      within(tray).getByRole('listbox', { name: 'Quick selection' })
-    ).toBeVisible();
+    // The tray slides in, so wait for the list.
+    await waitFor(() =>
+      expect(
+        within(tray).getByRole('listbox', { name: 'Quick selection' })
+      ).toBeVisible()
+    );
     // The preset matching the calendar value shows as selected.
     await expect(
       within(tray).getByRole('option', { name: 'Kickoff week' })

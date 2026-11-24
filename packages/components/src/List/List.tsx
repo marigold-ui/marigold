@@ -4,7 +4,15 @@ import { ListContext } from './Context';
 import { ListItem } from './ListItem';
 
 export interface ListProps {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
   /**
    * Displaying a unordered or ordered list for showing Information.

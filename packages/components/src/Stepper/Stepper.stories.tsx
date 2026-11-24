@@ -3,9 +3,9 @@ import { useState } from 'react';
 import { expect, waitFor } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Button } from '../Button/Button';
-import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Form } from '../Form/Form';
 import { Headline } from '../Headline/Headline';
+import { Inline } from '../Inline/Inline';
 import { RouterProvider } from '../RouterProvider/RouterProvider';
 import { Stack } from '../Stack/Stack';
 import { Text } from '../Text/Text';
@@ -101,9 +101,11 @@ Basic.test(
  *
  * The two overlapping steps carry `completed` plus a state that outranks it.
  * The connector follows the same order, so both leave a grey line behind them.
- * `current` is the one exception: a revisited step keeps its green connector.
+ * `current` is the one exception: a revisited step keeps its filled connector.
+ * A completed + disabled step still shows its check, so the work stays visible.
  */
 export const States = meta.story({
+  tags: ['component-test'],
   args: {
     'aria-label': 'Step states',
     selectedKey: 'current',
@@ -123,6 +125,34 @@ export const States = meta.story({
     </Stepper>
   ),
 });
+
+States.test(
+  'shows a not-allowed cursor on steps that cannot be clicked',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    for (const label of ['Disabled', 'Completed + disabled', 'Upcoming']) {
+      const step = canvas.getByText(label).parentElement!;
+
+      await expect(getComputedStyle(step).cursor).toBe('not-allowed');
+    }
+  }
+);
+
+States.test(
+  'shows a not-allowed cursor on a step left out by selectableKeys',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectableKeys: ['current'] },
+  },
+  async ({ canvas }) => {
+    const excluded = canvas.getByText('Completed').parentElement!;
+
+    await expect(getComputedStyle(excluded).cursor).toBe('not-allowed');
+    await expect(
+      getComputedStyle(canvas.getByRole('button', { name: /^Current/ })).cursor
+    ).toBe('pointer');
+  }
+);
 
 /**
  * The step is owned by the flow. Marigold never advances it, and never marks a
@@ -384,18 +414,22 @@ export const MultiStepForm = meta.story({
   render: function Render(args) {
     const [index, setIndex] = useState(0);
     const [completed, setCompleted] = useState<Key[]>([]);
+    const [placed, setPlaced] = useState(false);
     const isLast = index === FORM_STEPS.length - 1;
 
     const goTo = (key: Key) =>
       setIndex(FORM_STEPS.findIndex(step => step.id === key));
 
     const advance = () => {
+      // Ignore a second press instead of disabling the focused button.
+      if (placed) return;
       setCompleted(done =>
         done.includes(FORM_STEPS[index].id)
           ? done
           : [...done, FORM_STEPS[index].id]
       );
-      setIndex(current => current + 1);
+      if (isLast) setPlaced(true);
+      else setIndex(current => current + 1);
     };
 
     return (
@@ -404,6 +438,7 @@ export const MultiStepForm = meta.story({
           {...args}
           selectedKey={FORM_STEPS[index].id}
           completedKeys={completed}
+          selectableKeys={placed ? [] : undefined}
           onSelectionChange={goTo}
         >
           {FORM_STEPS.map(step => (
@@ -415,18 +450,23 @@ export const MultiStepForm = meta.story({
 
         <StepPanel step={FORM_STEPS[index].id} />
 
-        <ButtonGroup>
+        <Inline alignX="between" alignY="center">
           <Button
             variant="secondary"
-            disabled={index === 0}
+            disabled={index === 0 || placed}
             onPress={() => setIndex(current => current - 1)}
           >
             Back
           </Button>
-          <Button variant="primary" disabled={isLast} onPress={advance}>
-            Continue
-          </Button>
-        </ButtonGroup>
+          <Inline space={4} alignY="center">
+            <Text aria-live="polite">
+              {placed && 'Your order has been placed.'}
+            </Text>
+            <Button variant="primary" onPress={advance}>
+              {isLast ? 'Place order' : 'Continue'}
+            </Button>
+          </Inline>
+        </Inline>
       </Stack>
     );
   },
@@ -469,6 +509,39 @@ MultiStepForm.test(
   }
 );
 
+MultiStepForm.test(
+  'confirms the order when Place order is pressed',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Place order' }));
+
+    await expect(
+      canvas.getByText('Your order has been placed.')
+    ).toHaveAttribute('aria-live', 'polite');
+    await expect(canvas.getByRole('button', { name: 'Back' })).toBeDisabled();
+    await expect(
+      canvas.queryByRole('button', { name: /Contact/ })
+    ).not.toBeInTheDocument();
+  }
+);
+
+MultiStepForm.test(
+  'keeps focus on Place order once the order is placed',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+    await userEvent.click(canvas.getByRole('button', { name: 'Continue' }));
+    const placeOrder = canvas.getByRole('button', { name: 'Place order' });
+
+    await userEvent.click(placeOrder);
+
+    await expect(placeOrder).toBeEnabled();
+    await expect(placeOrder).toHaveFocus();
+  }
+);
+
 const CHECKOUT_STEPS = [
   { id: 'contact', label: 'Contact' },
   { id: 'payment', label: 'Payment' },
@@ -506,7 +579,9 @@ export const ValidationErrors = meta.story({
     const [failed, setFailed] = useState<Key[]>([]);
     const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
     const [values, setValues] = useState({ email: '', card: '' });
+    const [placed, setPlaced] = useState(false);
     const step = CHECKOUT_STEPS[index];
+    const isLast = index === CHECKOUT_STEPS.length - 1;
 
     const edit = (field: string) => (value: string) => {
       setValues(current => ({ ...current, [field]: value }));
@@ -515,6 +590,8 @@ export const ValidationErrors = meta.story({
     };
 
     const onContinue = () => {
+      // Ignore a second press instead of disabling the focused button.
+      if (placed) return;
       const failures = validateStep(step.id, values);
       setFieldErrors(failures);
 
@@ -526,7 +603,8 @@ export const ValidationErrors = meta.story({
       setCompleted(done =>
         done.includes(step.id) ? done : [...done, step.id]
       );
-      setIndex(current => current + 1);
+      if (isLast) setPlaced(true);
+      else setIndex(current => current + 1);
     };
 
     return (
@@ -535,6 +613,7 @@ export const ValidationErrors = meta.story({
           {...args}
           selectedKey={step.id}
           completedKeys={completed}
+          selectableKeys={placed ? [] : undefined}
           errorKeys={failed}
           onSelectionChange={key =>
             setIndex(CHECKOUT_STEPS.findIndex(item => item.id === key))
@@ -567,22 +646,23 @@ export const ValidationErrors = meta.story({
           {step.id === 'review' && <Text>Everything checks out.</Text>}
         </Form>
 
-        <ButtonGroup>
+        <Inline alignX="between" alignY="center">
           <Button
             variant="secondary"
-            disabled={index === 0}
+            disabled={index === 0 || placed}
             onPress={() => setIndex(current => current - 1)}
           >
             Back
           </Button>
-          <Button
-            variant="primary"
-            disabled={index === CHECKOUT_STEPS.length - 1}
-            onPress={onContinue}
-          >
-            Continue
-          </Button>
-        </ButtonGroup>
+          <Inline space={4} alignY="center">
+            <Text aria-live="polite">
+              {placed && 'Your order has been placed.'}
+            </Text>
+            <Button variant="primary" onPress={onContinue}>
+              {isLast ? 'Place order' : 'Continue'}
+            </Button>
+          </Inline>
+        </Inline>
       </Stack>
     );
   },

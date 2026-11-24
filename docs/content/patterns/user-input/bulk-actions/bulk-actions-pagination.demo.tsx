@@ -26,7 +26,7 @@ const events = [
 
 export default () => {
   const [page, setPage] = useState(1);
-  const [selected, setSelected] = useState<Selection>(new Set());
+  const [selected, setSelected] = useState<Selection>(() => new Set());
 
   const visible = events.slice((page - 1) * pageSize, page * pageSize);
 

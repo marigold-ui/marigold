@@ -27,6 +27,10 @@ export const Table: ThemeComponent<'Table'> = {
       // root does: a root row with no children must not read as the previous
       // group's last child.
       '[--tree-indent-skip:1]',
+      // `treeIndent="aligned"`: the first nested level shares its group label's
+      // x too. Opt-in for tables whose top-level rows are all groups, where the
+      // reason above does not apply.
+      'data-[tree-indent=aligned]:[--tree-indent-skip:2]',
     ],
     variants: {
       variant: {
@@ -113,8 +117,9 @@ export const Table: ThemeComponent<'Table'> = {
       'h-(--header-height) px-(--cell-x-padding) py-0 align-middle',
       'first:ps-(--cell-edge-padding) last:pe-(--cell-edge-padding)',
       'font-medium text-secondary',
-      'not-has-[[type=checkbox]]:has-focus-visible:outline-2 not-has-[[type=checkbox]]:has-focus-visible:-outline-offset-2 not-has-[[type=checkbox]]:has-focus-visible:outline-ring/50',
-      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50', // This one is for the empty dragging header column
+      'outline-none',
+      'not-has-[[type=checkbox]]:has-focus-visible:ui-state-focus-item',
+      'focus-visible:ui-state-focus-item', // This one is for the empty dragging header column
       'aria-[sort]:hover:ui-state-hover aria-[sort]:hover:cursor-pointer',
       'ui-sticky-edge',
     ],
@@ -147,8 +152,9 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       'px-(--cell-x-padding) py-(--cell-y-padding)',
       'first:ps-(--cell-edge-padding) last:pe-(--cell-edge-padding)',
-      'focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring/50',
-      'has-[[data-cell-content]:focus-visible]:outline-2 has-[[data-cell-content]:focus-visible]:-outline-offset-2 has-[[data-cell-content]:focus-visible]:outline-ring/50',
+      'outline-none',
+      'focus-visible:ui-state-focus-item',
+      'has-[[data-cell-content]:focus-visible]:ui-state-focus-item',
       '**:data-cell-content:outline-none',
       'data-editable:hover:ui-state-hover',
       'data-editable:has-[:focus-visible]:ui-state-hover',
@@ -157,7 +163,7 @@ export const Table: ThemeComponent<'Table'> = {
       // A focused row's ring, drawn by its cells rather than as the row's
       // outline: sticky cells sit above the row and would cover an outline.
       'group-focus-visible/row:not-data-sticky:relative',
-      'group-focus-visible/row:before:absolute group-focus-visible/row:before:inset-0 group-focus-visible/row:before:pointer-events-none group-focus-visible/row:before:border-y-2 group-focus-visible/row:before:border-ring/50',
+      'group-focus-visible/row:before:absolute group-focus-visible/row:before:inset-0 group-focus-visible/row:before:pointer-events-none group-focus-visible/row:before:border-y-2 group-focus-visible/row:before:border-ring',
       'first:group-focus-visible/row:before:border-s-2 last:group-focus-visible/row:before:border-e-2',
       'ui-sticky-edge',
     ],
@@ -276,5 +282,8 @@ export const Table: ThemeComponent<'Table'> = {
   // The room around the ActionBar slides with it instead of jumping.
   actionBarSpacer: cva({
     base: 'motion-safe:transition-[height] motion-safe:duration-200',
+  }),
+  container: cva({
+    base: 'ui-scroll-mask-x ui-scrollbar',
   }),
 };

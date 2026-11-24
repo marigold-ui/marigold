@@ -1,5 +1,13 @@
 import type { ComponentProps, FocusEvent, ReactNode } from 'react';
-import { use, useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import {
+  use,
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import type RAC from 'react-aria-components';
 import {
   Table as RACTable,
@@ -9,7 +17,7 @@ import {
 } from 'react-aria-components/Table';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { announce } from '@react-aria/live-announcer';
-import { getScrollParent } from '@react-aria/utils';
+import { getScrollParent, useResizeObserver } from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { useActionBar } from '../ActionBar/useActionBar';
 import { intlMessages } from '../intl/messages';
@@ -31,7 +39,15 @@ import { TableRow } from './TableRow';
 type RemovedProps = 'className' | 'style' | 'selectionBehavior' | 'render';
 
 export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: 'grid' | 'default' | 'muted' | (string & {});
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: 'compact' | 'default' | 'spacious' | (string & {});
   /**
    * Controls how cell content overflows. Works best when columns have defined width props.
@@ -65,6 +81,25 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
    * role from `grid` to `treegrid`.
    */
   treeColumn?: RAC.TableProps['treeColumn'];
+  /**
+   * Which level of rows can be selected. Rows outside it show no checkbox and
+   * are left out of select-all and range selection. Use `disabledKeys` for
+   * rows that are selectable in principle but not right now. After select-all,
+   * `onSelectionChange` receives `'all'`, which then means every row on the
+   * selectable level, not every key. Once a row is deselected after that, the
+   * selection lists only rendered rows, so the children of a collapsed group
+   * drop out of it.
+   * @default 'all'
+   */
+  selectableRows?: 'all' | 'top-level' | 'nested';
+  /**
+   * How far nested rows indent in the `treeColumn`. `aligned` lines the first
+   * nested level up with its group's label, and deeper levels indent from
+   * there. Use it when every top-level row is a group, otherwise a top-level
+   * row without children reads as the previous group's last child.
+   * @default 'default'
+   */
+  treeIndent?: 'default' | 'aligned';
   /**
    * The keys of the expanded rows (controlled).
    */
@@ -240,6 +275,8 @@ const TableRoot = ({
   loading = false,
   actionBar,
   treeColumn,
+  selectableRows = 'all',
+  treeIndent = 'default',
   selectedKeys: selectedKeysProp,
   defaultSelectedKeys: defaultSelectedKeysProp,
   onSelectionChange: onSelectionChangeProp,
@@ -254,6 +291,44 @@ const TableRoot = ({
 
   const [warnedMissingTextValue] = useState(() => new Set<string>());
   const [minTableWidth, setMinTableWidth] = useState<number>();
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scrolls, setScrolls] = useState(false);
+
+  const measure = useCallback(() => {
+    const container = containerRef.current;
+    if (!container || minTableWidth === undefined) return;
+
+    // Only a `Scrollable` is left alone: it scrolls sideways and has a height
+    // of its own for a sticky header to pin to. Reading `overflow-x` instead
+    // would catch every vertical scroller too, because CSS computes it to
+    // `auto` whenever `overflow-y` is not `visible`, and a `Dialog` or a
+    // scrolling app shell would keep the overflow this guard exists to stop.
+    // Only the nearest scroll parent is asked, so a vertical-only scroller
+    // between the table and a `Scrollable` hides it and the table takes the
+    // overflow itself. Contained either way, just not by the `Scrollable`.
+    if (getScrollParent(container).hasAttribute('data-scrollable')) {
+      setScrolls(false);
+      return;
+    }
+
+    setScrolls(container.getBoundingClientRect().width < minTableWidth);
+  }, [minTableWidth]);
+
+  // Without a tree every row is top-level, so "nested" would leave nothing
+  // selectable. Not a type error: the two props are often set at different times.
+  useDevWarning(
+    selectableRows === 'nested' && treeColumn == null,
+    '[Table] `selectableRows="nested"` without a `treeColumn` leaves no row selectable, because every row is top-level. Set `treeColumn`, or use `selectableRows="all"`.'
+  );
+
+  useResizeObserver({ ref: containerRef, onResize: measure });
+  useLayoutEffect(measure, [measure]);
+
+  // Only rows outside the selectable level read `disabledKeys`. An inline array
+  // is a new reference on every render, so keeping it out of the context
+  // otherwise spares every row and cell a re-render.
+  const rowDisabledKeys =
+    selectableRows === 'all' ? undefined : props.disabledKeys;
 
   const ctx = useMemo(
     () => ({
@@ -264,6 +339,8 @@ const TableRoot = ({
       allowTextSelection,
       alignY,
       treeColumn,
+      selectableRows,
+      disabledKeys: rowDisabledKeys,
       warnedMissingTextValue,
     }),
     [
@@ -274,6 +351,8 @@ const TableRoot = ({
       allowTextSelection,
       alignY,
       treeColumn,
+      selectableRows,
+      rowDisabledKeys,
       warnedMissingTextValue,
     ]
   );
@@ -297,8 +376,16 @@ const TableRoot = ({
   return (
     <TableContext value={ctx}>
       <div
+        ref={containerRef}
+        data-scrolls={scrolls || undefined}
         // Keeps the container filling its parent when the parent doesn't stretch.
-        className="w-full"
+        className={cn(
+          'w-full',
+          // `overflow-x-auto` is the fallback that keeps the table scrolling for
+          // a theme that leaves `container` undefined. theme-rui's part sets it
+          // too, so don't "clean up" the duplicate.
+          scrolls && ['overflow-x-auto', classNames.container]
+        )}
         onFocus={actionBarHeight ? scrollFocusedRowClearOfActionBar : undefined}
       >
         <ResizableTableContainer
@@ -321,6 +408,10 @@ const TableRoot = ({
               <TableElement
                 // Only a virtualized table renders a `<div>`, and Marigold's never is.
                 {...(domProps as ComponentProps<'table'>)}
+                // The theme owns the indent, so it only learns which one applies.
+                data-tree-indent={
+                  treeIndent === 'default' ? undefined : treeIndent
+                }
                 loading={loading}
                 onMinWidthChange={setMinTableWidth}
               />

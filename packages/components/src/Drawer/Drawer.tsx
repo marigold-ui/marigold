@@ -33,7 +33,15 @@ export interface DrawerProps extends Omit<
   DialogProps,
   'className' | 'style' | 'isOpen' | 'role'
 > {
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: 'xsmall' | 'small' | 'medium' | (string & {});
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
   /**
    * Whether the drawer is open (controlled). Works with or without

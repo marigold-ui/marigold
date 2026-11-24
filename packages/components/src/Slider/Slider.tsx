@@ -18,7 +18,15 @@ export interface SliderProps<T>
       'children' | 'isDisabled' | 'orientation' | 'style'
     >,
     Pick<FieldBaseProps<'label'>, 'description' | 'addon'> {
+  /**
+   * Visual variant of the component. Which values exist is defined by the theme
+   * and listed in the "Appearance" section of the component's documentation.
+   */
   variant?: string;
+  /**
+   * Size of the component. Which values exist is defined by the theme and listed
+   * in the "Appearance" section of the component's documentation.
+   */
   size?: string;
 
   /**
@@ -54,6 +62,7 @@ export interface SliderProps<T>
    * Set the label of the slider.
    */
   label?: ReactNode;
+  /** Ref to the DOM element the component renders. */
   ref?: Ref<HTMLDivElement>;
 }
 
@@ -145,6 +154,7 @@ const Slider = <T extends number | number[]>({
             {state.values.map((_, i) => (
               <SliderThumb
                 className={cn('top-1/2 cursor-pointer', classNames.thumb)}
+                // eslint-disable-next-line @eslint-react/no-array-index-key -- the thumb's `index` prop is its identity: thumbs are fixed by position and have no id
                 key={i}
                 index={i}
                 aria-label={thumbLabelsList[i]}

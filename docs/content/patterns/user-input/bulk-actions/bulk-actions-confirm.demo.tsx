@@ -28,7 +28,7 @@ const initialEvents: Event[] = [
 
 export default () => {
   const [events, setEvents] = useState(initialEvents);
-  const [selected, setSelected] = useState<Selection>(new Set());
+  const [selected, setSelected] = useState<Selection>(() => new Set());
   const confirm = useConfirmation();
   const { addToast } = useToast();
 
