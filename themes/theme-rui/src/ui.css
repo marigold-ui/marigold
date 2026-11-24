@@ -98,27 +98,90 @@
 }
 
 /*
+ * Cap: fill, ring and glint of the raised surfaces (ui-contrast, ui-soft), on
+ * ::before so ui-cap-pressed can scale the label but not the cap.
+ * The ring is a border over the fill, 1px outside the box: shapes that only
+ * touch leave a light seam. Not rounded-surface? Set --cap-radius.
+ * --cap-* are plain properties because the surface colors do not inherit.
+ */
+@utility ui-cap {
+  @apply relative isolate;
+
+  /* Below the content, inside the isolated element: paint order, not page stacking. */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    z-index: -1;
+    border: 1px solid var(--cap-ring);
+    border-radius: calc(var(--cap-radius, var(--radius-surface)) + 1px);
+    pointer-events: none;
+    /* Runs under the ring too, so no seam shows between them. */
+    background: var(--cap-fill);
+    background-clip: border-box;
+    /* Same entries, same order in both states, so the press interpolates. */
+    box-shadow:
+      inset 0 0 0 0 var(--cap-ring),
+      inset 0 1px 1.5px -1px var(--cap-glint);
+    /* Element's timing keeps the counter-scale in step. Only paint animates: moving edges flicker. */
+    transition-property: scale, border-color, box-shadow, background-clip;
+    transition-duration: inherit;
+    transition-timing-function: inherit;
+    /* Release: the fill returns halfway, under an almost opaque ring. */
+    transition-behavior: allow-discrete;
+  }
+
+  /* ui-state-disabled paints its own fill and drops the glint: follow it. */
+  &:where(:disabled, [data-disabled], [data-pending])::before {
+    background: none;
+    box-shadow: none;
+  }
+}
+
+/*
+ * Pressed ui-cap: the element scales, ::before scales back and stays on the
+ * pixel grid while its ring fades from outside to inside. Apply with the same
+ * variants as the scale: `active:ui-cap-pressed pressed:not-aria-expanded:ui-cap-pressed`.
+ */
+@utility ui-cap-pressed {
+  scale: 0.97;
+  &::before {
+    scale: calc(1 / 0.97);
+    border-color: transparent;
+    background-clip: padding-box;
+    box-shadow:
+      inset 0 0 0 1px var(--cap-ring),
+      inset 0 1px 2px 0 var(--cap-shade);
+    /* On press the fill leaves the ring at once, so the cap shrinks smoothly. */
+    transition-behavior: normal;
+  }
+}
+
+/*
  * Prominent dark surface: primary buttons, action bars. Mirrors ui-frame but
  * inverted in value — the edge is a darker shade of the fill (crisp, no light
  * rim) and the light lives on the face: a top-pooled glow plus a soft top-edge
  * highlight (a tinted, low-alpha inset shadow). Every layer derives from
  * `--ui-background-color`, so overriding that one token (e.g. the hover flip)
- * retints the whole surface.
+ * retints the whole surface. Painted through ui-cap.
+ *
+ * The ring reads --ui-border-color first (falling back to the derived dark
+ * edge) so state overrides recolor it exactly as on a plain ui-frame —
+ * otherwise a disabled/focused/invalid contrast surface keeps its dark outline.
  *
  * `background` is excluded from the transition so state bg flips feel instant.
  */
 @utility ui-contrast {
-  @apply rounded-surface relative transition-[box-shadow];
+  @apply ui-cap rounded-surface transition-[color,box-shadow,scale];
   @apply text-primary-foreground;
-
-  /* Read --ui-border-color first (falling back to the derived dark edge) so state
-     overrides recolor the ring here exactly as on a plain ui-frame — otherwise a
-     disabled/focused/invalid contrast surface keeps its dark outline. */
-  @apply ring-1 ring-[var(--ui-border-color,oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_-_0.04)_c_h))];
-  @apply inset-shadow-[0_1px_1.5px_-1px_oklch(from_var(--ui-background-color,var(--color-primary))_calc(l_+_0.2)_c_h_/_0.3)];
-
   /* prettier-ignore */
-  background:
+  --cap-ring: var(--ui-border-color, oklch(from var(--ui-background-color, var(--color-primary)) calc(l - 0.04) c h));
+  /* prettier-ignore */
+  --cap-glint: oklch(from var(--ui-background-color, var(--color-primary)) calc(l + 0.2) c h / 0.3);
+  /* prettier-ignore */
+  --cap-shade: oklch(from var(--ui-background-color, var(--color-primary)) calc(l - 0.2) c h / 0.4);
+  /* prettier-ignore */
+  --cap-fill:
       radial-gradient(ellipse 72% 70% at 50% -12%, var(--ui-highlight-color, oklch(from var(--ui-background-color, var(--color-primary)) calc(l + 0.15) c h / 0.8)), transparent 72%),
       linear-gradient(
         to bottom,
@@ -144,20 +207,24 @@
  * ui-contrast cap — a convex fill gradient (+0.005 / −0.02 L), a modeled ring
  * one step darker than its edge base (−0.12 L), and a soft top glint
  * (+0.2 L / 0.9 alpha inset). No drop shadow — the cap itself is the lift.
- * Like ui-contrast it does not @apply ui-frame; it draws its own ring, glint
- * and gradient. The ring reads --ui-border-color first so focus/disabled
- * recolor it like every other surface; the edge base and fill flip via
- * --soft-edge and --ui-background-color (e.g. the hover flip in Button.styles.ts).
+ * Like ui-contrast it does not @apply ui-frame; it is painted through ui-cap.
+ * The ring reads --ui-border-color first so focus/disabled recolor it like
+ * every other surface; the edge base and fill flip via --soft-edge and
+ * --ui-background-color (e.g. the hover flip in Button.styles.ts).
  *
  * `background` is excluded from the transition so state bg flips feel instant.
  */
 @utility ui-soft {
-  @apply rounded-surface relative transition-[box-shadow];
+  @apply ui-cap rounded-surface transition-[color,box-shadow,scale];
   @apply text-foreground;
-  @apply ring-1 ring-[var(--ui-border-color,oklch(from_var(--soft-edge,var(--color-soft-edge))_calc(l_-_0.12)_c_h))];
-  @apply inset-shadow-[0_1px_1.5px_-1px_oklch(from_var(--soft-edge,var(--color-soft-edge))_calc(l_+_0.2)_c_h_/_0.9)];
   /* prettier-ignore */
-  background: linear-gradient(
+  --cap-ring: var(--ui-border-color, oklch(from var(--soft-edge, var(--color-soft-edge)) calc(l - 0.12) c h));
+  /* prettier-ignore */
+  --cap-glint: oklch(from var(--soft-edge, var(--color-soft-edge)) calc(l + 0.2) c h / 0.9);
+  /* prettier-ignore */
+  --cap-shade: oklch(from var(--soft-edge, var(--color-soft-edge)) calc(l - 0.3) c h / 0.25);
+  /* prettier-ignore */
+  --cap-fill: linear-gradient(
     to bottom,
     oklch(from var(--ui-background-color, var(--color-soft)) calc(l + 0.005) c h),
     oklch(from var(--ui-background-color, var(--color-soft)) calc(l - 0.02) c h)
@@ -311,7 +378,7 @@
  */
 @utility ui-button-base {
   @apply inline-flex items-center justify-center;
-  @apply rounded-surface font-medium whitespace-nowrap transition-[color,box-shadow,transform];
+  @apply rounded-surface font-medium whitespace-nowrap transition-[color,box-shadow,transform,scale];
   @apply ui-interactive;
 
   & svg {
@@ -321,18 +388,17 @@
 }
 
 /*
- * Applies press/tap feedback: 1px down on :active and [data-pressed], not eased.
+ * Applies press/tap scale feedback (97% scale on :active and [data-pressed]).
  * Used by button-like elements that are not regular Buttons (which have a different
  * pressed:not-aria-expanded variant).
- * Whole-pixel move, not scale: a scale blurs 1px edges on 1x screens.
  */
 @utility ui-press {
   transition-duration: 150ms;
   &:active {
-    translate: 0 1px;
+    scale: 0.97;
   }
   &[data-pressed] {
-    translate: 0 1px;
+    scale: 0.97;
   }
 }
 

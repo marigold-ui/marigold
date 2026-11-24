@@ -4308,25 +4308,6 @@ ExpandableRows.test(
 );
 
 ExpandableRows.test(
-  'Chevron moves by whole pixels while pressed, like every pressable control',
-  { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvas, userEvent }) => {
-    const chevron = chevronOf(rowByName(canvas, 'Settlement run 1 Jul 2026'));
-
-    await userEvent.pointer({ keys: '[MouseLeft>]', target: chevron });
-
-    await waitFor(() => expect(chevron).toHaveAttribute('data-pressed'));
-
-    const { scale, translate } = getComputedStyle(chevron);
-
-    expect(scale).toBe('none');
-    expect(translate).toBe('0px 1px');
-
-    await userEvent.pointer({ keys: '[/MouseLeft]', target: chevron });
-  }
-);
-
-ExpandableRows.test(
   'Tab reaches the row actions, not the chevron',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent, step }) => {

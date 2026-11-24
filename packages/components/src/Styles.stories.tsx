@@ -244,7 +244,10 @@ export const Surface = meta.story({
 const grounds = [
   { name: 'Page', className: 'bg-background text-foreground' },
   { name: 'Panel', className: 'ui-surface text-foreground' },
-  { name: 'Dark (ActionBar)', className: 'ui-contrast rounded-full' },
+  {
+    name: 'Dark (ActionBar)',
+    className: 'ui-contrast rounded-full [--cap-radius:calc(infinity*1px)]',
+  },
 ] as const;
 
 const DisabledSpecimen = () => (
