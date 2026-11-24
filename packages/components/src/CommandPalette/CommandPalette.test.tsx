@@ -10,6 +10,7 @@ import { vi } from 'vitest';
 import { isAppleDevice } from '@react-aria/utils';
 import { renderWithOverlay } from '../test.utils';
 import {
+  AsyncSearch,
   Basic,
   MoreWithoutPrefix,
   PreviousResultsWhileLoading,
@@ -100,6 +101,31 @@ const type = (input: HTMLInputElement, text: string) => {
   }
 };
 
+const deleteBackward = (input: HTMLInputElement) =>
+  act(() => {
+    press(input, 'keydown', 'Backspace');
+    input.dispatchEvent(
+      new InputEvent('beforeinput', {
+        inputType: 'deleteContentBackward',
+        bubbles: true,
+        cancelable: true,
+      })
+    );
+    setValue.call(input, input.value.slice(0, -1));
+    input.dispatchEvent(
+      new InputEvent('input', {
+        inputType: 'deleteContentBackward',
+        bubbles: true,
+      })
+    );
+    press(input, 'keyup', 'Backspace');
+  });
+
+const arrowDown = (input: HTMLInputElement) => {
+  act(() => press(input, 'keydown', 'ArrowDown'));
+  act(() => press(input, 'keyup', 'ArrowDown'));
+};
+
 const pressEnter = (input: HTMLInputElement) => {
   act(() => press(input, 'keydown', 'Enter'));
   act(() => press(input, 'keyup', 'Enter'));
@@ -146,4 +172,47 @@ test('Enter runs the row on top after the previous rows went away', async () => 
   await expectFirstRowActive('Orders');
   pressEnter(input);
   await waitFor(() => expect(onAction).toHaveBeenLastCalledWith('orders'));
+});
+
+test('Enter while results load runs the first new row once and closes', async () => {
+  const onAction = vi.fn();
+  renderWithOverlay(
+    <PreviousResultsWhileLoading.Component defaultOpen onAction={onAction} />
+  );
+
+  // Enter right after typing, before the answer arrives.
+  const input = await screen.findByRole<HTMLInputElement>('searchbox');
+  type(input, 'jazz');
+  pressEnter(input);
+  expect(onAction).not.toHaveBeenCalled();
+
+  await waitFor(() => expect(onAction).toHaveBeenCalledWith('event-42'));
+  await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+  expect(onAction).toHaveBeenCalledTimes(1);
+});
+
+test('keeps the first result active as async results change', async () => {
+  renderWithOverlay(<AsyncSearch.Component />);
+  fireEvent.click(screen.getByRole('button', { name: /search characters/i }));
+  const input = await screen.findByRole<HTMLInputElement>('searchbox');
+
+  // Typing activates the first result.
+  type(input, 'r2');
+  await expectFirstRowActive('R2-D2');
+
+  // Deleting activates the first of the new results.
+  deleteBackward(input);
+  await expectFirstRowActive('Luke Skywalker');
+
+  // New results reset a row that was moved down.
+  arrowDown(input);
+  arrowDown(input);
+  await waitFor(() =>
+    expect(input).toHaveAttribute(
+      'aria-activedescendant',
+      screen.getAllByRole('menuitem')[2].id
+    )
+  );
+  type(input, '5');
+  await expectFirstRowActive('R5-D4');
 });

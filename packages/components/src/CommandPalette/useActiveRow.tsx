@@ -48,7 +48,7 @@ const NAVIGATION_KEYS = new Set([
   'End',
 ]);
 
-const row = '[role^="menuitem"]';
+const rowSelector = '[role^="menuitem"]';
 
 // RAC's collection keys, which leave out React's `bigint`.
 type Key = string | number;
@@ -70,8 +70,8 @@ interface ActiveRowContextValue {
   enterWaiting: () => boolean;
   /** Whether the app has answered the last search. */
   answered: () => boolean;
-  /** Runs the Enter that waited, on the active row. */
-  releaseEnter: () => void;
+  /** Runs the Enter that waited, on the given row. */
+  releaseEnter: (row: HTMLElement) => void;
   /**
    * What the values above depend on. A change re-renders the rows, so they
    * check again.
@@ -95,7 +95,6 @@ export const useActiveRow = (
   const inputRef = useRef<HTMLInputElement | null>(null);
   const pickedRef = useRef(false);
   const enterWaitingRef = useRef(false);
-  const heldKeyUpRef = useRef(false);
   const statusRef = useRef({ loading, searchWaiting });
   // How the app answered the last reported search. Answered up front, so
   // without a reported search only `loading` and the pause hold Enter.
@@ -132,24 +131,11 @@ export const useActiveRow = (
           e.preventDefault();
           e.stopImmediatePropagation();
           enterWaitingRef.current = true;
-          heldKeyUpRef.current = true;
         }
       };
-      // The key press is held as a whole. RAC replays the keyup of the input
-      // on the active row from a capturing listener on `document`, so this one
-      // sits on `window` to run first.
-      const onKeyUp = (e: KeyboardEvent) => {
-        if (e.key !== 'Enter' || e.target !== input || !heldKeyUpRef.current)
-          return;
-        heldKeyUpRef.current = false;
-        e.stopImmediatePropagation();
-      };
-      const win = input.ownerDocument.defaultView;
       input.addEventListener('keydown', onKeyDown);
-      win?.addEventListener('keyup', onKeyUp, true);
       return () => {
         input.removeEventListener('keydown', onKeyDown);
-        win?.removeEventListener('keyup', onKeyUp, true);
         inputRef.current = null;
       };
     },
@@ -160,7 +146,7 @@ export const useActiveRow = (
   const menuCallbackRef = useCallback((menu: HTMLDivElement | null) => {
     if (!menu) return;
     const onPointerMove = (e: PointerEvent) => {
-      if (e.target instanceof Element && e.target.closest(row))
+      if (e.target instanceof Element && e.target.closest(rowSelector))
         pickedRef.current = true;
     };
     menu.addEventListener('pointermove', onPointerMove);
@@ -198,19 +184,17 @@ export const useActiveRow = (
     }, ANSWER_GRACE);
   }, [recheck]);
 
-  // Cancelable like a real key press: RAC cancels it once the row ran,
-  // otherwise it clicks the row a second time.
-  const releaseEnter = useCallback(() => {
-    if (!enterWaitingRef.current || !answered()) return;
-    enterWaitingRef.current = false;
-    inputRef.current?.dispatchEvent(
-      new KeyboardEvent('keydown', {
-        key: 'Enter',
-        bubbles: true,
-        cancelable: true,
-      })
-    );
-  }, [answered]);
+  // RAC runs a row from its click handler, whether it was pressed, clicked
+  // or reached with Enter: the row's `onAction`, the menu's, a link, and
+  // closing. A click runs all of it, so the palette copies none of it.
+  const releaseEnter = useCallback(
+    (row: HTMLElement) => {
+      if (!enterWaitingRef.current || !answered()) return;
+      enterWaitingRef.current = false;
+      row.click();
+    },
+    [answered]
+  );
 
   const context = useMemo<ActiveRowContextValue>(
     () => ({
@@ -258,6 +242,8 @@ const firstRowKey = (
 const FirstRowRule = ({ id }: { id: Key }) => {
   const state = use(MenuStateContext);
   const active = use(ActiveRowContext);
+  // Finds the row this rule sits in, to run it.
+  const markerRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     if (!state || !active) return;
@@ -281,11 +267,13 @@ const FirstRowRule = ({ id }: { id: Key }) => {
         const first = firstRowKey(state.collection, key =>
           manager.isDisabled(key)
         );
-        if (manager.focusedKey === id && first === id) active.releaseEnter();
+        const row = markerRef.current?.closest<HTMLElement>(rowSelector);
+        if (manager.focusedKey === id && first === id && row)
+          active.releaseEnter(row);
       });
   });
 
-  return null;
+  return <span ref={markerRef} hidden />;
 };
 
 /** Adds the first-row rule to a row's content. */

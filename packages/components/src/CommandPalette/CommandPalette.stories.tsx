@@ -874,7 +874,8 @@ SearchPrefix.test(
 // ---------------
 // Results come from the server, so the built-in filter is off. A local list with a short delay stands in for the API, so the
 // story works offline. `onSearchChange` reports the search once typing
-// pauses, so the story needs no debounce of its own.
+// pauses, so the story needs no debounce of its own. `CommandPalette.test.tsx`
+// tests the active row with real events: user-event breaks it, see there.
 const characters = [
   'Luke Skywalker',
   'C-3PO',
@@ -938,38 +939,6 @@ export const AsyncSearch = meta.story({
   ...noSnapshot,
   render: () => <AsyncSearchPalette />,
 });
-
-AsyncSearch.test(
-  'Keeps the first result active as async results change',
-  async ({ canvas, step, userEvent }) => {
-    await userEvent.click(
-      canvas.getByRole('button', { name: /search characters/i })
-    );
-    await canvas.findByRole('searchbox');
-
-    await step('Typing activates the first result', async () => {
-      await userEvent.keyboard('r2');
-      await expectFirstRowActive(canvas, 'R2-D2');
-    });
-
-    await step('Deleting activates the first of the new results', async () => {
-      await userEvent.keyboard('{Backspace}');
-      await expectFirstRowActive(canvas, 'Luke Skywalker');
-    });
-
-    await step('New results reset a moved active row', async () => {
-      await userEvent.keyboard('{ArrowDown}{ArrowDown}');
-      await waitFor(() =>
-        expect(canvas.getByRole('searchbox')).toHaveAttribute(
-          'aria-activedescendant',
-          canvas.getAllByRole('menuitem')[2].id
-        )
-      );
-      await userEvent.keyboard('5');
-      await expectFirstRowActive(canvas, 'R5-D4');
-    });
-  }
-);
 
 // Search one kind of record
 // ---------------
