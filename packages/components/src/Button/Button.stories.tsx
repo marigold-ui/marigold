@@ -143,7 +143,9 @@ Basic.test(
   async ({ canvas }) => {
     const button = canvas.getByRole('button');
 
-    expect(getComputedStyle(button, '::before').boxShadow).toBe('none');
+    expect(getComputedStyle(button, '::before').boxShadow).toContain(
+      'rgba(0, 0, 0, 0) 0px 1px 1.5px -1px inset'
+    );
   }
 );
 

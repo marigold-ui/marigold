@@ -137,12 +137,6 @@
     /* Release: the fill returns halfway, under an almost opaque ring. */
     transition-behavior: allow-discrete;
   }
-
-  /* ui-state-disabled paints its own fill and drops the glint: follow it. */
-  &:where(:disabled, [data-disabled], [data-pending])::before {
-    background: none;
-    box-shadow: none;
-  }
 }
 
 /*
@@ -344,6 +338,9 @@
   /* No top highlight when disabled. Zeroing `--tw-inset-shadow` is reliable where a
      raw `box-shadow: none` lost the cascade to the surface utilities' box-shadow. */
   @apply inset-shadow-none;
+  /* The ui-cap paint sits on ::before: drop its fill and glint too. */
+  --cap-fill: none;
+  --cap-glint: transparent;
 }
 
 /*

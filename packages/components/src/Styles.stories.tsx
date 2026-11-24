@@ -79,6 +79,7 @@ const ListSurface = ({
 );
 
 export const Surface = meta.story({
+  tags: ['component-test'],
   render: () => (
     <Stack space="group">
       <Headline level="3">Elevation</Headline>
@@ -240,6 +241,16 @@ export const Surface = meta.story({
     </Stack>
   ),
 });
+
+Surface.test(
+  'A plain ui-state-disabled drops the cap fill of ui-contrast',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const specimen = canvas.getByText('contrast / disabled');
+
+    expect(getComputedStyle(specimen, '::before').backgroundImage).toBe('none');
+  }
+);
 
 const grounds = [
   { name: 'Page', className: 'bg-background text-foreground' },
