@@ -121,3 +121,13 @@ export type ValidateOptions = {
 
 export const isValidationCheck = (value: string): value is ValidationCheck =>
   value === 'technical' || value === 'spatial' || value === 'a11y';
+
+// Both render budgets (the renderer's and the check budget in index.ts) reject
+// with this name, so the report picks its hint without matching on wording.
+export const RENDER_BUDGET_ERROR = 'RenderBudgetExceededError';
+
+export const renderBudgetError = (message: string): Error => {
+  const err = new Error(message);
+  err.name = RENDER_BUDGET_ERROR;
+  return err;
+};

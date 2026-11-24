@@ -8,15 +8,18 @@ import {
 } from './helpers/component-locations.js';
 import { setComponentResolutionRoot } from './helpers/components.js';
 import { setThemeResolutionRoot } from './helpers/design-tokens.js';
+import { renderSkipReason } from './helpers/render-precheck.js';
 import { assertSupportedFile } from './helpers/source.js';
 import type { RenderTimingError, SharedRenderer } from './spatial/renderer.js';
 import {
   DYNAMIC_ISSUE_SOURCES,
+  RENDER_BUDGET_ERROR,
   type ValidateOptions,
   type ValidationCheck,
   type ValidationIssue,
   type ValidationReport,
   emptyCoverage,
+  renderBudgetError,
 } from './types.js';
 
 export type {
@@ -33,6 +36,44 @@ export { isValidationCheck } from './types.js';
 // in the validated file. runWithRenderer reports it as a `warning` so a missing
 // Chromium can't read, by exit code, as "this component is broken".
 class RenderToolchainUnavailableError extends Error {}
+
+// A renderer for runs that must not render: render() throws the toolchain
+// error, which runWithRenderer reports as a warning.
+const unavailableRenderer = (message: string): SharedRenderer => ({
+  render: () => {
+    throw new RenderToolchainUnavailableError(message);
+  },
+  close: async () => undefined,
+});
+
+const RUN_TECHNICAL = 'run with `--checks technical` to skip rendering';
+
+const renderFailureHint = (err: unknown, toolchainMissing: boolean): string => {
+  if (toolchainMissing) {
+    return `The render checks need the optional render toolchain plus a browser: \`npm i playwright vite @vitejs/plugin-react @axe-core/playwright && npx playwright install chromium\`. Or ${RUN_TECHNICAL}.`;
+  }
+  if (err instanceof Error && err.name === RENDER_BUDGET_ERROR) {
+    return `The component did not finish rendering in time. Look for a render loop or an effect that never settles, or ${RUN_TECHNICAL}.`;
+  }
+  return `The file could not be rendered. Fix the error above, or ${RUN_TECHNICAL}.`;
+};
+
+// A warning either way: a local import is no defect in the file, and an error
+// would push an agent to inline it just to pass. Without `technical` nothing
+// was checked, which the message and the empty `checksRun` both say.
+const renderSkippedIssue = (
+  reason: string,
+  technicalRan: boolean
+): ValidationIssue => ({
+  type: 'technical',
+  severity: 'warning',
+  source: 'runtime',
+  component: 'Renderer',
+  message: `Rendered checks skipped: ${reason}.`,
+  suggestion: technicalRan
+    ? 'The static checks above still ran and decide the result. Validate a self-contained file to include the layout and accessibility checks, or run with `--checks technical` to skip rendering explicitly.'
+    : 'Nothing was checked. Run with `--checks all` or `--checks technical`, or validate a self-contained file.',
+});
 
 // Outer backstop around the combined render+check call. The inner phases carry
 // their own budgets (RENDER_BUDGET_MS, INSPECTION_BUDGET_MS), so this must
@@ -172,7 +213,10 @@ const buildReport = (
 const runWithRenderer = async (
   filePath: string,
   options: ValidateOptions,
-  renderer: SharedRenderer
+  renderer: SharedRenderer,
+  // Set when the file cannot be rendered in the sandbox at all, see
+  // helpers/render-precheck.ts. The render checks are then skipped, not failed.
+  skipRenderReason?: string
 ): Promise<ValidationReport> => {
   const absolute = path.resolve(filePath);
   // Set before any check dispatch, not just in the `technical` branch: the
@@ -217,7 +261,9 @@ const runWithRenderer = async (
   );
 
   const wantsRender = checks.has('spatial') || checks.has('a11y');
-  if (wantsRender && !fatalTechnical) {
+  if (wantsRender && !fatalTechnical && skipRenderReason) {
+    issues.push(renderSkippedIssue(skipRenderReason, checks.has('technical')));
+  } else if (wantsRender && !fatalTechnical) {
     try {
       // Lazy so the technical-only path and a bare `import '@marigold/cli'`
       // never pull in the optional render toolchain. A missing one surfaces
@@ -232,7 +278,7 @@ const runWithRenderer = async (
         checkTimer = setTimeout(() => {
           // This firing means neither inner budget got the chance to — attach
           // elapsed time so the report isn't stuck at its 0 initializer.
-          const err: RenderTimingError = new Error(
+          const err: RenderTimingError = renderBudgetError(
             `Render checks exceeded ${CHECK_BUDGET_MS}ms budget`
           );
           err.renderTimeMs = Date.now() - renderPhaseStart;
@@ -346,8 +392,7 @@ const runWithRenderer = async (
         source: 'runtime',
         component: 'Renderer',
         message: `Headless render failed: ${message}`,
-        suggestion:
-          'The render checks need the optional render toolchain plus a browser: `npm i playwright vite @vitejs/plugin-react @axe-core/playwright && npx playwright install chromium`. Or run with `--checks technical` to skip rendering. Also ensure the file exports a default React component.',
+        suggestion: renderFailureHint(err, isToolchainUnavailable),
       });
     }
   }
@@ -357,7 +402,10 @@ const runWithRenderer = async (
   return buildReport(absolute, issues, passed, {
     renderTimeMs,
     componentsFound,
-    checksRun: Array.from(checks),
+    // A skipped render ran only the static checks, whatever was asked for.
+    checksRun: skipRenderReason
+      ? Array.from(checks).filter(c => c === 'technical')
+      : Array.from(checks),
     coverage,
     widthUtilization,
   });
@@ -385,17 +433,15 @@ export const validate = async (
 
   const wantsRender =
     options.checks.includes('spatial') || options.checks.includes('a11y');
-  if (!wantsRender) {
-    // No browser needed; build a stub renderer that throws if used.
-    const stub: SharedRenderer = {
-      render: () => {
-        throw new RenderToolchainUnavailableError(
-          'Renderer not available for technical-only run.'
-        );
-      },
-      close: async () => undefined,
-    };
-    return runWithRenderer(filePath, options, stub);
+  const skipRenderReason = wantsRender ? renderSkipReason(filePath) : undefined;
+  if (!wantsRender || skipRenderReason) {
+    // No browser needed: technical-only, or a file the sandbox cannot load.
+    return runWithRenderer(
+      filePath,
+      options,
+      unavailableRenderer('Renderer not available for technical-only run.'),
+      skipRenderReason
+    );
   }
 
   // The render toolchain is an optional peer dependency and Chromium may be
@@ -407,13 +453,9 @@ export const validate = async (
     const { createRenderer } = await import('./spatial/renderer.js');
     renderer = await createRenderer();
   } catch (err) {
-    const message = err instanceof Error ? err.message : String(err);
-    renderer = {
-      render: () => {
-        throw new RenderToolchainUnavailableError(message);
-      },
-      close: async () => undefined,
-    };
+    renderer = unavailableRenderer(
+      err instanceof Error ? err.message : String(err)
+    );
   }
   try {
     return await runWithRenderer(filePath, options, renderer);
