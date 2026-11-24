@@ -4376,6 +4376,25 @@ ExpandableRows.test(
   }
 );
 
+ExpandableRows.test(
+  'Keeps the whole chevron target clickable in a truncated tree cell',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { overflow: 'truncate' },
+  },
+  async ({ canvas }) => {
+    const chevron = chevronOf(rowByName(canvas, 'Settlement run 1 Jul 2026'));
+    const box = chevron.getBoundingClientRect();
+    const y = box.top + box.height / 2;
+
+    const atRightEdge = document.elementFromPoint(box.right - 1, y);
+    const atLeftEdge = document.elementFromPoint(box.left + 1, y);
+
+    expect(chevron.contains(atRightEdge)).toBe(true);
+    expect(chevron.contains(atLeftEdge)).toBe(true);
+  }
+);
+
 /**
  * The same table built from data, where `Table.ExpandableRows` renders the child rows
  * and the render function recurses.
