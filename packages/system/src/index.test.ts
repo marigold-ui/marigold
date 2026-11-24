@@ -6,3 +6,7 @@ test('does not export the style-prop class maps removed in v19', () => {
   expect(exported).not.toContain('fontWeight');
   expect(exported).not.toContain('textSize');
 });
+
+test('does not export the <SVG> component removed in v19', () => {
+  expect(Object.keys(system)).not.toContain('SVG');
+});
