@@ -79,6 +79,7 @@ const ListSurface = ({
 );
 
 export const Surface = meta.story({
+  tags: ['component-test'],
   render: () => (
     <Stack space="group">
       <Headline level="3">Elevation</Headline>
@@ -241,10 +242,23 @@ export const Surface = meta.story({
   ),
 });
 
+Surface.test(
+  'A plain ui-state-disabled drops the cap fill of ui-contrast',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const specimen = canvas.getByText('contrast / disabled');
+
+    expect(getComputedStyle(specimen, '::before').backgroundImage).toBe('none');
+  }
+);
+
 const grounds = [
   { name: 'Page', className: 'bg-background text-foreground' },
   { name: 'Panel', className: 'ui-surface text-foreground' },
-  { name: 'Dark (ActionBar)', className: 'ui-contrast rounded-full' },
+  {
+    name: 'Dark (ActionBar)',
+    className: 'ui-contrast rounded-full [--cap-radius:calc(infinity*1px)]',
+  },
 ] as const;
 
 const DisabledSpecimen = () => (
@@ -279,6 +293,7 @@ const DisabledSpecimen = () => (
  * Label and fill derive from the ink, so the state reads the same on each.
  */
 export const DisabledState = meta.story({
+  tags: ['component-test'],
   render: () => (
     <Stack space="group">
       {grounds.map(ground => (
@@ -292,6 +307,20 @@ export const DisabledState = meta.story({
     </Stack>
   ),
 });
+
+DisabledState.test(
+  'Buttons on a pill surface keep their own corner radius',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const [onPage, , onPill] = canvas.getAllByRole('button', {
+      name: 'Secondary',
+    });
+
+    expect(getComputedStyle(onPill, '::before').borderRadius).toBe(
+      getComputedStyle(onPage, '::before').borderRadius
+    );
+  }
+);
 
 /**
  * Legend swatch: a colour chip + the token + role it plays in the sidebar nav.
