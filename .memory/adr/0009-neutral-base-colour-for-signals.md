@@ -4,6 +4,7 @@ status: accepted # accepted | superseded-by ADR-NNNN
 date: 2026-11-19
 applies_to:
   - 'themes/theme-rui/src/tokens.css'
+  - 'themes/theme-rui/src/components/**'
 ---
 
 # 0009. The product chrome is neutral; colour is reserved for signals
@@ -20,11 +21,11 @@ The question was never whether the old look was ugly. It was that one hue did fi
 
 ## Decision
 
-**The product chrome must be neutral.** Surfaces, text, borders, navigation and primary actions use the charcoal scale and white. The brand orange must not be used as a chrome or accent colour inside the product. Brand and product chrome are different things: a colourful logo with a near-monochrome working surface is the common pattern (Google's logo against Gmail's inbox).
+**The product chrome must be neutral.** Surfaces, text, borders, navigation and primary actions use the charcoal scale and white. The brand orange must not be used as a chrome or accent colour inside the product; inside the product, orange is reserved for the master access marker. Brand and product chrome are different things: a colourful logo with a near-monochrome working surface is the common pattern (Google's logo against Gmail's inbox).
 
-**Colour must carry meaning, and only meaning.** A hue in the product says something about state: error, warning, success, information, or a category the user assigned (Saalplan categories). A colour that does not mean something must not be added for decoration or emphasis.
+**Colour must carry meaning, and only meaning.** A hue in the product says something about state: error, warning, success, information, an access level (master orange, admin purple), or a category the user assigned (Saalplan categories). A colour that does not mean something must not be added for decoration or emphasis.
 
-**Hierarchy must come from typography, spacing and grey steps, not hue.** Size and weight set reading order; `secondary` (charcoal-600) is the lightest grey allowed for text; charcoal-500 must not be used for text, because it falls below 4.5 : 1 (see Consequences).
+**Hierarchy must come from typography, spacing and grey steps, not hue.** Size and weight set reading order; `secondary` (charcoal-600) is the lightest grey allowed for readable text, disabled states excepted (`disabled` is charcoal-400, which WCAG 1.4.3 allows for inactive components); charcoal-500 must not be used for text, because it falls below 4.5 : 1 (see Consequences).
 
 **Controls stay at 36px (`--spacing-control`), 32px for small ones.** The old 24px controls sat exactly on the WCAG 2.2 minimum target size. Dense data tables get density through `Table size="compact"`, not through smaller controls everywhere.
 
@@ -49,7 +50,7 @@ Event overview (`Veranstaltungsübersicht`), old theme against RUI, screenshots 
 | First row starts at                   | 342              | 453 (+111)       |
 | Fully visible rows in an 836px window | 5                | 4                |
 
-Rows got about 9 % more compact, because statuses now sit side by side instead of stacked. The loss of a row on the first screen comes from the search and filter area above the table, not from the rows.
+Rows got about 9 % more compact, because statuses now sit side by side instead of stacked. The loss of a row on the first screen comes from the search and filter area above the table, not from the rows. That area is built from the same 36px controls, so making it shorter is a layout change (fewer rows of filters, filters behind a disclosure), not smaller inputs.
 
 ## Alternatives rejected
 
@@ -63,5 +64,5 @@ Rows got about 9 % more compact, because statuses now sit side by side instead o
 
 - **What it makes easy.** A red or yellow element is a real signal, because nothing else is red or yellow. New components need no colour decision beyond picking the status. Contrast is checked once on the token level: charcoal-600 is 5.5 : 1 on white and 5.0 : 1 on the page background, charcoal-900 above 15 : 1.
 - **What it makes hard.** Long tables lose some row separation that beige rows and borders used to give (NN/g on [data tables](https://www.nngroup.com/articles/data-tables/): zebra striping and light borders help users keep their place). Screens with many signals at once (several statuses per row) can turn noisy again, so status badges must stay quiet in shape and size.
-- **What we live with.** The first screen of list pages shows less, and long-time users feel slower in the first weeks whether or not they are. Users who browse rather than search are real: in the Buchungsliste 89 % of Veranstalter viewers never use the search form, so "just use search" is not an answer. The follow-ups are a shorter filter area, `compact` on dense overview tables, and before/after task measurement (success, time, perceived effort) rather than opinion.
-- **Communication.** The explanation lives in the internal DST blog post "Wo ist das Orange hin?" and, for conversations with customers, in the page "Argumentationshilfe: Wo ist das Orange hin?" for Betreuung, Vertrieb and Service.
+- **What we live with.** The first screen of list pages shows less, and long-time users feel slower in the first weeks whether or not they are. Users who browse rather than search are real, in the Buchungsliste as elsewhere, so "just use search" is not an answer. The follow-ups are a shorter filter area, `compact` on dense overview tables, and before/after task measurement (success, time, perceived effort) rather than opinion.
+- **Communication.** The explanation lives in the internal DST blog post [Wo ist das Orange hin?](https://reservix.atlassian.net/wiki/x/KQB9QgE) and, for conversations with customers, in the page [Argumentationshilfe: Fragen zum neuen Design (RUI)](https://reservix.atlassian.net/wiki/x/RIBzQgE) for Betreuung, Vertrieb and Service.
