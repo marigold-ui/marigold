@@ -46,6 +46,17 @@ const config = {
   outputFileTracingIncludes: {
     '/mcp': ['./lib/markdown/embeddings.json'],
   },
+  // Pages that were removed, so old links and bookmarks land on their replacement.
+  async redirects() {
+    return [
+      {
+        // <SVG> was removed in v19 (DST-1393).
+        source: '/components/content/svg',
+        destination: '/foundations/iconography#replacing-svg',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default withMDX(config);
