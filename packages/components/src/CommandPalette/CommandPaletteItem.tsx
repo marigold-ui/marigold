@@ -8,6 +8,7 @@ import {
 } from '../Menu/MenuItem';
 import { useDevWarning } from '../utils/useDevWarning';
 import { useCommandPalette } from './Context';
+import { withFirstRowRule } from './useActiveRow';
 
 // Props
 // ---------------
@@ -105,7 +106,9 @@ export const CommandPaletteItem = ({
       textValue={text}
       classNames={classNames}
     >
-      {label}
+      {typeof label === 'function'
+        ? renderProps => withFirstRowRule(props.id, label(renderProps))
+        : withFirstRowRule(props.id, label)}
     </MenuItemCore>
   );
 };
