@@ -23,6 +23,10 @@
   --font-sans: Inter, system-ui, sans-serif;
   --font-sans-variable: InterVariable, Inter, system-ui, sans-serif;
 
+  /* A step below Tailwind's `text-xs`, for compact key caps (the
+   * CommandPalette's legend), so they stay a quiet reminder. */
+  --text-2xs: 0.625rem;
+
   /* ====================== */
   /*     COLOR PALETTES     */
   /* ====================== */
@@ -502,6 +506,34 @@
       opacity: 1;
       filter: blur(0);
       transform: translateY(0);
+    }
+  }
+
+  /* Scale (centred overlays opened often, like the CommandPalette): starts
+     close to full size and only fades, so it reads as a soft cut, not as
+     movement. Closing is faster than opening, both ease out. */
+  --animate-scale-in: scale-in 150ms var(--ease-out-quint);
+  --animate-scale-out: scale-out 100ms var(--ease-out-quint) forwards;
+
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.98);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes scale-out {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.98);
     }
   }
 

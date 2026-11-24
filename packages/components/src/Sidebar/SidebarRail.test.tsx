@@ -5,7 +5,11 @@ import { vi } from 'vitest';
 import { theme } from '@marigold/theme-rui';
 import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { RouterProvider } from '../RouterProvider/RouterProvider';
-import { ensureOverlayContainer, mockMatchMedia } from '../test.utils';
+import {
+  ensureOverlayContainer,
+  mockMatchMedia,
+  shortcutKeys,
+} from '../test.utils';
 import { Sidebar } from './Sidebar';
 import { Rail, RailControlled } from './SidebarRail.stories';
 
@@ -67,7 +71,7 @@ describe('Sidebar.Rail — desktop', () => {
 
     expect(toggle).toHaveAttribute('aria-expanded', 'false');
 
-    await user.keyboard('{Meta>}b{/Meta}');
+    await user.keyboard(shortcutKeys('b'));
 
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
   });
@@ -121,20 +125,6 @@ describe('Sidebar.Rail — desktop', () => {
     );
 
     expect(document.cookie).toContain('marigold:sidebar:state=collapsed');
-  });
-});
-
-describe('Sidebar.Rail — Ctrl+B keyboard shortcut (non-meta, ctrlKey)', () => {
-  test('Ctrl+B toggles the rail collapse', async () => {
-    render(<Rail.Component />);
-    const toggle = screen.getByRole('button', {
-      name: 'Navigation umschalten',
-    });
-    expect(toggle).toHaveAttribute('aria-expanded', 'true');
-
-    await user.keyboard('{Control>}b{/Control}');
-
-    expect(toggle).toHaveAttribute('aria-expanded', 'false');
   });
 });
 

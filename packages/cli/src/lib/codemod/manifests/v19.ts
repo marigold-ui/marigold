@@ -5,6 +5,8 @@ import type { MigrationManifest } from '../types.js';
 import { v18 } from './v18.js';
 
 // Hand-written v19 manifest.
+// - `CommandPalette` is new in v19 (DST-1949). No consumer theme has it yet, so
+//   its slots are only stubbed.
 // - `Popover` became slotted (DST-1485), so the compound `<Popover>` can add
 //   its parts next to the surface every popover shares. The consumer's single
 //   style moves into `container`, the new slots are stubbed.
@@ -18,9 +20,9 @@ import { v18 } from './v18.js';
 //   which `system-text-class-maps` replaces in application code.
 //
 // `slots` mirrors the v19 `Theme` type: the v18 sets plus the new Popover,
-// Stepper, Tray and Sheet shapes. `theme-drift.test.ts` pins this file against the live type.
-// `stylesReferenceUrl` is left out until the v19 release tag exists, rather
-// than pointing reports at a moving branch.
+// Stepper, Tray, Sheet and CommandPalette shapes. `theme-drift.test.ts` pins
+// this file against the live type. `stylesReferenceUrl` is left out until the
+// v19 release tag exists, rather than pointing reports at a moving branch.
 export const v19: MigrationManifest = {
   schemaVersion: 1,
   version: 'v19',
@@ -52,6 +54,25 @@ export const v19: MigrationManifest = {
       'actions',
     ],
     Sheet: ['backdrop', 'container', 'content'],
+    // New in v19, so no consumer theme has it yet: only stubs, no move.
+    CommandPalette: [
+      'button',
+      'container',
+      'header',
+      'input',
+      'list',
+      'group',
+      'item',
+      'label',
+      'description',
+      'keyboard',
+      'match',
+      'empty',
+      'footer',
+      'prefixes',
+      'legend',
+      'tray',
+    ],
     NumberField: ['group', 'stepper', 'input', 'maxValue'],
   },
   restructures: [{ component: 'Popover', primarySlot: 'container' }],

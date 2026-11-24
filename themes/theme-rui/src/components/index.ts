@@ -10,6 +10,7 @@ export { Checkbox } from './Checkbox.styles';
 export { Calendar } from './Calendar.styles';
 export { CloseButton } from './CloseButton.styles';
 export { ComboBox } from './ComboBox.styles';
+export { CommandPalette } from './CommandPalette.styles';
 export { Collapsible } from './Collapsible.styles';
 export { ContextualHelp } from './ContextualHelp.styles';
 export { DateField } from './DateField.styles';
