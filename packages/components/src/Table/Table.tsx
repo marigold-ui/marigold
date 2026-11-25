@@ -34,9 +34,9 @@ import { useDevWarning } from '../utils/useDevWarning';
 import type { SkeletonColumn, StickyEdge } from './Context';
 import {
   TableContext,
+  TableSkeletonContext,
   TableStickyContext,
   isSkeletonRowKey,
-  noSkeletonColumns,
   noStickyColumns,
 } from './Context';
 import { TableBody, type TableBodyProps, isEmptyBody } from './TableBody';
@@ -224,7 +224,8 @@ const scrollFocusedRowClearOfActionBar = (e: FocusEvent<HTMLElement>) => {
 interface TableElementProps extends ComponentProps<'table'> {
   loading: boolean;
   onMinWidthChange: (width: number) => void;
-  onSkeletonColumnsChange: (columns: readonly SkeletonColumn[]) => void;
+  /** Receives the columns as JSON, so an unchanged value skips the re-render. */
+  onSkeletonColumnsChange: (columnsKey: string) => void;
   onShowsSkeletonsChange: (shows: boolean) => void;
 }
 
@@ -274,15 +275,19 @@ const TableElement = ({
   ).length;
 
   // Skeleton rows need the consumer's columns, which the collection has. A
-  // string key keeps the effect from firing on every render.
-  const skeletonColumnsKey = JSON.stringify(
-    columns
-      .filter(column => !injectedColumnKeys.has(column.key))
-      .map(column => ({ key: column.key, alignX: column.props.alignX }))
-  );
+  // string bails out of the state update when nothing changed, and only a
+  // loading table reports, so other tables never re-render for it.
+  // An empty collection reports nothing, so the header's columns stay in use.
+  const skeletonColumnsKey =
+    loading && columns.length > injected
+      ? JSON.stringify(
+          columns
+            .filter(column => !injectedColumnKeys.has(column.key))
+            .map(column => ({ key: column.key, alignX: column.props.alignX }))
+        )
+      : undefined;
   useLayoutEffect(() => {
-    const parsed: SkeletonColumn[] = JSON.parse(skeletonColumnsKey);
-    onSkeletonColumnsChange(parsed);
+    if (skeletonColumnsKey) onSkeletonColumnsChange(skeletonColumnsKey);
   }, [skeletonColumnsKey, onSkeletonColumnsChange]);
 
   const rows = state?.collection.rows ?? [];
@@ -373,6 +378,7 @@ const TableRoot = ({
   selectedKeys: selectedKeysProp,
   defaultSelectedKeys: defaultSelectedKeysProp,
   onSelectionChange: onSelectionChangeProp,
+  disabledBehavior,
   ...props
 }: TableProps) => {
   const classNames = useClassNames({
@@ -386,16 +392,18 @@ const TableRoot = ({
   const [minTableWidth, setMinTableWidth] = useState<number>();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrolls, setScrolls] = useState(false);
-  const [measuredSkeletonColumns, setMeasuredSkeletonColumns] =
-    useState<readonly SkeletonColumn[]>(noSkeletonColumns);
+  const [measuredColumnsKey, setMeasuredColumnsKey] = useState<string>();
   // Read once: only the first render, on the server too, lacks the collection.
   const [headerSkeletonColumns] = useState(() =>
-    loading ? skeletonColumnsFromChildren(props.children) : noSkeletonColumns
+    loading ? skeletonColumnsFromChildren(props.children) : []
   );
-  const skeletonColumns =
-    measuredSkeletonColumns.length > 0
-      ? measuredSkeletonColumns
-      : headerSkeletonColumns;
+  const skeletonColumns = useMemo(
+    (): readonly SkeletonColumn[] =>
+      measuredColumnsKey
+        ? JSON.parse(measuredColumnsKey)
+        : headerSkeletonColumns,
+    [measuredColumnsKey, headerSkeletonColumns]
+  );
   // Measured once the collection exists. The first render, on the server too,
   // reads it from the body, so "select all" starts out disabled.
   const [showsSkeletons, setShowsSkeletons] = useState(
@@ -450,9 +458,6 @@ const TableRoot = ({
       selectableRows,
       disabledKeys: rowDisabledKeys,
       warnedMissingTextValue,
-      loading,
-      skeletonColumns,
-      showsSkeletons,
     }),
     [
       classNames,
@@ -465,10 +470,12 @@ const TableRoot = ({
       selectableRows,
       rowDisabledKeys,
       warnedMissingTextValue,
-      loading,
-      skeletonColumns,
-      showsSkeletons,
     ]
+  );
+
+  const skeletonCtx = useMemo(
+    () => ({ loading, skeletonColumns, showsSkeletons }),
+    [loading, skeletonColumns, showsSkeletons]
   );
 
   const { selectedKeys, onSelectionChange, actionBarHeight, actionBarOverlay } =
@@ -480,7 +487,8 @@ const TableRoot = ({
     });
 
   // The table is always controlled here, so dropping a change keeps it out.
-  // Covers select-all by keyboard, which the disabled checkbox doesn't.
+  // Covers select-all by keyboard, which the disabled checkbox doesn't, and
+  // also keeps Escape from clearing a selection until the data has arrived.
   const handleSelectionChange = useCallback(
     (keys: Selection) => {
       if (!showsSkeletons) onSelectionChange(keys);
@@ -498,73 +506,85 @@ const TableRoot = ({
 
   return (
     <TableContext value={ctx}>
-      <div
-        ref={containerRef}
-        data-scrolls={scrolls || undefined}
-        // Keeps the container filling its parent when the parent doesn't stretch.
-        className={cn(
-          'w-full',
-          // `overflow-x-auto` is the fallback that keeps the table scrolling for
-          // a theme that leaves `container` undefined. theme-rui's part sets it
-          // too, so don't "clean up" the duplicate.
-          scrolls && ['overflow-x-auto', classNames.container]
-        )}
-        onFocus={actionBarHeight ? scrollFocusedRowClearOfActionBar : undefined}
-      >
-        <ResizableTableContainer
-          // Containment keeps the measured width from following the table (DST-1836).
-          className="w-full [contain:inline-size]"
-          style={{ minWidth: minTableWidth }}
-        >
-          <RACTable
-            // Its own stacking context, so the sticky header, footer and
-            // columns order among themselves and never against the page.
-            className={cn('group/table isolate', classNames.table)}
-            treeColumn={treeColumn}
-            selectionBehavior="toggle"
-            selectedKeys={selectedKeys}
-            defaultSelectedKeys={
-              actionBar ? undefined : defaultSelectedKeysProp
-            }
-            onSelectionChange={handleSelectionChange}
-            render={domProps => (
-              <TableElement
-                // Only a virtualized table renders a `<div>`, and Marigold's never is.
-                {...(domProps as ComponentProps<'table'>)}
-                // The theme owns the indent, so it only learns which one applies.
-                data-tree-indent={
-                  treeIndent === 'default' ? undefined : treeIndent
-                }
-                loading={loading}
-                onMinWidthChange={setMinTableWidth}
-                onSkeletonColumnsChange={setMeasuredSkeletonColumns}
-                onShowsSkeletonsChange={setShowsSkeletons}
-              />
-            )}
-            {...props}
-          />
-          {actionBar && (
-            <>
-              {/* Gap between the last row and the bar. */}
-              <div
-                aria-hidden
-                className={classNames.actionBarSpacer}
-                style={{
-                  height: actionBarHeight ? 'var(--actionbar-offset, 8px)' : 0,
-                }}
-              />
-              {actionBarOverlay}
-              {/* Cancels the bar's own height, then slides open to it, so the
-                  content below moves smoothly instead of jumping. */}
-              <div
-                aria-hidden
-                className={classNames.actionBarSpacer}
-                style={{ marginTop: -actionBarHeight, height: actionBarHeight }}
-              />
-            </>
+      <TableSkeletonContext value={skeletonCtx}>
+        <div
+          ref={containerRef}
+          data-scrolls={scrolls || undefined}
+          // Keeps the container filling its parent when the parent doesn't stretch.
+          className={cn(
+            'w-full',
+            // `overflow-x-auto` is the fallback that keeps the table scrolling for
+            // a theme that leaves `container` undefined. theme-rui's part sets it
+            // too, so don't "clean up" the duplicate.
+            scrolls && ['overflow-x-auto', classNames.container]
           )}
-        </ResizableTableContainer>
-      </div>
+          onFocus={
+            actionBarHeight ? scrollFocusedRowClearOfActionBar : undefined
+          }
+        >
+          <ResizableTableContainer
+            // Containment keeps the measured width from following the table (DST-1836).
+            className="w-full [contain:inline-size]"
+            style={{ minWidth: minTableWidth }}
+          >
+            <RACTable
+              // Its own stacking context, so the sticky header, footer and
+              // columns order among themselves and never against the page.
+              className={cn('group/table isolate', classNames.table)}
+              treeColumn={treeColumn}
+              selectionBehavior="toggle"
+              selectedKeys={selectedKeys}
+              defaultSelectedKeys={
+                actionBar ? undefined : defaultSelectedKeysProp
+              }
+              onSelectionChange={handleSelectionChange}
+              // With "selection" a disabled row stays focusable and actionable,
+              // and a row can't opt back out, so skeleton rows need "all".
+              disabledBehavior={showsSkeletons ? 'all' : disabledBehavior}
+              render={domProps => (
+                <TableElement
+                  // Only a virtualized table renders a `<div>`, and Marigold's never is.
+                  {...(domProps as ComponentProps<'table'>)}
+                  // The theme owns the indent, so it only learns which one applies.
+                  data-tree-indent={
+                    treeIndent === 'default' ? undefined : treeIndent
+                  }
+                  loading={loading}
+                  onMinWidthChange={setMinTableWidth}
+                  onSkeletonColumnsChange={setMeasuredColumnsKey}
+                  onShowsSkeletonsChange={setShowsSkeletons}
+                />
+              )}
+              {...props}
+            />
+            {actionBar && (
+              <>
+                {/* Gap between the last row and the bar. */}
+                <div
+                  aria-hidden
+                  className={classNames.actionBarSpacer}
+                  style={{
+                    height: actionBarHeight
+                      ? 'var(--actionbar-offset, 8px)'
+                      : 0,
+                  }}
+                />
+                {actionBarOverlay}
+                {/* Cancels the bar's own height, then slides open to it, so the
+                  content below moves smoothly instead of jumping. */}
+                <div
+                  aria-hidden
+                  className={classNames.actionBarSpacer}
+                  style={{
+                    marginTop: -actionBarHeight,
+                    height: actionBarHeight,
+                  }}
+                />
+              </>
+            )}
+          </ResizableTableContainer>
+        </div>
+      </TableSkeletonContext>
     </TableContext>
   );
 };

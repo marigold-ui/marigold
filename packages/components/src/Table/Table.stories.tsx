@@ -985,10 +985,10 @@ export const SkeletonRows = meta.story({
 });
 
 SkeletonRows.test(
-  'Renders the placeholder rows with one skeleton per column',
+  'Renders the skeleton rows with one skeleton per column',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, canvasElement }) => {
-    // Header plus three placeholder rows.
+    // Header plus three skeleton rows.
     await expect(canvas.getAllByRole('row')).toHaveLength(4);
     await expect(skeletonsIn(canvasElement)).toHaveLength(9);
     await expect(canvas.queryByText('No orders.')).not.toBeInTheDocument();
@@ -996,7 +996,7 @@ SkeletonRows.test(
 );
 
 SkeletonRows.test(
-  'Keeps the placeholder rows out of selection',
+  'Keeps the skeleton rows out of selection',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, userEvent }) => {
     const [selectAll, ...rowCheckboxes] = canvas.getAllByRole('checkbox');
@@ -1031,12 +1031,12 @@ SkeletonRows.test(
 );
 
 SkeletonRows.test(
-  'Aligns a placeholder like its column',
+  'Aligns a skeleton like its column',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvasElement }) => {
-    // The last placeholder sits in the right-aligned "Status" column.
-    const placeholder = skeletonsIn(canvasElement).at(-1)!;
-    const cell = placeholder.closest<HTMLElement>('[data-cell-content]')!;
+    // The last skeleton sits in the right-aligned "Status" column.
+    const skeleton = skeletonsIn(canvasElement).at(-1)!;
+    const cell = skeleton.closest<HTMLElement>('[data-cell-content]')!;
 
     await expect(cell).toHaveClass('text-right');
   }
@@ -1058,7 +1058,7 @@ SkeletonRows.test(
 );
 
 SkeletonRows.test(
-  'Replaces the placeholders with the data, nothing selected',
+  'Replaces the skeletons with the data, nothing selected',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, canvasElement, userEvent }) => {
     await userEvent.click(canvas.getByRole('button', { name: 'Finish load' }));
@@ -1078,6 +1078,61 @@ SkeletonRows.test(
     const [, body] = canvas.getAllByRole('rowgroup');
 
     await expect(body).toHaveAttribute('lang', 'en');
+  }
+);
+
+SkeletonRows.test(
+  'Keeps the skeleton rows out of onRowAction when disabled rows stay actionable',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { disabledBehavior: 'selection', onRowAction: fn() },
+  },
+  async ({ args, canvas, step, userEvent }) => {
+    await step('A skeleton row does not reach the handler', async () => {
+      const [, skeletonRow] = canvas.getAllByRole('row');
+      await userEvent.click(
+        within(skeletonRow).getAllByRole('gridcell').at(-1)!
+      );
+
+      await expect(args.onRowAction).not.toHaveBeenCalled();
+    });
+
+    await step('A real row does, once the data has arrived', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Finish load' })
+      );
+      await userEvent.click(canvas.getByText(users[0].email));
+
+      await expect(args.onRowAction).toHaveBeenCalledWith(users[0].email);
+    });
+  }
+);
+
+/** A column can opt out of its skeleton with `skeleton={null}`. */
+export const SkeletonRowsEmptyColumn = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => (
+    <Table aria-label="Orders" loading {...args}>
+      <Table.Header>
+        <Table.Column rowHeader>Name</Table.Column>
+        <Table.Column skeleton={null}>Actions</Table.Column>
+      </Table.Header>
+      <Table.Body skeletonRows={2}>{[]}</Table.Body>
+    </Table>
+  ),
+});
+
+SkeletonRowsEmptyColumn.test(
+  'Leaves the cells of a column with skeleton={null} empty',
+  async ({ canvas, canvasElement }) => {
+    // One skeleton per row, for the "Name" column only.
+    await expect(skeletonsIn(canvasElement)).toHaveLength(2);
+    for (const row of canvas.getAllByRole('row').slice(1)) {
+      await expect(
+        within(row).getAllByRole('gridcell').at(-1)
+      ).toHaveTextContent('');
+    }
   }
 );
 

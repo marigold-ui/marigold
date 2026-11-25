@@ -62,7 +62,8 @@ export interface TableColumnProps extends Omit<RAC.ColumnProps, RemovedProps> {
    * The skeleton this column shows in the body's `skeletonRows`, shaped like
    * the content it stands in for, for example
    * `<Skeleton width={16} variant="rounded" />` for a badge. Without it, the
-   * column shows a skeleton that fills the cell.
+   * column shows a skeleton that fills the cell. Pass `null` to leave the cell
+   * empty.
    */
   skeleton?: ReactNode;
 }

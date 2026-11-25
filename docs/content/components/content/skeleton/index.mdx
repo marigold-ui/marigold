@@ -114,7 +114,7 @@ How `width` behaves:
 For a table, let the table render the skeleton rows itself. The header stays real, the columns keep their widths, and nothing shifts when the data arrives.
 
 - **Set `loading`** on the table and `skeletonRows` on `<Table.Body>` while the first page loads. As long as the body has no rows, it shows that many skeleton rows instead of the empty state, and the table announces the load to screen readers. Use the number of rows a page holds.
-- **Shape each column's skeleton** with `skeleton` on `<Table.Column>`, like the content it stands in for: a short bar for a date, a rounded one for a badge, two bars for a cell that always wraps. A column without it shows a bar that fills the cell. Matching the height of the tallest content, such as a button, keeps the row height from jumping.
+- **Shape each column's skeleton** with `skeleton` on `<Table.Column>`, like the content it stands in for: a short bar for a date, a rounded one for a badge, two bars for a cell that always wraps. A column without it shows a bar that fills the cell, and `skeleton={null}` leaves the cell empty. Matching the height of the tallest content, such as a button, keeps the row height from jumping.
 - **Selection stays out of the way.** Nobody can select a skeleton row, and "select all" is disabled until the data has arrived.
 - **Alignment follows the column.** A skeleton in a column with `alignX="right"` or `alignX="center"` lines up like the content it stands in for, so numbers and their skeletons share an edge.
 

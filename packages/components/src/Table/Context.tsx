@@ -25,6 +25,13 @@ export interface TableContextProps {
   disabledKeys?: RAC.TableProps['disabledKeys'];
   /** Components that already logged the missing `textValue` warning in this table. */
   warnedMissingTextValue: Set<string>;
+}
+
+/**
+ * Kept apart from `TableContext`, so a `loading` toggle re-renders only the
+ * header and body that read it, not every row and cell.
+ */
+export interface TableSkeletonContextProps {
   /** Whether the table's data is loading. */
   loading: boolean;
   /** The consumer's columns, for skeleton rows. */
@@ -40,15 +47,15 @@ export interface SkeletonColumn {
   skeleton?: ReactNode;
 }
 
-/** Shared, so the context stays stable until the columns are known. */
-export const noSkeletonColumns: readonly SkeletonColumn[] = [];
-
 const skeletonPrefix = 'marigold-skeleton-row-';
 export const skeletonRowKey = (index: number) => `${skeletonPrefix}${index}`;
 export const isSkeletonRowKey = (key: RAC.Key) =>
   typeof key === 'string' && key.startsWith(skeletonPrefix);
 
 export const TableContext = createContext<TableContextProps | null>(null);
+
+export const TableSkeletonContext =
+  createContext<TableSkeletonContextProps | null>(null);
 
 /**
  * The level of the rows rendered below this point, starting at 1 like React
@@ -74,6 +81,16 @@ export const useTableContext = () => {
   const context = use(TableContext);
   if (context === null) {
     throw new Error('useTableContext must be used within a <Table> component');
+  }
+  return context;
+};
+
+export const useTableSkeletonContext = () => {
+  const context = use(TableSkeletonContext);
+  if (context === null) {
+    throw new Error(
+      'useTableSkeletonContext must be used within a <Table> component'
+    );
   }
   return context;
 };

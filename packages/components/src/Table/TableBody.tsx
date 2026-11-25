@@ -8,7 +8,11 @@ import {
 import { cn } from '@marigold/system';
 import { Skeleton } from '../Skeleton/Skeleton';
 import type { SkeletonColumn } from './Context';
-import { skeletonRowKey, useTableContext } from './Context';
+import {
+  skeletonRowKey,
+  useTableContext,
+  useTableSkeletonContext,
+} from './Context';
 import { TableCell } from './TableCell';
 import { TableRow } from './TableRow';
 
@@ -35,7 +39,8 @@ export const isEmptyBody = <T extends object>({
   items,
   children,
 }: Pick<TableBodyProps<T>, 'items' | 'children'>) => {
-  if (items) return [...items].length === 0;
+  // Checks for a first item instead of copying every row.
+  if (items) return !!items[Symbol.iterator]().next().done;
   // A render function without `items` has nothing to render.
   if (typeof children === 'function') return true;
   // Unlike `Children.count`, drops `false` and `null` from `{loaded && rows}`.
@@ -46,9 +51,12 @@ export const isEmptyBody = <T extends object>({
 // rebuild the collection on every render. Look it up while the cell renders.
 const ColumnSkeleton = ({ column }: { column: SkeletonColumn }) => {
   const state = use(TableStateContext);
-  const fromCollection: ReactNode = state?.collection.getItem(column.key)?.props
-    .skeleton;
-  return column.skeleton ?? fromCollection ?? <Skeleton />;
+  const skeleton: ReactNode =
+    column.skeleton !== undefined
+      ? column.skeleton
+      : state?.collection.getItem(column.key)?.props.skeleton;
+  // Only a missing prop gets the default, so `null` leaves the cell empty.
+  return skeleton === undefined ? <Skeleton /> : skeleton;
 };
 
 const TableBody = <T extends object = object>({
@@ -56,7 +64,8 @@ const TableBody = <T extends object = object>({
   skeletonRows,
   ...props
 }: TableBodyProps<T>) => {
-  const { classNames, loading, skeletonColumns } = useTableContext();
+  const { classNames } = useTableContext();
+  const { loading, skeletonColumns } = useTableSkeletonContext();
 
   if (loading && skeletonRows && isEmptyBody(props)) {
     const { items: _items, children: _children, ...bodyProps } = props;

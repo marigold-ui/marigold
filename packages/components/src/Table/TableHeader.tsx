@@ -7,7 +7,7 @@ import {
 } from 'react-aria-components/Table';
 import { cn } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
-import { useTableContext } from './Context';
+import { useTableContext, useTableSkeletonContext } from './Context';
 import { renderStickyColumn } from './TableStickyCell';
 
 // Keys of the columns injected ahead of the consumer's, so the table can tell them apart.
@@ -43,7 +43,8 @@ const TableHeader = <T extends object>({
 }: TableHeaderProps<T>) => {
   const { selectionBehavior, selectionMode, allowsDragging } =
     useTableOptions();
-  const { classNames, showsSkeletons } = useTableContext();
+  const { classNames } = useTableContext();
+  const { showsSkeletons } = useTableSkeletonContext();
 
   return (
     <RACTableHeader
