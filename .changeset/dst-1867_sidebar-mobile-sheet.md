@@ -6,7 +6,7 @@
 '@marigold/docs': patch
 ---
 
-refactor(DST-1867): render the mobile Sidebar drawer through React Aria's `Sheet`
+refactor(DST-1867): render the mobile Sidebar drawer through the internal `Sheet`
 
 On small screens the `Sidebar` (single column and `Sidebar.Rail`) now opens as a full-width sheet from the start edge, built on the same internal `Sheet` as the tray. Props and the desktop sidebar are unchanged.
 

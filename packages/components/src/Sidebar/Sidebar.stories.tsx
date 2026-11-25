@@ -247,7 +247,9 @@ Mobile.test(
     });
     // The nav and the footer sit inside the drawer.
     expect(
-      drawer.querySelector('nav')?.getBoundingClientRect().height
+      within(drawer)
+        .getByRole('navigation', { name: 'App navigation' })
+        .getBoundingClientRect().height
     ).toBeGreaterThan(0);
     expect(drawer).toHaveTextContent('Footer content');
   }
@@ -295,10 +297,17 @@ Mobile.test(
   'Scrolling the nav does not move the drawer',
   async ({ canvas, userEvent }) => {
     const { toggle, drawer } = await openDrawer({ canvas, userEvent });
-    const nav = drawer.querySelector('nav')!;
+    const nav = within(drawer).getByRole('navigation', {
+      name: 'App navigation',
+    });
 
     nav.scrollBy({ top: 200 });
     nav.dispatchEvent(new Event('scroll'));
+    // Give the sheet two frames to react, so a move or close that starts
+    // asynchronously would show up below.
+    await new Promise(resolve =>
+      requestAnimationFrame(() => requestAnimationFrame(resolve))
+    );
 
     expect(scrollerOf(drawer).scrollLeft).toBeCloseTo(0, 0);
     expect(toggle).toHaveAttribute('aria-expanded', 'true');
