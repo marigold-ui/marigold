@@ -267,7 +267,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // usually fits, so pinning it on would be wrong more often than right.
   railFooter: cva({
     base: [
-      'shrink-0 flex flex-col gap-0.5 py-1.5',
+      // Same gap-tight as the rail above: its tiles are the same railItem.
+      'shrink-0 flex flex-col gap-tight py-1.5',
       'ui-scroll-seam-footer [--seam-fallback-color:transparent]',
       // The drawer list usually overflows: keep the hairline.
       'max-sm:[--seam-fallback-color:var(--seam-color)]',
