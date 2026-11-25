@@ -5,6 +5,7 @@ import {
   Badge,
   EmptyState,
   Inline,
+  NumericFormat,
   Panel,
   Scrollable,
   Table,
@@ -51,16 +52,10 @@ export const ReportVenues = () => {
                   Venue
                 </Table.Column>
                 <Table.Column {...venueColumnWidths.city}>City</Table.Column>
-                <Table.Column {...venueColumnWidths.region}>
-                  Region
-                </Table.Column>
                 <Table.Column {...venueColumnWidths.country}>
                   Country
                 </Table.Column>
                 <Table.Column {...venueColumnWidths.type}>Type</Table.Column>
-                <Table.Column {...venueColumnWidths.setting}>
-                  Setting
-                </Table.Column>
                 <Table.Column alignX="right" {...venueColumnWidths.capacity}>
                   Capacity
                 </Table.Column>
@@ -71,7 +66,7 @@ export const ReportVenues = () => {
                   Upcoming
                 </Table.Column>
                 <Table.Column {...venueColumnWidths.status}>
-                  Status
+                  Availability
                 </Table.Column>
                 <Table.Column alignX="right" {...venueColumnWidths.rate}>
                   Day rate
@@ -82,19 +77,31 @@ export const ReportVenues = () => {
                   <Table.Row id={venue.id}>
                     <Table.Cell>{venue.name}</Table.Cell>
                     <Table.Cell>{venue.city}</Table.Cell>
-                    <Table.Cell>{venue.region}</Table.Cell>
                     <Table.Cell>{venue.country}</Table.Cell>
                     <Table.Cell>{venue.type}</Table.Cell>
-                    <Table.Cell>{venue.setting}</Table.Cell>
-                    <Table.Cell alignX="right">{venue.capacity}</Table.Cell>
-                    <Table.Cell alignX="right">{venue.rating}</Table.Cell>
+                    <Table.Cell alignX="right">
+                      <NumericFormat value={venue.capacity} />
+                    </Table.Cell>
+                    <Table.Cell alignX="right">
+                      <NumericFormat
+                        value={venue.rating}
+                        minimumFractionDigits={1}
+                      />
+                    </Table.Cell>
                     <Table.Cell alignX="right">{venue.events}</Table.Cell>
                     <Table.Cell>
                       <Badge variant={statusVariant[venue.status]}>
                         {venue.status}
                       </Badge>
                     </Table.Cell>
-                    <Table.Cell alignX="right">{venue.rate}</Table.Cell>
+                    <Table.Cell alignX="right">
+                      <NumericFormat
+                        style="currency"
+                        currency="EUR"
+                        value={venue.rate}
+                        maximumFractionDigits={0}
+                      />
+                    </Table.Cell>
                   </Table.Row>
                 )}
               </Table.Body>

@@ -6,13 +6,18 @@
 import { Description, Page, Title } from '@marigold/components';
 import { ReportVenues } from './ReportVenues';
 
+// The report covers next summer's run, so the availability column always
+// refers to dates ahead. Derived from today so the example never goes stale.
+const now = new Date();
+const season = now.getMonth() < 5 ? now.getFullYear() : now.getFullYear() + 1;
+
 const PickPage = () => (
   <Page>
     <Page.Header>
-      <Title>Venue report</Title>
+      <Title>Summer comedy series</Title>
       <Description>
-        A report owns the venues you pick for it. Build the set in the pick
-        dialog. It stays on the report and can be edited anytime.
+        Venue shortlist for June to August {season}. Availability is for these
+        dates.
       </Description>
     </Page.Header>
     <ReportVenues />
