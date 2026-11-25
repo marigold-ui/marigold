@@ -43,7 +43,7 @@ const TableHeader = <T extends object>({
 }: TableHeaderProps<T>) => {
   const { selectionBehavior, selectionMode, allowsDragging } =
     useTableOptions();
-  const { classNames } = useTableContext();
+  const { classNames, showsSkeletons } = useTableContext();
 
   return (
     <RACTableHeader
@@ -71,7 +71,10 @@ const TableHeader = <T extends object>({
           width={injectedColumnWidth}
           className={classNames.column}
         >
-          {selectionMode === 'multiple' && <Checkbox slot="selection" />}
+          {selectionMode === 'multiple' && (
+            // React Aria disables "select all" only for an empty collection.
+            <Checkbox slot="selection" disabled={showsSkeletons} />
+          )}
         </Column>
       )}
       <Collection items={columns}>{children}</Collection>

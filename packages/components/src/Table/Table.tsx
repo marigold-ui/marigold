@@ -1,5 +1,12 @@
-import type { ComponentProps, FocusEvent, ReactNode } from 'react';
+import type {
+  ComponentProps,
+  FocusEvent,
+  ReactElement,
+  ReactNode,
+} from 'react';
 import {
+  Children,
+  isValidElement,
   use,
   useCallback,
   useEffect,
@@ -23,17 +30,27 @@ import { useActionBar } from '../ActionBar/useActionBar';
 import { intlMessages } from '../intl/messages';
 import type { Selection } from '../types';
 import { useDevWarning } from '../utils/useDevWarning';
-import type { StickyEdge } from './Context';
-import { TableContext, TableStickyContext, noStickyColumns } from './Context';
+import type { SkeletonColumn, StickyEdge } from './Context';
+import {
+  TableContext,
+  TableStickyContext,
+  isSkeletonRowKey,
+  noSkeletonColumns,
+  noStickyColumns,
+} from './Context';
 import { TableBody } from './TableBody';
 import { TableCell } from './TableCell';
-import { TableColumn } from './TableColumn';
+import { TableColumn, type TableColumnProps } from './TableColumn';
 import { renderDragPreview } from './TableDragPreview';
 import { renderDropIndicator } from './TableDropIndicator';
 import { TableEditableCell } from './TableEditableCell';
 import { TableExpandableRows } from './TableExpandableRows';
 import { TableFooter } from './TableFooter';
-import { TableHeader, injectedColumnKeys } from './TableHeader';
+import {
+  TableHeader,
+  type TableHeaderProps,
+  injectedColumnKeys,
+} from './TableHeader';
 import { TableRow } from './TableRow';
 
 type RemovedProps = 'className' | 'style' | 'selectionBehavior' | 'render';
@@ -116,6 +133,32 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
 
 // Helper
 // ---------------
+/**
+ * The header's static columns, for the first render. The collection that
+ * `TableElement` reads them from doesn't exist yet, and on the server it never
+ * reaches a layout effect, so skeleton rows would be missing from the HTML.
+ */
+const skeletonColumnsFromChildren = (children: ReactNode): SkeletonColumn[] => {
+  const header = Children.toArray(children).find(
+    (child): child is ReactElement<TableHeaderProps> =>
+      isValidElement(child) && child.type === TableHeader
+  );
+  // Columns from a `columns` render function are only known to the collection.
+  if (!header || typeof header.props.children === 'function') return [];
+
+  return Children.toArray(header.props.children).flatMap((child, index) =>
+    isValidElement<TableColumnProps>(child) && child.type === TableColumn
+      ? [
+          {
+            key: child.props.id ?? `marigold-skeleton-column-${index}`,
+            alignX: child.props.alignX,
+            skeleton: child.props.skeleton,
+          },
+        ]
+      : []
+  );
+};
+
 const isRelative = (size: unknown) =>
   typeof size === 'string' && size.endsWith('%');
 
@@ -155,6 +198,8 @@ const scrollFocusedRowClearOfActionBar = (e: FocusEvent<HTMLElement>) => {
 interface TableElementProps extends ComponentProps<'table'> {
   loading: boolean;
   onMinWidthChange: (width: number) => void;
+  onSkeletonColumnsChange: (columns: readonly SkeletonColumn[]) => void;
+  onShowsSkeletonsChange: (shows: boolean) => void;
 }
 
 /**
@@ -164,6 +209,8 @@ interface TableElementProps extends ComponentProps<'table'> {
 const TableElement = ({
   loading,
   onMinWidthChange,
+  onSkeletonColumnsChange,
+  onShowsSkeletonsChange,
   ...props
 }: TableElementProps) => {
   const state = use(TableStateContext);
@@ -199,6 +246,26 @@ const TableElement = ({
   const injected = columns.filter(column =>
     injectedColumnKeys.has(column.key)
   ).length;
+
+  // Skeleton rows need the consumer's columns, which the collection has. A
+  // string key keeps the effect from firing on every render.
+  const skeletonColumnsKey = JSON.stringify(
+    columns
+      .filter(column => !injectedColumnKeys.has(column.key))
+      .map(column => ({ key: column.key, alignX: column.props.alignX }))
+  );
+  useLayoutEffect(() => {
+    const parsed: SkeletonColumn[] = JSON.parse(skeletonColumnsKey);
+    onSkeletonColumnsChange(parsed);
+  }, [skeletonColumnsKey, onSkeletonColumnsChange]);
+
+  const rows = state?.collection.rows ?? [];
+  const showsSkeletons =
+    rows.length > 0 && rows.every(row => isSkeletonRowKey(row.key));
+  useLayoutEffect(() => {
+    onShowsSkeletonsChange(showsSkeletons);
+  }, [showsSkeletons, onShowsSkeletonsChange]);
+
   const first = columns.at(injected);
   const last = columns.at(-1);
   const edges = columns.map((column, index): StickyEdge | undefined =>
@@ -293,6 +360,17 @@ const TableRoot = ({
   const [minTableWidth, setMinTableWidth] = useState<number>();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrolls, setScrolls] = useState(false);
+  const [measuredSkeletonColumns, setMeasuredSkeletonColumns] =
+    useState<readonly SkeletonColumn[]>(noSkeletonColumns);
+  // Read once: only the first render, on the server too, lacks the collection.
+  const [headerSkeletonColumns] = useState(() =>
+    loading ? skeletonColumnsFromChildren(props.children) : noSkeletonColumns
+  );
+  const skeletonColumns =
+    measuredSkeletonColumns.length > 0
+      ? measuredSkeletonColumns
+      : headerSkeletonColumns;
+  const [showsSkeletons, setShowsSkeletons] = useState(false);
 
   const measure = useCallback(() => {
     const container = containerRef.current;
@@ -342,6 +420,9 @@ const TableRoot = ({
       selectableRows,
       disabledKeys: rowDisabledKeys,
       warnedMissingTextValue,
+      loading,
+      skeletonColumns,
+      showsSkeletons,
     }),
     [
       classNames,
@@ -354,6 +435,9 @@ const TableRoot = ({
       selectableRows,
       rowDisabledKeys,
       warnedMissingTextValue,
+      loading,
+      skeletonColumns,
+      showsSkeletons,
     ]
   );
 
@@ -364,6 +448,15 @@ const TableRoot = ({
       onSelectionChange: onSelectionChangeProp,
       actionBar,
     });
+
+  // The table is always controlled here, so dropping a change keeps it out.
+  // Covers select-all by keyboard, which the disabled checkbox doesn't.
+  const handleSelectionChange = useCallback(
+    (keys: Selection) => {
+      if (!showsSkeletons) onSelectionChange(keys);
+    },
+    [showsSkeletons, onSelectionChange]
+  );
 
   // A live region rendered with the table would be inserted with its text
   // already in it on mount, which screen readers skip. The shared announcer's
@@ -403,7 +496,7 @@ const TableRoot = ({
             defaultSelectedKeys={
               actionBar ? undefined : defaultSelectedKeysProp
             }
-            onSelectionChange={onSelectionChange}
+            onSelectionChange={handleSelectionChange}
             render={domProps => (
               <TableElement
                 // Only a virtualized table renders a `<div>`, and Marigold's never is.
@@ -414,6 +507,8 @@ const TableRoot = ({
                 }
                 loading={loading}
                 onMinWidthChange={setMinTableWidth}
+                onSkeletonColumnsChange={setMeasuredSkeletonColumns}
+                onShowsSkeletonsChange={setShowsSkeletons}
               />
             )}
             {...props}

@@ -17,6 +17,7 @@ import { NumberField } from '../NumberField/NumberField';
 import { Panel } from '../Panel/Panel';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Select } from '../Select/Select';
+import { Skeleton } from '../Skeleton/Skeleton';
 import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
@@ -839,6 +840,18 @@ Empty.test(
   }
 );
 
+Empty.test(
+  'Keeps the empty state while loading without skeletonRows',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { loading: true },
+  },
+  async ({ canvas }) => {
+    await expect(canvas.getByText('No results found.')).toBeInTheDocument();
+    await expect(canvas.getAllByRole('row')).toHaveLength(2);
+  }
+);
+
 export const Loading = meta.story({
   tags: ['component-test'],
   // `loading` changes no pixels, the tests below guard it instead.
@@ -904,6 +917,145 @@ Loading.test(
       expect(screen.getByRole('toolbar')).toBeInTheDocument();
     });
     expect(screen.getAllByRole('status')).toHaveLength(1);
+  }
+);
+
+// Rendered skeletons: decorative, so hidden, and sized through `--width`.
+const skeletonsIn = (root: HTMLElement) =>
+  Array.from(root.querySelectorAll<HTMLElement>('[aria-hidden="true"]')).filter(
+    el => el.style.getPropertyValue('--width') !== ''
+  );
+
+/**
+ * The first load: `skeletonRows` fills an empty, loading body with skeleton
+ * rows that follow the columns, until the data arrives.
+ */
+const SkeletonRowsTable = (args: TableProps) => {
+  const [rows, setRows] = useState<typeof users>([]);
+  const loading = rows.length === 0;
+
+  return (
+    <Stack space={4}>
+      <Table aria-label="Orders" loading={loading} {...args}>
+        <Table.Header>
+          <Table.Column rowHeader>Name</Table.Column>
+          <Table.Column>Email</Table.Column>
+          <Table.Column
+            alignX="right"
+            skeleton={<Skeleton width={16} height={5} variant="rounded" />}
+          >
+            Status
+          </Table.Column>
+        </Table.Header>
+        <Table.Body
+          items={rows}
+          skeletonRows={3}
+          emptyState={() => <Text>No orders.</Text>}
+        >
+          {user => (
+            <Table.Row id={user.email}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell alignX="right">{user.status}</Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+      <Button onPress={() => setRows(users.slice(0, 2))}>Finish load</Button>
+    </Stack>
+  );
+};
+
+export const SkeletonRows = meta.story({
+  tags: ['component-test'],
+  args: { selectionMode: 'multiple' },
+  render: args => <SkeletonRowsTable {...args} />,
+});
+
+SkeletonRows.test(
+  'Renders the placeholder rows with one skeleton per column',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, canvasElement }) => {
+    // Header plus three placeholder rows.
+    await expect(canvas.getAllByRole('row')).toHaveLength(4);
+    await expect(skeletonsIn(canvasElement)).toHaveLength(9);
+    await expect(canvas.queryByText('No orders.')).not.toBeInTheDocument();
+  }
+);
+
+SkeletonRows.test(
+  'Keeps the placeholder rows out of selection',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    const [selectAll, ...rowCheckboxes] = canvas.getAllByRole('checkbox');
+
+    await expect(selectAll).toBeDisabled();
+    for (const checkbox of rowCheckboxes) {
+      await expect(checkbox).toBeDisabled();
+    }
+
+    await userEvent.click(selectAll);
+
+    await expect(selectAll).not.toBeChecked();
+  }
+);
+
+SkeletonRows.test(
+  'Ignores select-all by keyboard',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    // Disabled rows take no focus, so the grid itself receives it.
+    await userEvent.tab();
+    await expect(canvas.getByRole('grid')).toHaveFocus();
+    // React Aria reads Cmd on macOS and Ctrl elsewhere.
+    const mod = /Mac/.test(navigator.platform) ? 'Meta' : 'Control';
+    await userEvent.keyboard(`{${mod}>}a{/${mod}}`);
+
+    await expect(canvas.getAllByRole('checkbox')[0]).not.toBeChecked();
+    for (const row of canvas.getAllByRole('row').slice(1)) {
+      await expect(row).not.toHaveAttribute('aria-selected', 'true');
+    }
+  }
+);
+
+SkeletonRows.test(
+  'Aligns a placeholder like its column',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    // The last placeholder sits in the right-aligned "Status" column.
+    const placeholder = skeletonsIn(canvasElement).at(-1)!;
+    const cell = placeholder.closest<HTMLElement>('[data-cell-content]')!;
+
+    await expect(cell).toHaveClass('text-right');
+  }
+);
+
+SkeletonRows.test(
+  "Uses a column's own skeleton",
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    const [name, , status] = skeletonsIn(canvasElement);
+
+    await expect(status.style.getPropertyValue('--width')).not.toBe(
+      name.style.getPropertyValue('--width')
+    );
+    await expect(status.style.getPropertyValue('--height')).not.toBe(
+      name.style.getPropertyValue('--height')
+    );
+  }
+);
+
+SkeletonRows.test(
+  'Replaces the placeholders with the data, nothing selected',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, canvasElement, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Finish load' }));
+
+    await expect(skeletonsIn(canvasElement)).toHaveLength(0);
+    const [selectAll, ...rowCheckboxes] = canvas.getAllByRole('checkbox');
+    await expect(rowCheckboxes).toHaveLength(2);
+    await expect(selectAll).toBeEnabled();
+    await expect(selectAll).not.toBeChecked();
   }
 );
 

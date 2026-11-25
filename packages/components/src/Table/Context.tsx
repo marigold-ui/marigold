@@ -1,6 +1,8 @@
+import type { ReactNode } from 'react';
 import { createContext, use } from 'react';
 import type RAC from 'react-aria-components';
 import type { ComponentClassNames } from '@marigold/system';
+import type { textAlign } from '../utils/styleProps';
 
 export interface TableContextProps {
   classNames: ComponentClassNames<'Table'>;
@@ -23,7 +25,28 @@ export interface TableContextProps {
   disabledKeys?: RAC.TableProps['disabledKeys'];
   /** Components that already logged the missing `textValue` warning in this table. */
   warnedMissingTextValue: Set<string>;
+  /** Whether the table's data is loading. */
+  loading: boolean;
+  /** The consumer's columns, for skeleton rows. */
+  skeletonColumns: readonly SkeletonColumn[];
+  /** Whether the body shows skeleton rows and nothing else. */
+  showsSkeletons: boolean;
 }
+
+export interface SkeletonColumn {
+  key: RAC.Key;
+  alignX?: keyof typeof textAlign;
+  /** The column's own skeleton, when read from the header before the collection exists. */
+  skeleton?: ReactNode;
+}
+
+/** Shared, so the context stays stable until the columns are known. */
+export const noSkeletonColumns: readonly SkeletonColumn[] = [];
+
+const skeletonPrefix = 'marigold-skeleton-row-';
+export const skeletonRowKey = (index: number) => `${skeletonPrefix}${index}`;
+export const isSkeletonRowKey = (key: RAC.Key) =>
+  typeof key === 'string' && key.startsWith(skeletonPrefix);
 
 export const TableContext = createContext<TableContextProps | null>(null);
 
