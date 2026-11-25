@@ -13,6 +13,7 @@ import { writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { getAllMdxFiles, parseMdxToMarkdown } from '../parser';
+import { assertPropsTables } from './props-guard';
 import { fit, splitAt } from './split';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -56,6 +57,7 @@ async function main() {
   );
 
   const chunks = allChunks.flat().map((c, i) => ({ id: i + 1, ...c }));
+  const withProps = assertPropsTables(chunks);
   await writeFile(OUTPUT_FILE, JSON.stringify(chunks, null, 2));
 
   const avg = Math.round(
@@ -63,7 +65,7 @@ async function main() {
   );
   const max = Math.max(...chunks.map(c => c.textForEmbedding.length));
   console.log(
-    `${filteredFiles.length} files → ${chunks.length} chunks — avg ${avg}c max ${max}c → ${OUTPUT_FILE}`
+    `${filteredFiles.length} files → ${chunks.length} chunks (${withProps} with a props table) — avg ${avg}c max ${max}c → ${OUTPUT_FILE}`
   );
 }
 

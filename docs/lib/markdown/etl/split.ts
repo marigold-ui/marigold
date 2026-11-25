@@ -83,8 +83,8 @@ export function fit(
 const isTableRow = (line: string): boolean => line.trimStart().startsWith('|');
 
 /**
- * A markdown table is one paragraph, so the paragraph fallback below cannot cut
- * it. A generated props table can run to 20,000 characters, past MAX_CHARS and
+ * A markdown table is one paragraph, so the paragraph fallback in `fit` cannot
+ * cut it. A generated props table can run to 20,000 characters, past MAX_CHARS and
  * close to the embedding model's input limit. Split it by rows instead, and
  * repeat the header and alignment rows so every piece is still a table.
  */
