@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { useDragAndDrop } from 'react-aria-components/useDragAndDrop';
-import { expect, screen, waitFor, within } from 'storybook/test';
+import { expect, fn, mocked, screen, waitFor, within } from 'storybook/test';
 import preview from '.storybook/preview';
 import { SortDescriptor } from '@react-types/shared';
 import { NumericFormat } from '@marigold/system';
@@ -4329,6 +4329,53 @@ ExpandableRows.test(
   }
 );
 
+ExpandableRows.test(
+  'Keeps the focus ring of a control in a truncated cell unclipped',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { overflow: 'truncate' },
+  },
+  async ({ canvas, userEvent }) => {
+    const button = canvas.getByRole('button', { name: 'Total PDF' });
+
+    // Enter the grid with a click: programmatic focus lands on the row.
+    await userEvent.click(canvas.getByText('Settlement run 1 Jul 2026'));
+    for (let i = 0; i < 6 && document.activeElement !== button; i++) {
+      await userEvent.keyboard('{ArrowRight}');
+    }
+
+    const ring = parseFloat(getComputedStyle(button).outlineWidth);
+    const clip = button.closest('[data-cell-content]')!.getBoundingClientRect();
+    const box = button.getBoundingClientRect();
+
+    expect(button).toHaveFocus();
+    expect(ring).toBeGreaterThan(0);
+    expect(box.top - ring).toBeGreaterThanOrEqual(clip.top);
+    expect(box.bottom + ring).toBeLessThanOrEqual(clip.bottom);
+    expect(box.left - ring).toBeGreaterThanOrEqual(clip.left);
+    expect(box.right + ring).toBeLessThanOrEqual(clip.right);
+  }
+);
+
+ExpandableRows.test(
+  'Keeps the whole chevron target clickable in a truncated tree cell',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { overflow: 'truncate' },
+  },
+  async ({ canvas }) => {
+    const chevron = chevronOf(rowByName(canvas, 'Settlement run 1 Jul 2026'));
+    const box = chevron.getBoundingClientRect();
+    const y = box.top + box.height / 2;
+
+    const atRightEdge = document.elementFromPoint(box.right - 1, y);
+    const atLeftEdge = document.elementFromPoint(box.left + 1, y);
+
+    expect(chevron.contains(atRightEdge)).toBe(true);
+    expect(chevron.contains(atLeftEdge)).toBe(true);
+  }
+);
+
 /**
  * The same table built from data, where `Table.ExpandableRows` renders the child rows
  * and the render function recurses.
@@ -4403,6 +4450,231 @@ ExpandableRowsDynamic.test(
 
       expect(canvas.getByText('CLR-10231')).toBeInTheDocument();
     });
+  }
+);
+
+/**
+ * Modelled on managing packages: a price level bundles the articles linked to
+ * it. Bulk actions act on price levels, so only they can be selected. The
+ * articles are the price level's contents, not records of their own.
+ */
+interface PriceLevelRow {
+  id: string;
+  name: string;
+  articles?: PriceLevelRow[];
+}
+
+const priceLevels: PriceLevelRow[] = [
+  {
+    id: 'level-0',
+    name: 'Standard price',
+    articles: [
+      { id: 'article-79104', name: 'Dinner menu (79104)' },
+      { id: 'article-79105', name: 'Welcome drink (79105)' },
+    ],
+  },
+  {
+    id: 'level-1',
+    name: 'Reduced',
+    articles: [{ id: 'article-79106', name: 'Kids menu (79106)' }],
+  },
+  // A price level without articles is still a price level, so it stays
+  // selectable: the level decides, not whether the row has children.
+  { id: 'level-2', name: 'Staff' },
+];
+
+export const ExpandableRowsSelectableLevel = meta.story({
+  tags: ['component-test'],
+  args: {
+    treeColumn: 'name',
+    selectionMode: 'multiple',
+    selectableRows: 'top-level',
+  },
+  argTypes: {
+    selectableRows: {
+      control: { type: 'select' },
+      options: ['all', 'top-level', 'nested'],
+    },
+    treeIndent: {
+      control: { type: 'select' },
+      options: ['default', 'aligned'],
+    },
+  },
+  render: args => (
+    <Table
+      aria-label="Packages"
+      defaultExpandedKeys={['level-0', 'level-1']}
+      {...args}
+    >
+      <Table.Header>
+        <Table.Column id="name" rowHeader>
+          Price level
+        </Table.Column>
+        <Table.Column id="articles">Articles</Table.Column>
+      </Table.Header>
+      <Table.Body items={priceLevels}>
+        {function renderRow(row: PriceLevelRow) {
+          return (
+            <Table.Row id={row.id}>
+              <Table.Cell>{row.name}</Table.Cell>
+              <Table.Cell>
+                {row.articles ? row.articles.length : '—'}
+              </Table.Cell>
+              <Table.ExpandableRows items={row.articles}>
+                {renderRow}
+              </Table.ExpandableRows>
+            </Table.Row>
+          );
+        }}
+      </Table.Body>
+    </Table>
+  ),
+});
+
+ExpandableRowsSelectableLevel.test(
+  'Only rows on the selectable level carry a checkbox',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent, step }) => {
+    const level = rowByName(canvas, 'Standard price');
+    const article = rowByName(canvas, 'Dinner menu (79104)');
+
+    await step('A price level has a checkbox, an article has none', () => {
+      expect(within(level).getByRole('checkbox')).toBeInTheDocument();
+      expect(within(article).queryByRole('checkbox')).not.toBeInTheDocument();
+    });
+
+    await step('Clicking an article selects nothing', async () => {
+      await userEvent.click(canvas.getByText('Dinner menu (79104)'));
+
+      // `aria-selected` is never on such a row, so check the selection state.
+      expect(article).not.toHaveAttribute('data-selected');
+    });
+
+    await step('Select all selects every price level only', async () => {
+      await userEvent.click(
+        canvas.getByRole('checkbox', { name: /select all/i })
+      );
+
+      expect(level).toHaveAttribute('aria-selected', 'true');
+      expect(rowByName(canvas, 'Staff')).toHaveAttribute(
+        'aria-selected',
+        'true'
+      );
+      expect(article).not.toHaveAttribute('data-selected');
+    });
+  }
+);
+
+ExpandableRowsSelectableLevel.test(
+  'Clicking or pressing Space on a row outside the level selects nothing',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onSelectionChange: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByText('Dinner menu (79104)'));
+    await userEvent.keyboard(' ');
+
+    await expect(args.onSelectionChange).not.toHaveBeenCalled();
+  }
+);
+
+ExpandableRowsSelectableLevel.test(
+  'A Shift+click range skips rows outside the level',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onSelectionChange: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    const checkboxOf = (name: string) =>
+      within(rowByName(canvas, name)).getByRole('checkbox');
+
+    await userEvent.click(checkboxOf('Standard price'));
+    await userEvent.keyboard('{Shift>}');
+    await userEvent.click(checkboxOf('Staff'));
+    await userEvent.keyboard('{/Shift}');
+
+    const selection = mocked(args.onSelectionChange!).mock.lastCall![0];
+    await expect([...selection].sort()).toEqual([
+      'level-0',
+      'level-1',
+      'level-2',
+    ]);
+  }
+);
+
+ExpandableRowsSelectableLevel.test(
+  'Rows outside the level keep row actions and keyboard focus',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { onRowAction: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(canvas.getByText('Dinner menu (79104)'));
+    await expect(args.onRowAction).toHaveBeenCalledWith('article-79104');
+
+    // A click focuses the cell, so arrow keys move cell by cell, as in any row.
+    await userEvent.keyboard('{ArrowDown}');
+    await expect(
+      within(rowByName(canvas, 'Welcome drink (79105)')).getByRole('rowheader')
+    ).toHaveFocus();
+  }
+);
+
+ExpandableRowsSelectableLevel.test(
+  '"nested" select-all reaches the children of unselectable groups',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectableRows: 'nested', onSelectionChange: fn() },
+  },
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('checkbox', { name: /select all/i })
+    );
+    await expect(rowByName(canvas, 'Dinner menu (79104)')).toHaveAttribute(
+      'aria-selected',
+      'true'
+    );
+    await expect(rowByName(canvas, 'Standard price')).not.toHaveAttribute(
+      'aria-selected'
+    );
+
+    // Materialising the `all` sentinel must not drop the other children.
+    await userEvent.click(
+      within(rowByName(canvas, 'Dinner menu (79104)')).getByRole('checkbox')
+    );
+    const selection = mocked(args.onSelectionChange!).mock.lastCall![0];
+    await expect([...selection].sort()).toEqual([
+      'article-79105',
+      'article-79106',
+    ]);
+  }
+);
+
+ExpandableRowsSelectableLevel.test(
+  '"nested": deselecting after select-all drops the children of a collapsed group',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: {
+      selectableRows: 'nested',
+      defaultExpandedKeys: ['level-0'],
+      onSelectionChange: fn(),
+    },
+  },
+  async ({ args, canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('checkbox', { name: /select all/i })
+    );
+    await expect(args.onSelectionChange).toHaveBeenLastCalledWith('all');
+
+    // A known React Aria limitation, not a design decision: deselecting one
+    // child turns `all` into the keys of the rendered rows only. The collapsed
+    // group's "Kids menu (79106)" was never deselected, yet it drops out.
+    await userEvent.click(
+      within(rowByName(canvas, 'Dinner menu (79104)')).getByRole('checkbox')
+    );
+    const selection = mocked(args.onSelectionChange!).mock.lastCall![0];
+    await expect([...selection].sort()).toEqual(['article-79105']);
   }
 );
 

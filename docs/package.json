@@ -1,6 +1,6 @@
 {
   "name": "@marigold/docs",
-  "version": "18.4.0",
+  "version": "18.5.0",
   "private": true,
   "scripts": {
     "build": "pnpm -w build:themes && pnpm build:assets && next build",
@@ -42,9 +42,9 @@
     "class-variance-authority": "^0.7.1",
     "dayjs": "^1.11.13",
     "dotenv": "17.4.2",
-    "fumadocs-core": "16.15.18",
-    "fumadocs-mdx": "15.4.6",
-    "fumadocs-ui": "16.15.18",
+    "fumadocs-core": "16.19.5",
+    "fumadocs-mdx": "15.6.4",
+    "fumadocs-ui": "16.19.5",
     "jose": "6.2.18",
     "lucide-react": "^1.28.0",
     "mcp-handler": "2.4.0",

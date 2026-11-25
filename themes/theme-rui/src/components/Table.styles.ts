@@ -27,6 +27,10 @@ export const Table: ThemeComponent<'Table'> = {
       // root does: a root row with no children must not read as the previous
       // group's last child.
       '[--tree-indent-skip:1]',
+      // `treeIndent="aligned"`: the first nested level shares its group label's
+      // x too. Opt-in for tables whose top-level rows are all groups, where the
+      // reason above does not apply.
+      'data-[tree-indent=aligned]:[--tree-indent-skip:2]',
     ],
     variants: {
       variant: {
@@ -185,7 +189,8 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       // Ghost icon button. The wash is `bg-current/10`, so it blends on any
       // ground including the group row's own fill.
-      'ui-button-base col-start-1',
+      // `relative` paints it above a truncated cell's padding, which reaches into its track.
+      'ui-button-base relative col-start-1',
       // Keeps the 32px target while the caret itself sits where the column's
       // values do, so its margin box still measures exactly one track.
       'size-(--tree-chevron-size) -ms-(--tree-caret-inset)',

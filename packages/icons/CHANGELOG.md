@@ -1,5 +1,21 @@
 # @marigold/icons
 
+## 2.0.6
+
+### Patch Changes
+
+- 04f4206: docs(DST-1981): give the published packages a real README
+
+  The README of each package was a single line. It now says what the package is, how to install and set it up, and where the documentation lives: the docs site, the Markdown version of every page, and the `marigold` CLI. The `@marigold/components` README also lists the conventions that differ from other React libraries, such as `disabled` instead of `isDisabled`, `onPress` instead of `onClick`, and no `className`. This is the first file an AI coding agent reads in `node_modules`, so it no longer has to guess.
+
+- 4c5665a: refactor: clean up internal lint warnings
+
+  `Breadcrumbs` now keys its items by their element key instead of their position, and `createFilledIcon` no longer uses `forwardRef`. Custom icons still forward `ref` to the `<svg>`. Nothing changes in how you use these components.
+
+- Updated dependencies [04f4206]
+- Updated dependencies [923cef8]
+  - @marigold/system@18.5.0
+
 ## 2.0.5
 
 ### Patch Changes

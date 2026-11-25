@@ -103,6 +103,94 @@ Basic.test(
   }
 );
 
+for (const variant of ['primary', 'secondary', 'destructive'] as const) {
+  Basic.test(
+    `Keeps the ${variant} outline unscaled while pressed, so its edge stays sharp`,
+    {
+      parameters: { chromatic: { disableSnapshot: true } },
+      args: { variant },
+    },
+    async ({ canvas, userEvent }) => {
+      const button = canvas.getByRole('button');
+
+      await userEvent.pointer({ keys: '[MouseLeft>]', target: button });
+
+      await waitFor(() => expect(button).toHaveAttribute('data-pressed'));
+
+      const cap = getComputedStyle(button, '::before');
+
+      await waitFor(() => expect(getComputedStyle(button).scale).toBe('0.97'));
+      // The ring moves inside without the cap's box moving.
+      await waitFor(() =>
+        expect(cap.boxShadow).toMatch(/0px 0px 0px 1px inset/)
+      );
+
+      expect(cap.top).toBe('-1px');
+
+      expect(0.97 * Number(cap.scale)).toBeCloseTo(1, 3);
+
+      await userEvent.pointer({ keys: '[/MouseLeft]', target: button });
+    }
+  );
+}
+
+Basic.test(
+  'Drops the top glint when disabled, like every disabled surface',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { variant: 'primary', disabled: true },
+  },
+  async ({ canvas }) => {
+    const button = canvas.getByRole('button');
+
+    expect(getComputedStyle(button, '::before').boxShadow).toContain(
+      'rgba(0, 0, 0, 0) 0px 1px 1.5px -1px inset'
+    );
+  }
+);
+
+Basic.test(
+  'Ghost shrinks as a whole while pressed, it has no outline to keep',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { variant: 'ghost' },
+  },
+  async ({ canvas, userEvent }) => {
+    const button = canvas.getByRole('button');
+
+    await userEvent.pointer({ keys: '[MouseLeft>]', target: button });
+
+    await waitFor(() => expect(button).toHaveAttribute('data-pressed'));
+    await waitFor(() => expect(getComputedStyle(button).scale).toBe('0.97'));
+
+    expect(getComputedStyle(button, '::before').content).toBe('none');
+
+    await userEvent.pointer({ keys: '[/MouseLeft]', target: button });
+  }
+);
+
+Basic.test(
+  'Eases the press instead of jumping',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { variant: 'primary' },
+  },
+  async ({ canvas, userEvent }) => {
+    const button = canvas.getByRole('button');
+
+    await userEvent.pointer({ keys: '[MouseLeft>]', target: button });
+
+    await waitFor(() => expect(button).toHaveAttribute('data-pressed'));
+
+    const { transitionProperty, transitionDuration } = getComputedStyle(button);
+
+    expect(transitionProperty).toContain('scale');
+    expect(transitionDuration).toBe('0.09s');
+
+    await userEvent.pointer({ keys: '[/MouseLeft]', target: button });
+  }
+);
+
 export const ButtonVariants = meta.story({
   tags: ['component-test'],
   parameters: {

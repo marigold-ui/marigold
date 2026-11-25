@@ -71,7 +71,8 @@ export const Menu: ThemeComponent<'Menu'> = {
   button: cva({
     base: [
       'ui-button-base gap-2',
-      'duration-150 active:scale-[0.97] pressed:not-aria-expanded:scale-[0.97]',
+      'ease-out-quint duration-180 active:scale-[0.97] active:duration-90',
+      'pressed:not-aria-expanded:scale-[0.97] pressed:not-aria-expanded:duration-90',
       'pending:ui-state-disabled',
     ],
     variants: {
@@ -82,6 +83,8 @@ export const Menu: ThemeComponent<'Menu'> = {
           'ui-soft',
           'hover:[--ui-background-color:var(--color-soft-hover)] hover:[--soft-edge:var(--color-soft-edge-hover)]',
           'expanded:[--ui-background-color:var(--color-soft-hover)] expanded:[--soft-edge:var(--color-soft-edge-hover)]',
+          // Same conditions as the scale above, see ui-cap-pressed.
+          'active:ui-cap-pressed pressed:not-aria-expanded:ui-cap-pressed',
         ],
         ghost: 'hover:ui-state-hover-ghost',
       },

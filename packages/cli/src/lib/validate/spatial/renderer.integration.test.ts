@@ -1,4 +1,5 @@
 import { beforeAll, describe, expect, it } from 'vitest';
+import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validate } from '../index.js';
@@ -47,11 +48,9 @@ describe('render integration (requires a working render environment)', () => {
     // No runtime render error (crash / fallback / failed harness).
     expect(report.errors.some(e => e.source === 'runtime')).toBe(false);
     expect(report.metadata.componentsFound.length).toBeGreaterThan(0);
-    // The sandbox's own `context.routeWebSocket` (necessarily) closes Vite's
-    // HMR client's WebSocket on every single render, which would otherwise
-    // surface as "Console error during render" noise about Vite's own
-    // reconnect/error-reporting failures — unrelated to the component under
-    // test — on every render regardless of its content.
+    // Vite's client logs reconnect and forwarding errors when its socket is
+    // closed. The sandbox lets that socket through, so a healthy render must
+    // show none of them.
     expect(
       report.warnings.some(
         w => w.component === 'Console' && /vite|websocket/i.test(w.message)
@@ -77,6 +76,35 @@ describe('render integration (requires a working render environment)', () => {
     const runtimeErrors = report.errors.filter(e => e.source === 'runtime');
     expect(runtimeErrors).toEqual([]);
     expect(report.metadata.componentsFound.length).toBeGreaterThan(0);
+  }, 60_000);
+
+  it('fails fast on an import the sandbox cannot resolve instead of waiting out the render budget', async ctx => {
+    if (!renderWorks)
+      return skipIntegration(ctx, 'No working Chromium render', {
+        inCI: 'fail',
+        cause: probeError,
+      });
+    // Written at runtime, not committed: the repo typecheck covers every .tsx
+    // file and would reject the unresolvable import. It sits next to the other
+    // examples so @marigold/components resolves from the CLI package.
+    const file = example(`unresolvable-import-${process.pid}.tsx`);
+    fs.writeFileSync(
+      file,
+      `import { Button } from '@marigold/components';
+      import { track } from '@acme/not-installed';
+      export default () => <Button onPress={track}>Save</Button>;`
+    );
+    try {
+      const started = Date.now();
+      const report = await validate(file, { checks: ['spatial'], viewport });
+      // The render budget is 45s. Vite reports the resolve error through its
+      // HMR socket within a few seconds once that socket is allowed through.
+      expect(Date.now() - started).toBeLessThan(20_000);
+      const renderError = report.errors.find(e => e.component === 'Renderer');
+      expect(renderError?.message).toMatch(/could not be resolved/);
+    } finally {
+      fs.rmSync(file, { force: true });
+    }
   }, 60_000);
 
   it('drives the interaction simulation over a dialog without throwing', async ctx => {

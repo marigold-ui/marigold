@@ -73,6 +73,42 @@ describe('loadMarigoldRegistry (registry source of truth)', () => {
     expect(isMarigoldComponent('ButtonProps')).toBe(false);
   });
 
+  // In this repo `@types/node` already loads the newer Intl libs, so only
+  // `fractionalSecondDigits` (ES2021) fails without the pinned lib. The other
+  // options document the acceptance criterion, not a regression guard.
+  it('includes Intl options newer than ES5 that the formatters inherit', () => {
+    const dateProps = (getComponentProps('DateFormat') ?? []).map(p => p.name);
+    expect(dateProps).toEqual(
+      expect.arrayContaining([
+        'dateStyle',
+        'timeStyle',
+        'fractionalSecondDigits',
+        'dayPeriod',
+      ])
+    );
+
+    const numberProps = (getComponentProps('NumericFormat') ?? []).map(
+      p => p.name
+    );
+    expect(numberProps).toEqual(
+      expect.arrayContaining(['notation', 'signDisplay', 'unit'])
+    );
+  });
+
+  it('includes Intl options newer than ES2022, so an app on a current lib is not flagged', () => {
+    const numberProps = (getComponentProps('NumericFormat') ?? []).map(
+      p => p.name
+    );
+    expect(numberProps).toEqual(
+      expect.arrayContaining([
+        'roundingMode',
+        'roundingPriority',
+        'roundingIncrement',
+        'trailingZeroDisplay',
+      ])
+    );
+  });
+
   it('derives props for a component whose prop type is inline, not a separately-exported *Props interface', () => {
     // IconButton declares its props inline as its function parameter rather
     // than exporting `IconButtonProps`, exercising extractPropsFor's

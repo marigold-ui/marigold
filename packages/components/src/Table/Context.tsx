@@ -14,11 +14,24 @@ export interface TableContextProps {
    * render props, but the header column has to compare its own `id`.
    */
   treeColumn?: RAC.TableProps['treeColumn'];
+  /** Which level of rows carries selection. */
+  selectableRows?: 'all' | 'top-level' | 'nested';
+  /**
+   * The table's own `disabledKeys`, so a row outside the selectable level can
+   * tell whether the consumer disabled it as well.
+   */
+  disabledKeys?: RAC.TableProps['disabledKeys'];
   /** Components that already logged the missing `textValue` warning in this table. */
   warnedMissingTextValue: Set<string>;
 }
 
 export const TableContext = createContext<TableContextProps | null>(null);
+
+/**
+ * The level of the rows rendered below this point, starting at 1 like React
+ * Aria's. Needed while the collection is built, before React Aria knows it.
+ */
+export const TableRowLevelContext = createContext(1);
 
 export type StickyEdge = 'start' | 'end';
 
