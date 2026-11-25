@@ -284,9 +284,9 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     ],
   }),
   // Section heading atop the panel; also the focus target when the panel swaps.
-  // Full-strength ink like the rows, a step above them in weight, and above the
-  // `secondary` groupLabel captions in size and colour: semibold 14px
-  // `foreground` against their semibold 12px `secondary`.
+  // Full-strength ink like the rows and the groupLabel captions, a step above
+  // the rows in weight and above the captions in size: semibold 14px against
+  // their semibold 12px.
   panelTitle: cva({
     base: [
       // Centered via line-height, not flex: ellipsis needs a block container.
