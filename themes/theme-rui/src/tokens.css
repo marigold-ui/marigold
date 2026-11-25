@@ -581,21 +581,6 @@
     }
   }
 
-  --animate-slide-in-left: slide-in-left var(--slide-in-duration)
-    var(--ease-out-expo);
-  --animate-slide-out-left: slide-in-left var(--slide-out-duration) reverse
-    forwards;
-
-  @keyframes slide-in-left {
-    from {
-      transform: translateX(calc(-100% - var(--slide-offset, 0px)));
-    }
-
-    to {
-      transform: translateX(0);
-    }
-  }
-
   --animate-slide-in-top: slide-in-top var(--slide-in-duration)
     var(--ease-out-expo);
   --animate-slide-out-top: slide-in-top var(--slide-out-duration) reverse

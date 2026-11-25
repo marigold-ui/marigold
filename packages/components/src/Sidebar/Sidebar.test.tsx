@@ -1337,3 +1337,40 @@ describe('roving tab stop follows the route', () => {
     );
   });
 });
+
+describe('mobile drawer', () => {
+  beforeEach(() => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    ensureOverlayContainer();
+  });
+
+  test('is a dialog named by the sidebar label', async () => {
+    render(<Basic.Component />);
+
+    await user.click(screen.getByRole('button', { name: 'Toggle navigation' }));
+
+    const drawer = await screen.findByRole('dialog', { name: 'Sidebar' });
+    expect(
+      screen.getByRole('navigation', { name: 'App navigation' })
+    ).toBeInTheDocument();
+    expect(drawer).toContainElement(
+      screen.getByRole('button', { name: 'Close navigation' })
+    );
+  });
+
+  test('⌘B / Ctrl+B closes the open drawer', async () => {
+    render(<Basic.Component />);
+    const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
+
+    await user.click(toggle);
+    await screen.findByRole('dialog', { name: 'Sidebar' });
+    await user.keyboard(shortcutKeys('b'));
+
+    await waitFor(() =>
+      expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    );
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+  });
+});

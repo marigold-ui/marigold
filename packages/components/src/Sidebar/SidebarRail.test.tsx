@@ -395,7 +395,7 @@ describe('Sidebar.Rail — mobile', () => {
     // `current` matches a Tickets leaf, so the drawer opens at the section
     // level with the back row, not at the rail-level list. Scope to the
     // drawer: the top-bar breadcrumb mirrors leaf names as links.
-    const drawer = await screen.findByRole('complementary', {
+    const drawer = await screen.findByRole('dialog', {
       name: 'Seitenleiste',
     });
     expect(
@@ -409,7 +409,7 @@ describe('Sidebar.Rail — mobile', () => {
   test('the drilled-in section name is a heading, and tapping it hits the back button', async () => {
     render(<Rail.Component />);
     await openDrawer();
-    const drawer = await screen.findByRole('complementary', {
+    const drawer = await screen.findByRole('dialog', {
       name: 'Seitenleiste',
     });
 
@@ -448,7 +448,7 @@ describe('Sidebar.Rail — mobile', () => {
   test('a section row drills in and keeps the drawer open', async () => {
     render(<Rail.Component />);
     const toggle = await openDrawer();
-    const drawer = await screen.findByRole('complementary', {
+    const drawer = await screen.findByRole('dialog', {
       name: 'Seitenleiste',
     });
     await user.click(
@@ -497,7 +497,7 @@ describe('Sidebar.Rail — mobile', () => {
   test('top-level rows keep their rail icon and mark the active section', async () => {
     render(<Rail.Component />);
     await openDrawer();
-    const drawer = await screen.findByRole('complementary', {
+    const drawer = await screen.findByRole('dialog', {
       name: 'Seitenleiste',
     });
     await user.click(

@@ -3,7 +3,8 @@ export const isChromatic =
   /Chromatic/.test(navigator.userAgent) || /chromatic=true/.test(location.href);
 
 /**
- * `beforeEach` for stories that open a sheet (Tray, and trays on small screens).
+ * `beforeEach` for stories that open a sheet (Tray, trays on small screens and
+ * the mobile Sidebar drawer).
  *
  * Chromatic resizes the window while capturing, which can push an open sheet out
  * of view, and RAC's Sheet closes once it is out of view. Only reports right after
@@ -22,9 +23,15 @@ export const keepSheetsOpenInChromatic = () => {
     resizedAt = performance.now();
     requestAnimationFrame(() => {
       for (const scroller of document.querySelectorAll('[data-sheet-scroll]')) {
-        if (!scroller.closest('[data-exiting]')) {
-          scroller.scrollTop = scroller.scrollHeight;
-        }
+        if (scroller.closest('[data-exiting]')) continue;
+        // RAC rests a sheet at the end of its scroller, except one that exits
+        // toward the left, which rests at scroll 0 (a start sheet in LTR).
+        const swipe = scroller
+          .closest('[data-swipe-direction]')
+          ?.getAttribute('data-swipe-direction');
+        if (swipe === 'left') scroller.scrollLeft = 0;
+        else if (swipe === 'right') scroller.scrollLeft = scroller.scrollWidth;
+        else scroller.scrollTop = scroller.scrollHeight;
       }
     });
   };

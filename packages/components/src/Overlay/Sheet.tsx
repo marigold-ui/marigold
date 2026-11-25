@@ -14,6 +14,11 @@ import { ResetButtonContext } from '../Button/ResetButtonContext';
 // Shell for small-screen edge overlays (ADR-0007): backdrop, swipe-to-dismiss,
 // dismissal, z-index. Consumers like `<Tray>` render their parts as children.
 // RAC's `SheetContent` is the dialog, so dialog props go here.
+//
+// Edge follows purpose (ADR-0007): contextual tasks come from the bottom
+// (`Tray`), navigation from the start edge (the mobile `Sidebar`). RAC slides
+// the sheet in from that edge by scrolling, so the enter, exit and swipe all
+// mirror in right-to-left locales without a keyframe of ours.
 
 // Props
 // ---------------
@@ -34,7 +39,15 @@ export interface SheetProps extends Omit<
   onOpenChange?: (isOpen: boolean) => void;
 
   /**
-   * Whether swiping down, pressing Escape and pressing outside close the
+   * The edge the sheet slides in from and is swiped back to. `bottom` sizes
+   * to its content (capped below the visible viewport). `start` fills the
+   * viewport and mirrors to the right edge in right-to-left locales.
+   * @default 'bottom'
+   */
+  position?: 'bottom' | 'start';
+
+  /**
+   * Whether swiping it away, pressing Escape and pressing outside close the
    * overlay. The three can't be set separately.
    * @default true
    */
@@ -49,6 +62,37 @@ export interface SheetProps extends Omit<
 /** Keeps actions above the software keyboard (DST-1739), RAC never resizes. */
 const SHEET_MAX_HEIGHT =
   '[--sheet-available:calc(var(--visual-viewport-height)*0.95)] max-h-(--sheet-available)';
+
+/**
+ * Layout per edge, for RAC's `Sheet` (the surface) and `SheetContent` (the
+ * dialog). A bottom sheet lifts above the software keyboard, so its actions
+ * stay reachable. A start sheet fills the height instead and gives up what
+ * the keyboard covers, the same as the layout viewport the page sits in.
+ */
+const SHEET_LAYOUT = {
+  bottom: {
+    surface: '-top-(--sheet-keyboard,0px)',
+    // Until `pinSheetContent` measures it, nothing surrounds the content.
+    content: cn(SHEET_MAX_HEIGHT, '[--sheet-chrome:0px]'),
+  },
+  start: {
+    // `overscrollPadding` adds a viewport of padding toward the edge. Sized
+    // by content box, the width stays the visible part and the padding keeps
+    // the surface going while an overscroll bounces. RAC centres the sheet on
+    // the cross axis, `self-start` pins it to the top.
+    surface:
+      'box-content self-start h-[calc(100dvh-var(--sheet-keyboard,0px))]',
+    // RAC closes once its IntersectionObserver sees the dialog leave the
+    // screen. A full-width dialog swiped out ends exactly on the viewport
+    // edge, which still counts as intersecting, so the observer never fires:
+    // the exit hangs and the overlay keeps blocking the page. One pixel short
+    // of the far edge puts it past the edge instead (inline start aligns it,
+    // so the pixel is on the far side in both directions). The surface behind
+    // stays full width, so nothing shows. Important, because RAC sets
+    // `width: 100%` inline on the dialog.
+    content: 'h-full w-[calc(100%-1px)]!',
+  },
+} as const;
 
 /** Longest a slide-in may take before it is ended by hand, in ms (normal is ~300). */
 const SLIDE_IN_LIMIT = 1000;
@@ -169,12 +213,14 @@ export const followSheetContent = (node: HTMLElement | null) => {
 export const Sheet = ({
   open,
   onOpenChange,
+  position = 'bottom',
   dismissable = true,
   children,
   ref,
   ...props
 }: SheetProps) => {
   const classNames = useClassNames({ component: 'Sheet' });
+  const layout = SHEET_LAYOUT[position];
   const overlayRef = useRef<HTMLDivElement>(null);
   const overlayCallbackRef = useCallback((overlay: HTMLDivElement | null) => {
     overlayRef.current = overlay;
@@ -195,6 +241,7 @@ export const Sheet = ({
       ref={overlayCallbackRef}
       isOpen={open}
       onOpenChange={onOpenChange}
+      position={position}
       preventDismissal={!dismissable}
       // Closing mid slide-in skips RAC's focus restore, like Escape it waits.
       shouldCloseOnInteractOutside={() =>
@@ -209,21 +256,15 @@ export const Sheet = ({
       />
       <RACSheet
         overscrollPadding
-        // Lifts the surface with its content, the background lives here.
-        className={cn('-top-(--sheet-keyboard,0px)', classNames.container)}
+        // The background lives here, so the surface moves with its content.
+        className={cn(layout.surface, classNames.container)}
       >
         <ResetButtonContext>
           <SheetContent
             {...props}
             // RAC types the dialog as a div, consumers hold an HTMLElement ref.
             ref={ref as Ref<HTMLDivElement>}
-            className={cn(
-              'flex flex-col',
-              SHEET_MAX_HEIGHT,
-              // Until `pinSheetContent` measures it, nothing surrounds the content.
-              '[--sheet-chrome:0px]',
-              classNames.content
-            )}
+            className={cn('flex flex-col', layout.content, classNames.content)}
           >
             {children}
           </SheetContent>
