@@ -31,14 +31,15 @@ export interface TableBodyProps<T extends object = object> extends Omit<
   skeletonRows?: number;
 }
 
-const isEmpty = <T extends object>({
+export const isEmptyBody = <T extends object>({
   items,
   children,
 }: Pick<TableBodyProps<T>, 'items' | 'children'>) => {
   if (items) return [...items].length === 0;
   // A render function without `items` has nothing to render.
   if (typeof children === 'function') return true;
-  return Children.count(children) === 0;
+  // Unlike `Children.count`, drops `false` and `null` from `{loaded && rows}`.
+  return Children.toArray(children).length === 0;
 };
 
 // Columns read from the collection carry no element: one in state would
@@ -57,10 +58,11 @@ const TableBody = <T extends object = object>({
 }: TableBodyProps<T>) => {
   const { classNames, loading, skeletonColumns } = useTableContext();
 
-  if (loading && skeletonRows && isEmpty(props)) {
+  if (loading && skeletonRows && isEmptyBody(props)) {
+    const { items: _items, children: _children, ...bodyProps } = props;
     return (
       // No `emptyState`: the body isn't empty, it is still loading.
-      <RACTableBody className={cn(classNames.body)}>
+      <RACTableBody {...bodyProps} className={cn(classNames.body)}>
         {/* Without static header columns, they're known after the first pass. */}
         {skeletonColumns.length > 0 &&
           Array.from({ length: skeletonRows }, (_, index) => (

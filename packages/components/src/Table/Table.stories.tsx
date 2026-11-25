@@ -852,6 +852,17 @@ Empty.test(
   }
 );
 
+Empty.test(
+  'Disables select-all while there are no rows',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas }) => {
+    await expect(canvas.getByRole('checkbox')).toBeDisabled();
+  }
+);
+
 export const Loading = meta.story({
   tags: ['component-test'],
   // `loading` changes no pixels, the tests below guard it instead.
@@ -948,6 +959,7 @@ const SkeletonRowsTable = (args: TableProps) => {
           </Table.Column>
         </Table.Header>
         <Table.Body
+          lang="en"
           items={rows}
           skeletonRows={3}
           emptyState={() => <Text>No orders.</Text>}
@@ -1056,6 +1068,100 @@ SkeletonRows.test(
     await expect(rowCheckboxes).toHaveLength(2);
     await expect(selectAll).toBeEnabled();
     await expect(selectAll).not.toBeChecked();
+  }
+);
+
+SkeletonRows.test(
+  'Keeps the body props while the skeleton rows show',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const [, body] = canvas.getAllByRole('rowgroup');
+
+    await expect(body).toHaveAttribute('lang', 'en');
+  }
+);
+
+const composedColumns = ['Name', 'Email', 'Status'];
+
+// A wrapper of the kind apps write: the table can't see through it.
+const StatusColumn = () => (
+  <Table.Column skeleton={<Skeleton width={16} height={5} variant="rounded" />}>
+    Status
+  </Table.Column>
+);
+
+const ComposedSkeletonTable = ({
+  header,
+  ...args
+}: TableProps & { header: 'fragment' | 'wrapper' }) => {
+  const loading = true;
+
+  return (
+    <Table aria-label="Orders" loading={loading} {...args}>
+      <Table.Header>
+        {header === 'fragment' ? (
+          <>
+            {composedColumns.map((name, i) => (
+              <Table.Column key={name} rowHeader={i === 0}>
+                {name}
+              </Table.Column>
+            ))}
+          </>
+        ) : (
+          [
+            <Table.Column key="name" rowHeader>
+              Name
+            </Table.Column>,
+            <Table.Column key="email">Email</Table.Column>,
+            <StatusColumn key="status" />,
+          ]
+        )}
+      </Table.Header>
+      <Table.Body skeletonRows={3} emptyState={() => <Text>No orders.</Text>}>
+        {/* Children as apps often write them: `false` while loading. */}
+        {!loading &&
+          users.map(user => (
+            <Table.Row key={user.email}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell>{user.status}</Table.Cell>
+            </Table.Row>
+          ))}
+      </Table.Body>
+    </Table>
+  );
+};
+
+/** Columns inside a Fragment, and body children that are `false` while loading. */
+export const SkeletonRowsInFragment = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { selectionMode: 'multiple' },
+  render: args => <ComposedSkeletonTable {...args} header="fragment" />,
+});
+
+SkeletonRowsInFragment.test(
+  'Shows skeleton rows when the children are false',
+  async ({ canvas, canvasElement }) => {
+    await expect(canvas.queryByText('No orders.')).not.toBeInTheDocument();
+    await expect(canvas.getAllByRole('row')).toHaveLength(4);
+    await expect(skeletonsIn(canvasElement)).toHaveLength(9);
+  }
+);
+
+/** A column behind a wrapper component, which the table can't see through. */
+export const SkeletonRowsWrappedColumn = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { selectionMode: 'multiple' },
+  render: args => <ComposedSkeletonTable {...args} header="wrapper" />,
+});
+
+SkeletonRowsWrappedColumn.test(
+  'Fills every column behind a wrapper component',
+  async ({ canvas, canvasElement }) => {
+    await expect(canvas.getAllByRole('row')).toHaveLength(4);
+    await expect(skeletonsIn(canvasElement)).toHaveLength(9);
   }
 );
 

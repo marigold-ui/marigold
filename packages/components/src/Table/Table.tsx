@@ -6,6 +6,7 @@ import type {
 } from 'react';
 import {
   Children,
+  Fragment,
   isValidElement,
   use,
   useCallback,
@@ -38,7 +39,7 @@ import {
   noSkeletonColumns,
   noStickyColumns,
 } from './Context';
-import { TableBody } from './TableBody';
+import { TableBody, type TableBodyProps, isEmptyBody } from './TableBody';
 import { TableCell } from './TableCell';
 import { TableColumn, type TableColumnProps } from './TableColumn';
 import { renderDragPreview } from './TableDragPreview';
@@ -138,16 +139,35 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
  * `TableElement` reads them from doesn't exist yet, and on the server it never
  * reaches a layout effect, so skeleton rows would be missing from the HTML.
  */
-const skeletonColumnsFromChildren = (children: ReactNode): SkeletonColumn[] => {
-  const header = Children.toArray(children).find(
-    (child): child is ReactElement<TableHeaderProps> =>
-      isValidElement(child) && child.type === TableHeader
+// Fragments are transparent to React Aria's collection, so flatten them too.
+const flattenChildren = (children: ReactNode): ReactNode[] =>
+  Children.toArray(children).flatMap(child =>
+    isValidElement<{ children?: ReactNode }>(child) && child.type === Fragment
+      ? flattenChildren(child.props.children)
+      : [child]
   );
+
+const findChild = <P,>(children: ReactNode, type: unknown) =>
+  flattenChildren(children).find(
+    (child): child is ReactElement<P> =>
+      isValidElement(child) && child.type === type
+  );
+
+const skeletonColumnsFromChildren = (children: ReactNode): SkeletonColumn[] => {
+  const header = findChild<TableHeaderProps>(children, TableHeader);
   // Columns from a `columns` render function are only known to the collection.
   if (!header || typeof header.props.children === 'function') return [];
 
-  return Children.toArray(header.props.children).flatMap((child, index) =>
-    isValidElement<TableColumnProps>(child) && child.type === TableColumn
+  const columns = flattenChildren(header.props.children);
+  // A wrapper component hides its columns, so a count would come up short.
+  // Wait for the collection instead of rendering rows with missing cells.
+  if (
+    !columns.every(child => isValidElement(child) && child.type === TableColumn)
+  )
+    return [];
+
+  return columns.flatMap((child, index) =>
+    isValidElement<TableColumnProps>(child)
       ? [
           {
             key: child.props.id ?? `marigold-skeleton-column-${index}`,
@@ -157,6 +177,12 @@ const skeletonColumnsFromChildren = (children: ReactNode): SkeletonColumn[] => {
         ]
       : []
   );
+};
+
+/** Whether the body starts out with skeleton rows, for the first render. */
+const startsWithSkeletons = (children: ReactNode) => {
+  const body = findChild<TableBodyProps>(children, TableBody);
+  return !!body?.props.skeletonRows && isEmptyBody(body.props);
 };
 
 const isRelative = (size: unknown) =>
@@ -370,7 +396,11 @@ const TableRoot = ({
     measuredSkeletonColumns.length > 0
       ? measuredSkeletonColumns
       : headerSkeletonColumns;
-  const [showsSkeletons, setShowsSkeletons] = useState(false);
+  // Measured once the collection exists. The first render, on the server too,
+  // reads it from the body, so "select all" starts out disabled.
+  const [showsSkeletons, setShowsSkeletons] = useState(
+    () => loading && startsWithSkeletons(props.children)
+  );
 
   const measure = useCallback(() => {
     const container = containerRef.current;

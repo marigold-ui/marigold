@@ -73,7 +73,8 @@ const TableHeader = <T extends object>({
         >
           {selectionMode === 'multiple' && (
             // React Aria disables "select all" only for an empty collection.
-            <Checkbox slot="selection" disabled={showsSkeletons} />
+            // `undefined` otherwise, or `false` would override that.
+            <Checkbox slot="selection" disabled={showsSkeletons || undefined} />
           )}
         </Column>
       )}
