@@ -10,6 +10,7 @@ import {
   useState,
 } from 'react';
 import { MenuStateContext } from 'react-aria-components/Menu';
+import { useDevWarning } from '../utils/useDevWarning';
 
 // Keep the first row active
 // ---------------
@@ -244,7 +245,14 @@ const FirstRowRule = ({ id }: { id: Key }) => {
   const active = use(ActiveRowContext);
   // Finds the row this rule sits in, to run it.
   const markerRef = useRef<HTMLSpanElement>(null);
+  useDevWarning(
+    !state,
+    '[CommandPalette] The rows cannot reach `MenuStateContext`, so the ' +
+      'first row no longer keeps itself active.'
+  );
 
+  // RAC hands out a new `state` whenever the rows or the active row change,
+  // so this runs exactly then.
   useEffect(() => {
     if (!state || !active) return;
     const { collection, selectionManager: manager } = state;
@@ -258,10 +266,11 @@ const FirstRowRule = ({ id }: { id: Key }) => {
       manager.setFocusedKey(id);
       return;
     }
-    // RAC moves virtual focus to this row in its own effect, which runs
-    // after this one, so the Enter waits for the end of the commit. By then
-    // newer rows may have taken over, so it checks again that this row is
-    // still the first and the active one.
+    // The palette learns of the answer one render before RAC has turned the
+    // new rows into its collection, so this row may be one the answer
+    // replaces. RAC builds the new collection in a render React runs before
+    // this microtask. The check reads RAC's live state: only the row that is
+    // still the active one runs.
     if (isActive && active.enterWaiting())
       queueMicrotask(() => {
         const first = firstRowKey(state.collection, key =>
@@ -271,7 +280,7 @@ const FirstRowRule = ({ id }: { id: Key }) => {
         if (manager.focusedKey === id && first === id && row)
           active.releaseEnter(row);
       });
-  });
+  }, [state, active, id]);
 
   return <span ref={markerRef} hidden />;
 };
