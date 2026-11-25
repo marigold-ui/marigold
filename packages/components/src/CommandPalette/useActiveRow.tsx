@@ -9,35 +9,14 @@ import {
   useRef,
   useState,
 } from 'react';
+import { setInteractionModality } from 'react-aria-components';
 import { MenuStateContext } from 'react-aria-components/Menu';
 import { useDevWarning } from '../utils/useDevWarning';
 
-// Keep the first row active
-// ---------------
-// The palette keeps one row active at all times, as Spotlight, Raycast and
-// cmdk do, so Enter always runs something. The first row does it itself:
-// it reads the menu's state from RAC's `MenuStateContext` and makes itself
-// the active row when
-//
-// - no row is active (RAC clears it after a delete, paste or undo),
-// - the active row is gone (the app replaced the rows), or
-// - nobody picked a row since the query changed (new rows arrived while an
-//   older row further down is still active).
-//
-// Picking a row, with the arrow keys or by pointing at it, keeps it active
-// until the query changes, so a page loaded at the end stays where it is.
-//
-// Enter on stale rows
-// ---------------
-// Until the app has answered the last search, the first row is about to be
-// replaced. Enter then waits and runs the first of the new rows, so a quick
-// "jazz ↵" opens the jazz result and not the row that matched "ja". A row
-// people picked runs right away, as does a click.
-//
-// The app has answered once its search no longer waits for the pause and,
-// since the palette reported it, either `loading` went on and off again or
-// `ANSWER_GRACE` passed without `loading`. The grace covers apps that set
-// `loading` a little later and apps without `loading`.
+// Keeps one row active so Enter always runs something. The first row makes
+// itself active when no row is, the active row is gone, or nobody picked a
+// row since the query changed. Enter waits while the app answers the search,
+// then runs the first new row. A picked row runs at once.
 
 // Keys that pick a row.
 const NAVIGATION_KEYS = new Set([
@@ -74,8 +53,9 @@ interface ActiveRowContextValue {
   /** Runs the Enter that waited, on the given row. */
   releaseEnter: (row: HTMLElement) => void;
   /**
-   * What the values above depend on. A change re-renders the rows, so they
-   * check again.
+   * What the values above depend on. Nothing reads it: it gives the context
+   * a new identity when they change, so the rows re-render and check again.
+   * As a field it keeps them real `useMemo` dependencies for the lint rule.
    */
   status: {
     query: string;
@@ -93,7 +73,6 @@ export const useActiveRow = (
   inputValue: string,
   { loading, searchWaiting }: SearchStatus
 ) => {
-  const inputRef = useRef<HTMLInputElement | null>(null);
   const pickedRef = useRef(false);
   const enterWaitingRef = useRef(false);
   const statusRef = useRef({ loading, searchWaiting });
@@ -104,6 +83,9 @@ export const useActiveRow = (
   const [revision, setRevision] = useState(0);
   const recheck = useCallback(() => setRevision(r => r + 1), []);
 
+  // Answered once the search no longer waits for the pause and, since the
+  // palette reported it, `loading` went on and off again or `ANSWER_GRACE`
+  // passed without it (apps that set `loading` late, or never).
   const answered = useCallback(() => {
     const { loading, searchWaiting } = statusRef.current;
     const { sawLoading, graceOver } = answerRef.current;
@@ -113,12 +95,17 @@ export const useActiveRow = (
   // A callback ref, so the listeners follow the input whenever it mounts.
   const inputCallbackRef = useCallback(
     (input: HTMLInputElement | null) => {
-      inputRef.current = input;
       if (!input) return;
       // On the input itself, so it runs before RAC's handler, which React
       // calls from the root.
       const onKeyDown = (e: KeyboardEvent) => {
-        if (NAVIGATION_KEYS.has(e.key)) {
+        // RAC leaves Shift+Home/End to the input while no row is active, so
+        // they only select text there.
+        const selectsText =
+          e.shiftKey &&
+          (e.key === 'Home' || e.key === 'End') &&
+          !input.hasAttribute('aria-activedescendant');
+        if (NAVIGATION_KEYS.has(e.key) && !selectsText) {
           pickedRef.current = true;
           enterWaitingRef.current = false;
         }
@@ -137,7 +124,6 @@ export const useActiveRow = (
       input.addEventListener('keydown', onKeyDown);
       return () => {
         input.removeEventListener('keydown', onKeyDown);
-        inputRef.current = null;
       };
     },
     [answered]
@@ -193,6 +179,9 @@ export const useActiveRow = (
       if (!enterWaitingRef.current || !answered()) return;
       enterWaitingRef.current = false;
       row.click();
+      // A click sets the modality to `virtual`. RAC sets it back after its
+      // own Enter, so focus rings keep showing for keyboard users.
+      setInteractionModality('keyboard');
     },
     [answered]
   );
@@ -251,8 +240,8 @@ const FirstRowRule = ({ id }: { id: Key }) => {
       'first row no longer keeps itself active.'
   );
 
-  // RAC hands out a new `state` whenever the rows or the active row change,
-  // so this runs exactly then.
+  // RAC hands out a new `state` on every menu render, so this runs in every
+  // row each time. Only the first row gets past the check below.
   useEffect(() => {
     if (!state || !active) return;
     const { collection, selectionManager: manager } = state;
@@ -269,16 +258,13 @@ const FirstRowRule = ({ id }: { id: Key }) => {
     // The palette learns of the answer one render before RAC has turned the
     // new rows into its collection, so this row may be one the answer
     // replaces. RAC builds the new collection in a render React runs before
-    // this microtask. The check reads RAC's live state: only the row that is
-    // still the active one runs.
+    // this microtask, and the new first row makes itself active there. RAC
+    // reads `focusedKey` through a ref, so the check below sees that, while
+    // `state` is still this render's: only the row that is still active runs.
     if (isActive && active.enterWaiting())
       queueMicrotask(() => {
-        const first = firstRowKey(state.collection, key =>
-          manager.isDisabled(key)
-        );
         const row = markerRef.current?.closest<HTMLElement>(rowSelector);
-        if (manager.focusedKey === id && first === id && row)
-          active.releaseEnter(row);
+        if (manager.focusedKey === id && row) active.releaseEnter(row);
       });
   }, [state, active, id]);
 
