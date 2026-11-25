@@ -1,5 +1,7 @@
 import { ReactNode } from 'react';
+import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { Button } from '../Button/Button';
 import { Divider } from '../Divider/Divider';
 import { Headline } from '../Headline/Headline';
 import { NumberField } from '../NumberField/NumberField';
@@ -173,7 +175,7 @@ const data = [
 ];
 export const TableLike = meta.story({
   render: () => (
-    <div className="w-5/12 p-4">
+    <div className="max-w-md p-4">
       <Columns columns={[1, 1, 1]} space={2}>
         <Headline level="4">Name</Headline>
         <Headline level="4">Price</Headline>
@@ -214,3 +216,151 @@ export const TableLike = meta.story({
     </div>
   ),
 });
+
+/**
+ * A narrow container, such as a side panel. Columns keep their ratios however
+ * wide their content is, so rows line up and nothing pushes the row past the
+ * container. Stacking only happens through `collapseAt`.
+ */
+export const NarrowContainer = meta.story({
+  tags: ['component-test'],
+  render: () => (
+    <div className="w-60">
+      <Stack space={6}>
+        <Stack space={2}>
+          <Columns
+            role="region"
+            aria-label="Price table headings"
+            columns={[1, 1, 1]}
+            space={2}
+          >
+            <Headline level="4">Name</Headline>
+            <Headline level="4">Price</Headline>
+            <Headline level="4">Fee</Headline>
+          </Columns>
+          <Columns
+            role="region"
+            aria-label="Price table fields"
+            columns={[1, 1, 1]}
+            space={2}
+          >
+            <TextField aria-label="Name" defaultValue="Standard" />
+            <NumberField
+              aria-label="Price"
+              defaultValue={2.5}
+              hideStepper
+              width={20}
+              formatOptions={{ style: 'currency', currency: 'EUR' }}
+            />
+            <NumberField
+              aria-label="Fee"
+              defaultValue={3}
+              hideStepper
+              width={20}
+              formatOptions={{ style: 'currency', currency: 'EUR' }}
+            />
+          </Columns>
+        </Stack>
+        <Columns
+          role="region"
+          aria-label="Wide content"
+          columns={[2, 1]}
+          space={2}
+        >
+          <div className="overflow-x-auto">
+            <div className="h-10 w-[600px] bg-[#e9ecef]" />
+          </div>
+          <div className="h-10 bg-[#e9ecef]" />
+        </Columns>
+        <Columns
+          role="region"
+          aria-label="Fit column"
+          columns={[1, 'fit']}
+          space={2}
+        >
+          <TextField aria-label="Search" />
+          <Button>Search</Button>
+        </Columns>
+        <Columns
+          role="region"
+          aria-label="Collapsed"
+          columns={[1, 1]}
+          space={2}
+          collapseAt="40em"
+        >
+          <div className="h-10 bg-[#e9ecef]" />
+          <div className="h-10 bg-[#e9ecef]" />
+        </Columns>
+      </Stack>
+    </div>
+  ),
+});
+
+const columnRects = (row: HTMLElement) =>
+  Array.from(row.children, child => child.getBoundingClientRect());
+
+NarrowContainer.test(
+  'Lines up two rows whose content needs different widths',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const headings = columnRects(
+      canvas.getByRole('region', { name: 'Price table headings' })
+    );
+    const fields = columnRects(
+      canvas.getByRole('region', { name: 'Price table fields' })
+    );
+
+    headings.forEach((heading, idx) => {
+      expect(fields[idx].left).toBeCloseTo(heading.left, 0);
+      expect(fields[idx].width).toBeCloseTo(heading.width, 0);
+      expect(fields[idx].top).toBeCloseTo(fields[0].top, 0);
+    });
+  }
+);
+
+NarrowContainer.test(
+  'Keeps the ratio and the container width when content is wider',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const row = canvas.getByRole('region', { name: 'Wide content' });
+    const [wide, narrow] = columnRects(row);
+
+    expect(wide.width).toBeCloseTo(narrow.width * 2, 0);
+    expect(wide.top).toBeCloseTo(narrow.top, 0);
+    expect(narrow.right).toBeLessThanOrEqual(
+      row.getBoundingClientRect().right + 0.5
+    );
+  }
+);
+
+NarrowContainer.test(
+  'Sizes a fit column to its content',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const row = canvas.getByRole('region', { name: 'Fit column' });
+    const fitColumn = row.lastElementChild!.getBoundingClientRect();
+    const button = canvas
+      .getByRole('button', { name: 'Search' })
+      .getBoundingClientRect();
+
+    expect(fitColumn.width).toBeCloseTo(button.width, 0);
+    expect(fitColumn.top).toBeCloseTo(
+      row.firstElementChild!.getBoundingClientRect().top,
+      0
+    );
+  }
+);
+
+NarrowContainer.test(
+  'Stacks every column below collapseAt',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const row = canvas.getByRole('region', { name: 'Collapsed' });
+    const [first, second] = columnRects(row);
+    const rowWidth = row.getBoundingClientRect().width;
+
+    expect(first.width).toBeCloseTo(rowWidth, 0);
+    expect(second.width).toBeCloseTo(rowWidth, 0);
+    expect(second.top).toBeGreaterThan(first.bottom);
+  }
+);

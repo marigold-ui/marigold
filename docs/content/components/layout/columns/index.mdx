@@ -29,6 +29,12 @@ Sometimes you need to set an element at the start or at the end of a column. You
 
 You can also add space between the columns and set a `collapseAt` prop to collapse the columns at a certain width. This is convenient for a good responsivness.
 
+### Narrow containers
+
+Columns keep their ratio at every width, however wide their content is. Two `<Columns>` with the same `columns` line up, and wide content never pushes the row past its container. Columns only stack when the container is narrower than `collapseAt`, and then they all stack at once.
+
+Content in a column has to fit into the column's share. Fields and text do this on their own. Give anything with a fixed width, such as an image or a wide custom element, its own horizontal scroll area. A `fit` column keeps the width of its content, up to the width of the whole row.
+
 ### Stretch to height of parent
 
 By using the `stretch` prop you can make the container to take full height.

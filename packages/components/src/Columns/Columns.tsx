@@ -43,17 +43,20 @@ export const Columns = ({
 
   return (
     <div
-      className={cn(
-        'flex flex-wrap items-stretch gap-(--space)',
-        stretch && 'h-full'
-      )}
+      className={cn('flex flex-wrap gap-(--space)', stretch && 'h-full')}
       style={createSpacingVar('space', `${space}`)}
       {...props}
     >
       {Children.map(children, (child, idx) => (
         <div
           className={cn(
-            columns[idx] === 'fit' ? 'flex h-fit w-fit' : 'flex-(--columnSize)',
+            // A ratio column must be allowed below its content's width, or wide
+            // content breaks the ratio, wraps single columns and overflows the
+            // row. A `fit` column has no grow, so `min-width: auto` is the only
+            // thing giving it its content's width: cap it, never zero it.
+            columns[idx] === 'fit'
+              ? 'flex h-fit w-fit max-w-full'
+              : 'min-w-0 grow-(--columnSize)',
             'basis-[calc((var(--collapseAt)-100%)*999)]'
           )}
           style={createVar({

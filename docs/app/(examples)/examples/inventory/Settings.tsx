@@ -47,7 +47,7 @@ export const Settings = () => (
             </Description>
           </Panel.Header>
           <Panel.Content>
-            <Columns columns={['fit', 1]} space="group">
+            <Columns columns={['fit', 1]} space="group" collapseAt="30em">
               <div className="w-32">
                 <img
                   src={user.avatar}
