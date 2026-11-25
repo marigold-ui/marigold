@@ -73,6 +73,8 @@ The families are told apart by their **boundary**, not by a shadow. Nothing in n
 
 `ui-surface` and `ui-control` are built on one primitive. `ui-frame` draws the shared fill, radius, and 1px rim that every raised element needs. The two utilities are **siblings** of that frame, differing only in which boundary token the rim wears (the quiet `surface-border` versus the denser `control-border`). Neither is a special case of the other. A control is not a kind of surface, it is the operable sibling. `ui-soft` and `ui-contrast` sit outside this primitive entirely. Caps draw their own ring, glint, and fill gradient, because the lift is the whole point of the recipe.
 
+Caps draw on `::before` and create a stacking context. On an element with `ui-soft` or `ui-contrast`, don't use `::before` for anything else and don't set `overflow: hidden`, or the ring is clipped. Use them on elements that can hold content, such as `<button>`, `<a>` or `<div>`. Void elements like `<input>` don't render `::before`, so the cap doesn't show.
+
 Two consequences of the rule:
 
 - **The border is the sole operability cue for fields.** There's no shadow to lean on anymore, so a selected `<ToggleButton>` or a segment inside a group still has to read as a control through its boundary and fill alone.
