@@ -1,4 +1,5 @@
 import { comboBoxValueProps } from '../transforms/combobox-value-props.js';
+import { systemSvg } from '../transforms/system-svg.js';
 import { systemTextClassMaps } from '../transforms/system-text-class-maps.js';
 import { trayGroupSelector } from '../transforms/tray-group-selector.js';
 import type { MigrationManifest } from '../types.js';
@@ -18,6 +19,8 @@ import { v18 } from './v18.js';
 //   `slotDefaults` entry: it keeps the `hideLabels` counter visible.
 // - `@marigold/system` dropped the `fontWeight`/`textSize` maps (DST-1869),
 //   which `system-text-class-maps` replaces in application code.
+// - `@marigold/system` dropped `<SVG>` (DST-1393), which `system-svg` turns
+//   into a native `<svg>` that renders the same.
 //
 // `slots` mirrors the v19 `Theme` type: the v18 sets plus the new Popover,
 // Stepper, Tray, Sheet and CommandPalette shapes. `theme-drift.test.ts` pins
@@ -129,5 +132,10 @@ export const v19: MigrationManifest = {
     repurposed: {},
     componentDependencies: {},
   },
-  transforms: [comboBoxValueProps, trayGroupSelector, systemTextClassMaps],
+  transforms: [
+    comboBoxValueProps,
+    trayGroupSelector,
+    systemTextClassMaps,
+    systemSvg,
+  ],
 };

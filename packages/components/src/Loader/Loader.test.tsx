@@ -132,7 +132,7 @@ test('renders loader with loaderType circle', () => {
   expect(svg).toMatchInlineSnapshot(`
     <svg
       aria-hidden="true"
-      class="flex-none animate-rotate-spinner origin-center fill-none size-20"
+      class="animate-rotate-spinner flex-none origin-center fill-none size-20"
       height="80px"
       role="img"
       width="80px"

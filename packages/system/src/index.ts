@@ -1,6 +1,4 @@
 // Components
-export { SVG } from './components/SVG/SVG';
-export type { SVGProps } from './components/SVG/SVG';
 export { DateFormat } from './components/Formatters/DateFormat';
 export type { DateFormatProps } from './components/Formatters/DateFormat';
 export { NumericFormat } from './components/Formatters/NumericFormat';
