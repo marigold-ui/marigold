@@ -9,6 +9,14 @@ describe('hasPropsTable', () => {
     expect(hasPropsTable(`Intro.\n\n${table}`)).toBe(true);
   });
 
+  it('finds an indented props table with padded cells', () => {
+    expect(
+      hasPropsTable(
+        ' | Prop     | Type      | Default | Description |\n | :--- |'
+      )
+    ).toBe(true);
+  });
+
   it('ignores other tables', () => {
     expect(
       hasPropsTable('| Key | Action |\n| --- | --- |\n| Tab | Next |')

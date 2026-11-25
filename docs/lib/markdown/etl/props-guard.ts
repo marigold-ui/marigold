@@ -4,9 +4,10 @@
  * even when every table fails, and nothing downstream noticed.
  */
 
-// The header row `remarkResolvePropsTable` gives every props table.
+// The header row `remarkResolvePropsTable` gives every props table. Some come
+// out indented by a space, and the cells are padded to the column width.
 const PROPS_TABLE_HEADER =
-  /^\| *Prop *\| *Type *\| *Default *\| *Description *\|/m;
+  /^ *\| *Prop *\| *Type *\| *Default *\| *Description *\|/m;
 
 export const hasPropsTable = (text: string): boolean =>
   PROPS_TABLE_HEADER.test(text);
