@@ -10,7 +10,8 @@
   "main": "src/index.ts",
   "types": "src/index.ts",
   "files": [
-    "src"
+    "src",
+    "!src/**/*.test.*"
   ],
   "repository": {
     "type": "git",
