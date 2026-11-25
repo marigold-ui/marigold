@@ -286,12 +286,9 @@ const FirstRowRule = ({ id }: { id: Key }) => {
 };
 
 /** Adds the first-row rule to a row's content. */
-export const withFirstRowRule = (id: Key | undefined, content: ReactNode) =>
-  id === undefined ? (
-    content
-  ) : (
-    <>
-      {content}
-      <FirstRowRule id={id} />
-    </>
-  );
+export const withFirstRowRule = (id: Key, content: ReactNode) => (
+  <>
+    {content}
+    <FirstRowRule id={id} />
+  </>
+);

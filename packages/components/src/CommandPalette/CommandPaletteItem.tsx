@@ -12,7 +12,13 @@ import { withFirstRowRule } from './useActiveRow';
 
 // Props
 // ---------------
-export type CommandPaletteItemProps = MenuItemProps;
+export interface CommandPaletteItemProps extends Omit<MenuItemProps, 'id'> {
+  /**
+   * Unique id of the row. The palette passes it to `onAction`, and needs it
+   * to keep the first row active.
+   */
+  id: NonNullable<MenuItemProps['id']>;
+}
 
 // Helpers
 // ---------------
