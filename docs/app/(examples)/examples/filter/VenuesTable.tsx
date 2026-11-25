@@ -6,12 +6,14 @@ import {
   venueTypes,
 } from '@/lib/data/venues';
 import type { Venue } from '@/lib/data/venues';
+import { useState } from 'react';
 import {
   ActionBar,
   Badge,
   Button,
   Center,
   Inline,
+  type Selection,
   Skeleton,
   type SkeletonProps,
   Stack,
@@ -217,6 +219,7 @@ export const VenuesTable = () => {
     useVenues();
   const [sort, setSort] = useSort();
   const { deleteVenue, isDeleting } = useDeleteVenue();
+  const [selected, setSelected] = useState<Selection>(() => new Set());
 
   // The table announces the load itself (`loading`). This region announces the
   // result. A live region is announced when the text inside an already present
@@ -238,6 +241,11 @@ export const VenuesTable = () => {
         selectionMode="multiple"
         // Placeholder rows can't be selected, but the checkbox column stays.
         disabledKeys={skeletonIds}
+        selectedKeys={selected}
+        // "Select all" ignores disabled rows, so drop it while the placeholders show.
+        onSelectionChange={keys => {
+          if (!isLoading) setSelected(keys);
+        }}
         sortDescriptor={sort}
         onSortChange={d =>
           setSort({

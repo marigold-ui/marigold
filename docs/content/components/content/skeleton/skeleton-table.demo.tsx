@@ -16,6 +16,8 @@ export default () => (
     selectionMode="multiple"
     // Placeholder rows can't be selected, but the checkbox column stays.
     disabledKeys={rows}
+    // "Select all" ignores disabled rows, so keep the selection empty while loading.
+    selectedKeys={[]}
   >
     <Table.Header>
       {columns.map(({ name }, i) => (

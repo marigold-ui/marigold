@@ -206,6 +206,8 @@ export const InTable = meta.story({
       selectionMode="multiple"
       // Placeholder rows can't be selected, but the checkbox column stays.
       disabledKeys={skeletonRows}
+      // "Select all" ignores disabled rows, so keep the selection empty while loading.
+      selectedKeys={[]}
     >
       <Table.Header>
         {columns.map(({ name, alignX }, i) => (
@@ -267,6 +269,7 @@ InTable.test(
 
     await userEvent.click(selectAll);
 
+    await expect(selectAll).not.toBeChecked();
     for (const row of canvas.getAllByRole('row').slice(1)) {
       await expect(row).not.toHaveAttribute('aria-selected', 'true');
     }

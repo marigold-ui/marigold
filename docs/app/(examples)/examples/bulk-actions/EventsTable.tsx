@@ -207,7 +207,10 @@ export const EventsTable = () => {
         // Placeholder rows can't be selected, but the checkbox column stays.
         disabledKeys={skeletonIds}
         selectedKeys={selected}
-        onSelectionChange={setSelected}
+        // "Select all" ignores disabled rows, so drop it while the placeholders show.
+        onSelectionChange={keys => {
+          if (!isLoading) setSelected(keys);
+        }}
         actionBar={() => <BulkActionBar />}
       >
         {/* Columns with predictable short content get a fixed width; the two
