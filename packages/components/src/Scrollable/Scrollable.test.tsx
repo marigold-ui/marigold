@@ -15,7 +15,7 @@ test('should be rendered', () => {
 
 test('should have classNames', () => {
   render(
-    <Basic.Component data-testid="scroll">
+    <Basic.Component data-testid="scroll" width="1/5">
       <div>something</div>
     </Basic.Component>
   );
@@ -24,7 +24,7 @@ test('should have classNames', () => {
   expect(scroll.className).toMatchInlineSnapshot(
     `"sticky h-(--height) w-(--width) overflow-auto overscroll-auto"`
   );
-  // Basic defaults to width="1/5", which maps to the fractional calc value.
+  // A fractional width maps to the fractional calc value.
   expect(scroll.style.getPropertyValue('--width')).toBe('calc((1 / 5) * 100%)');
   expect(scroll).toBeValid();
 });
