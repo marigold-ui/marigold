@@ -17,7 +17,7 @@ export interface ColumnsProps extends AriaRegionProps {
    */
   columns: Array<number | 'fit'>;
   /**
-   * Collapse children into a vertical layout at given width. Note that `collapseAt` is based on the total element width, and not the window width. With a default value of "0" columns will not collapse by default.
+   * Collapse children into a vertical layout at given width. Note that `collapseAt` is based on the total element width, and not the window width. With a default value of "0" columns will not collapse by default. Columns never wrap on their own: below `collapseAt` all of them stack, above it they stay in one row in their ratio.
    */
   collapseAt?: string;
   /**
