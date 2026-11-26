@@ -46,7 +46,7 @@ const activity = [
   {
     id: 'a4',
     date: '2026-05-19',
-    text: 'Joined the Venue Operations show-day briefing.',
+    text: 'Joined the show-day briefing.',
   },
 ];
 
