@@ -9,6 +9,6 @@ A column with content wider than its share used to take that width anyway. This 
 
 Check your `Columns` on small screens. Three things render differently:
 
-- Columns no longer wrap by themselves when their content does not fit. They stay in one row. Set `collapseAt` to stack them below a width of your choice.
+- Ratio columns no longer wrap by themselves when their content does not fit. They stay in one row. Set `collapseAt` to stack them below a width of your choice. A `fit` column without room left in the row still moves onto its own line.
 - A field with a `width` now shrinks to its column. If the column's share is smaller, the value can be cut off. Give that column a larger ratio, use `fit` for it, or set `collapseAt`.
 - Content that cannot shrink, such as an image or a plain `<table>`, now spills into the next column instead of widening the row. Give it a horizontal scroll area.

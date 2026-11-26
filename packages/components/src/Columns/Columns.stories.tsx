@@ -174,49 +174,73 @@ const data = [
     fee: 6.0,
   },
 ];
+const PriceTable = () => (
+  <div className="max-w-md p-4">
+    <Columns columns={[1, 1, 1]} space={2}>
+      <Headline level="4">Name</Headline>
+      <Headline level="4">Price</Headline>
+      <Headline level="4">Fee</Headline>
+    </Columns>
+    <Columns columns={[1, 1, 1]} space={2}>
+      <Stack>
+        {data.map(({ name }) => (
+          <TextField key={crypto.randomUUID()} defaultValue={name} />
+        ))}
+      </Stack>
+      <Stack>
+        {data.map(({ price }) => (
+          <NumberField
+            key={crypto.randomUUID()}
+            defaultValue={price}
+            hideStepper
+            width={20}
+            formatOptions={{ style: 'currency', currency: 'EUR' }}
+          />
+        ))}
+      </Stack>
+      <Stack>
+        {data.map(({ fee }) => (
+          <NumberField
+            key={crypto.randomUUID()}
+            defaultValue={fee}
+            hideStepper
+            width={20}
+            formatOptions={{
+              style: 'currency',
+              currency: 'EUR',
+            }}
+          />
+        ))}
+      </Stack>
+    </Columns>
+  </div>
+);
+
 export const TableLike = meta.story({
-  render: () => (
-    <div className="max-w-md p-4">
-      <Columns columns={[1, 1, 1]} space={2}>
-        <Headline level="4">Name</Headline>
-        <Headline level="4">Price</Headline>
-        <Headline level="4">Fee</Headline>
-      </Columns>
-      <Columns columns={[1, 1, 1]} space={2}>
-        <Stack>
-          {data.map(({ name }) => (
-            <TextField key={crypto.randomUUID()} defaultValue={name} />
-          ))}
-        </Stack>
-        <Stack>
-          {data.map(({ price }) => (
-            <NumberField
-              key={crypto.randomUUID()}
-              defaultValue={price}
-              hideStepper
-              width={20}
-              formatOptions={{ style: 'currency', currency: 'EUR' }}
-            />
-          ))}
-        </Stack>
-        <Stack>
-          {data.map(({ fee }) => (
-            <NumberField
-              key={crypto.randomUUID()}
-              defaultValue={fee}
-              hideStepper
-              width={20}
-              formatOptions={{
-                style: 'currency',
-                currency: 'EUR',
-              }}
-            />
-          ))}
-        </Stack>
-      </Columns>
-    </div>
-  ),
+  render: () => <PriceTable />,
 });
+
+/**
+ * The price table on a 320px phone screen: nothing scrolls sideways.
+ */
+export const SmallScreen = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { viewports: [320] } },
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+  render: () => <PriceTable />,
+});
+
+SmallScreen.test(
+  'Does not overflow the screen',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async () => {
+    const root = document.documentElement;
+
+    expect(root.scrollWidth).toBeLessThanOrEqual(root.clientWidth);
+  }
+);
 
 const Cell = ({ children }: { children: ReactNode }) => (
   <div className="flex h-10 items-center justify-center rounded bg-[#e9ecef] text-xs">
@@ -357,6 +381,20 @@ export const NarrowContainer = meta.story({
               <Cell>Column 2</Cell>
             </Columns>
           </Example>
+          <Example
+            title="5. A fit column wider than the row moves onto its own line"
+            description="The 300px block is wider than the panel. It moves below the field and is capped at the panel's width."
+          >
+            <Columns
+              role="region"
+              aria-label="Wide fit column"
+              columns={[1, 'fit']}
+              space={2}
+            >
+              <TextField aria-label="Note" />
+              <div className="h-10 w-[300px] bg-[#e9ecef]" />
+            </Columns>
+          </Example>
         </Stack>
       </div>
     </Stack>
@@ -429,5 +467,18 @@ NarrowContainer.test(
     expect(first.width).toBeCloseTo(rowWidth, 0);
     expect(second.width).toBeCloseTo(rowWidth, 0);
     expect(second.top).toBeGreaterThan(first.bottom);
+  }
+);
+
+NarrowContainer.test(
+  'Caps a fit column at the row width',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const row = canvas.getByRole('region', { name: 'Wide fit column' });
+    const fitColumn = row.lastElementChild!.getBoundingClientRect();
+
+    expect(fitColumn.right).toBeLessThanOrEqual(
+      row.getBoundingClientRect().right + 0.5
+    );
   }
 );

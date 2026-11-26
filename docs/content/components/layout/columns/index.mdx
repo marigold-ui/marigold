@@ -31,7 +31,7 @@ You can also add space between the columns and set a `collapseAt` prop to collap
 
 ### Narrow containers
 
-Columns keep their ratio at every width, however wide their content is. Two `<Columns>` with the same `columns` line up, and wide content never pushes the row past its container. Columns only stack when the container is narrower than `collapseAt`, and then they all stack at once.
+Columns keep their ratio at every width, however wide their content is. Two `<Columns>` with the same `columns` line up, and wide content never pushes the row past its container. Ratio columns only stack when the container is narrower than `collapseAt`, and then they all stack at once.
 
 Content in a column has to fit into the column's share:
 
@@ -39,7 +39,7 @@ Content in a column has to fit into the column's share:
 - **Fields** shrink to their column, also when they have a `width`. If the share is smaller than that width, the value can be cut off. Give that column a larger ratio, use `fit` for it, or set `collapseAt`.
 - **Content that cannot shrink**, such as an image, a plain `<table>` or a wide custom element, spills into the next column. Give it its own horizontal scroll area, or let it shrink.
 
-A `fit` column keeps the width of its content, up to the width of the whole row.
+A `fit` column keeps the width of its content, up to the width of the whole row. If the row has no room left for it, it moves onto its own line.
 
 ### Stretch to height of parent
 
