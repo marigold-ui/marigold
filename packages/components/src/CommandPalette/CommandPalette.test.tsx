@@ -1,11 +1,5 @@
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { isAppleDevice } from '@react-aria/utils';
 import { renderWithOverlay } from '../test.utils';
@@ -82,6 +76,7 @@ const expectFirstRowActive = (name: string) =>
   });
 
 test('Enter runs the row on top after the previous rows went away', async () => {
+  const user = userEvent.setup();
   const onAction = vi.fn();
   renderWithOverlay(
     <PreviousResultsWhileLoading.Component defaultOpen onAction={onAction} />
@@ -96,7 +91,7 @@ test('Enter runs the row on top after the previous rows went away', async () => 
   await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
 
   // The next search shows them until its answer replaces them.
-  fireEvent.click(screen.getByRole('button', { name: /go to|search/i }));
+  await user.click(screen.getByRole('button', { name: /go to|search/i }));
   input = await screen.findByRole<HTMLInputElement>('searchbox');
   type(input, 'ord');
   await waitFor(() =>

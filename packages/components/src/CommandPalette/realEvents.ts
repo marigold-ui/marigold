@@ -8,7 +8,7 @@
  * stops there, and the input keeps pointing at the row that is gone, which
  * no browser does. So these keys are real events: `beforeinput` tells RAC
  * the text was typed forward, the native setter and `input` let React see the
- * new value.
+ * new value. Only keys in the search need this, clicks can use user-event.
  *
  * Lives in its own module, not `test.utils.tsx`, so story files can import it
  * without pulling in `vitest`.
