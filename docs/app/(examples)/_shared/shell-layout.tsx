@@ -15,7 +15,6 @@ import {
   Text,
   TopNavigation,
 } from '@marigold/components';
-import { useSmallScreen } from '@marigold/system';
 import { Logo } from '@/ui/Logo';
 import { currentUser, organisation } from './demo-data';
 import type { NavNode, RailTile, ShellConfig } from './shell-types';
@@ -155,9 +154,6 @@ export const ShellLayout = ({
 }: PropsWithChildren<{ config: ShellConfig }>) => {
   const pathname = usePathname();
   const router = useRouter();
-  // Below `sm` the user section needs the top bar's room, so the pattern link
-  // gives way; the rail's Docs tile links the same page in the drawer.
-  const isSmallScreen = useSmallScreen();
 
   const footerTiles = config.footerTiles ?? [];
   const slug = pathname.replace(config.base, '').replace(/^\//, '');
@@ -295,16 +291,22 @@ export const ShellLayout = ({
               {/* No room for the trail beside the user section below `sm`. */}
               <div className="w-full min-w-0 max-sm:hidden">{trail}</div>
             </TopNavigation.Start>
-            {!isSmallScreen && pattern?.docsHref && pattern.docsLabel && (
+            {pattern?.docsHref && pattern.docsLabel && (
               <TopNavigation.Middle aria-label="Pattern" alignX="right">
-                <LinkButton
-                  variant="ghost"
-                  size="small"
-                  href={pattern.docsHref}
-                >
-                  <BookOpen />
-                  {pattern.docsLabel}
-                </LinkButton>
+                {/* Below `sm` the user section needs the room; the rail's
+                    Docs tile links the same page in the drawer. CSS, not
+                    `useSmallScreen()`, so phones get no flash of the link
+                    before hydration. Same wrapper as the trail above. */}
+                <div className="max-sm:hidden">
+                  <LinkButton
+                    variant="ghost"
+                    size="small"
+                    href={pattern.docsHref}
+                  >
+                    <BookOpen />
+                    {pattern.docsLabel}
+                  </LinkButton>
+                </div>
               </TopNavigation.Middle>
             )}
             <TopNavigation.End>
