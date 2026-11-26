@@ -13,6 +13,7 @@ import {
   Title,
   useToast,
 } from '@marigold/components';
+import { organisation } from '../../_shared/demo-data';
 
 const GeneralPage = () => {
   const { addToast } = useToast();
@@ -48,14 +49,14 @@ const GeneralPage = () => {
             <Stack space="regular">
               <TextField
                 label="Workspace name"
-                defaultValue="Acme Inc."
+                defaultValue={organisation.name}
                 description="Shown in the sidebar and on shared links."
                 width={80}
               />
               <TextField
                 label="Workspace URL"
-                defaultValue="acme"
-                description="Your workspace lives at acme.example.com."
+                defaultValue="riverside"
+                description="Your workspace lives at riverside.example.com."
                 width={56}
               />
               <Inline space="related">

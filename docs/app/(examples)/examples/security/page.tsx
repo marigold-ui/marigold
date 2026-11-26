@@ -16,14 +16,16 @@ import {
   Title,
   useToast,
 } from '@marigold/components';
+import { daysAgo } from '../../_shared/demo-data';
 
-const sessions = [
+// A function, so the dates are worked out on every render, not once per server.
+const getSessions = () => [
   {
     id: 'sess-1',
     device: 'MacBook Pro',
     browser: 'Chrome',
     location: 'Berlin, Germany',
-    lastActive: '2026-06-02',
+    lastActive: daysAgo(0),
     current: true,
   },
   {
@@ -31,7 +33,7 @@ const sessions = [
     device: 'iPhone 15',
     browser: 'Safari',
     location: 'Berlin, Germany',
-    lastActive: '2026-06-01',
+    lastActive: daysAgo(1),
     current: false,
   },
   {
@@ -39,7 +41,7 @@ const sessions = [
     device: 'Windows PC',
     browser: 'Edge',
     location: 'Munich, Germany',
-    lastActive: '2026-05-20',
+    lastActive: daysAgo(13),
     current: false,
   },
 ];
@@ -148,7 +150,7 @@ const SecurityPage = () => {
               <Table.Column alignX="right">&nbsp;</Table.Column>
             </Table.Header>
             <Table.Body>
-              {sessions.map(session => (
+              {getSessions().map(session => (
                 <Table.Row key={session.id}>
                   <Table.Cell textValue={session.device}>
                     <Stack>
@@ -162,10 +164,7 @@ const SecurityPage = () => {
                   </Table.Cell>
                   <Table.Cell>{session.location}</Table.Cell>
                   <Table.Cell>
-                    <DateFormat
-                      value={new Date(session.lastActive)}
-                      dateStyle="medium"
-                    />
+                    <DateFormat value={session.lastActive} dateStyle="medium" />
                   </Table.Cell>
                   <Table.Cell alignX="right">
                     <Button

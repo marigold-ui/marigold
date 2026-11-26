@@ -1,3 +1,5 @@
+import { DAY, daysBetween } from './dates';
+
 // Static demo dataset for the bulk-actions example (app/(examples)/examples/bulk-actions).
 //
 // The mix is deliberate so every teaching moment of the bulk-actions pattern
@@ -44,6 +46,19 @@ export interface Event {
   /** Active ticket reservations — the blast radius named when deleting. */
   reservations: number;
 }
+
+// The dates below are written as if today were 2 June 2026. `asOfToday` moves
+// an event by the days since then, so the bulk-actions list always looks ahead
+// from the real today. The API route applies it per request; the data here stays
+// fixed, so docs demos that import `events` directly render the same on the
+// server and in the browser.
+const WRITTEN_FOR = new Date(Date.UTC(2026, 5, 2, 12));
+
+export const asOfToday = (event: Event, now = new Date()): Event => {
+  const shift = daysBetween(WRITTEN_FOR, now) * DAY;
+  const date = new Date(Date.parse(`${event.date}T00:00:00Z`) + shift);
+  return { ...event, date: date.toISOString().slice(0, 10) };
+};
 
 export const events: Event[] = [
   {
