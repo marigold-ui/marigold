@@ -20,9 +20,15 @@ export const organisation = {
 // Signed-in user
 // ---------------
 // One of the staff, so the person in the top bar also shows up in Users.
-export const currentUser = people.find(
-  person => person.id === 'soundcheck'
-) as Person;
+const findCurrentUser = (): Person => {
+  const person = people.find(({ id }) => id === 'soundcheck');
+  if (!person) {
+    throw new Error('demo-data: the signed-in user is missing from people.ts');
+  }
+  return person;
+};
+
+export const currentUser = findCurrentUser();
 
 // User status
 // ---------------
@@ -36,26 +42,10 @@ export const userStatus = {
 
 // Dates relative to today
 // ---------------
-// Anchored at 12:00 UTC of the current UTC day, so the server and the browser
-// land on the same calendar day in every time zone. The examples layout renders
-// per request (`dynamic = 'force-dynamic'`), so "today" is never the build day.
-const DAY = 24 * 60 * 60 * 1000;
-
-const todayAtNoonUtc = () => {
-  const now = new Date();
-  return Date.UTC(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate(),
-    12
-  );
-};
-
-export const daysAgo = (days: number) =>
-  new Date(todayAtNoonUtc() - days * DAY);
-
-export const daysFromNow = (days: number) =>
-  new Date(todayAtNoonUtc() + days * DAY);
+// The helpers live in `lib/data/dates.ts`, shared with the events fixture. Call
+// them while rendering, not at module level: the examples layout renders per
+// request (`dynamic = 'force-dynamic'`), so "today" is never the build day.
+export { daysAgo, daysFromNow, monthsAgo } from '@/lib/data/dates';
 
 // Business figures
 // ---------------

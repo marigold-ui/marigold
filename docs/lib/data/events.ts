@@ -1,3 +1,5 @@
+import { DAY, daysBetween } from './dates';
+
 // Static demo dataset for the bulk-actions example (app/(examples)/examples/bulk-actions).
 //
 // The mix is deliberate so every teaching moment of the bulk-actions pattern
@@ -50,16 +52,10 @@ export interface Event {
 // from the real today. The API route applies it per request; the data here stays
 // fixed, so docs demos that import `events` directly render the same on the
 // server and in the browser.
-const WRITTEN_FOR = Date.UTC(2026, 5, 2);
-const DAY = 24 * 60 * 60 * 1000;
+const WRITTEN_FOR = new Date(Date.UTC(2026, 5, 2, 12));
 
 export const asOfToday = (event: Event, now = new Date()): Event => {
-  const today = Date.UTC(
-    now.getUTCFullYear(),
-    now.getUTCMonth(),
-    now.getUTCDate()
-  );
-  const shift = Math.round((today - WRITTEN_FOR) / DAY) * DAY;
+  const shift = daysBetween(WRITTEN_FOR, now) * DAY;
   const date = new Date(Date.parse(`${event.date}T00:00:00Z`) + shift);
   return { ...event, date: date.toISOString().slice(0, 10) };
 };

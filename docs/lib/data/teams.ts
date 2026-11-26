@@ -28,7 +28,7 @@ export const teams = [
     memberIds: ['hype', 'sponsor'],
   },
   {
-    // No members yet, so the examples show a team in its empty state.
+    // No members yet, so the Teams example shows its empty state.
     id: 'finance',
     name: 'Finance',
     description:
