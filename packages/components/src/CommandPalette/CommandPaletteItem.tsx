@@ -1,4 +1,4 @@
-import { Children } from 'react';
+import { Children, useRef } from 'react';
 import { useCollator } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
 import {
@@ -8,10 +8,18 @@ import {
 } from '../Menu/MenuItem';
 import { useDevWarning } from '../utils/useDevWarning';
 import { useCommandPalette } from './Context';
+import { FirstRowRule } from './useActiveRow';
 
 // Props
 // ---------------
-export type CommandPaletteItemProps = MenuItemProps;
+export interface CommandPaletteItemProps extends Omit<MenuItemProps, 'id'> {
+  /**
+   * Unique id of the row. The palette passes it to `onAction`, and needs it
+   * to keep the first row active. Only `CommandPalette.Item` rows do that, so
+   * build every row of the palette with it.
+   */
+  id: NonNullable<MenuItemProps['id']>;
+}
 
 // Helpers
 // ---------------
@@ -63,6 +71,7 @@ export const CommandPaletteItem = ({
   ...props
 }: CommandPaletteItemProps) => {
   const { query: term, filter } = useCommandPalette();
+  const rowRef = useRef<HTMLDivElement>(null);
   const collator = useCollator({ usage: 'search', sensitivity: 'base' });
   const classNames = useClassNames({
     component: 'CommandPalette',
@@ -101,11 +110,17 @@ export const CommandPaletteItem = ({
   return (
     <MenuItemCore
       {...props}
+      ref={rowRef}
       variant={variant}
       textValue={text}
       classNames={classNames}
     >
-      {label}
+      {renderProps => (
+        <>
+          {typeof label === 'function' ? label(renderProps) : label}
+          <FirstRowRule id={props.id} rowRef={rowRef} />
+        </>
+      )}
     </MenuItemCore>
   );
 };

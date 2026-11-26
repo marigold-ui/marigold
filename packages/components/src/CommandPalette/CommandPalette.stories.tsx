@@ -26,6 +26,7 @@ import type {
   CommandPaletteProps,
   CommandPaletteSearchState,
 } from './CommandPalette';
+import { deleteBackward, press, typeChar } from './realEvents';
 
 // The palette's own callbacks, passed as args so Storybook resets them
 // between tests and lists them in the Actions panel.
@@ -874,7 +875,8 @@ SearchPrefix.test(
 // ---------------
 // Results come from the server, so the built-in filter is off. A local list with a short delay stands in for the API, so the
 // story works offline. `onSearchChange` reports the search once typing
-// pauses, so the story needs no debounce of its own.
+// pauses, so the story needs no debounce of its own. `CommandPalette.test.tsx`
+// tests the active row with real events: user-event breaks it, see there.
 const characters = [
   'Luke Skywalker',
   'C-3PO',
@@ -905,7 +907,7 @@ const searchCharacters = (query: string, signal: AbortSignal) =>
     });
   });
 
-const AsyncSearchPalette = () => {
+const AsyncSearchPalette = ({ defaultOpen }: { defaultOpen?: boolean }) => {
   const list = useAsyncList<(typeof characters)[number]>({
     async load({ signal, filterText }) {
       if (!filterText) return { items: [] };
@@ -914,7 +916,7 @@ const AsyncSearchPalette = () => {
   });
 
   return (
-    <CommandPalette.Trigger>
+    <CommandPalette.Trigger defaultOpen={defaultOpen}>
       <CommandPalette.Button>Search characters…</CommandPalette.Button>
       <CommandPalette
         placeholder="Type a Star Wars name…"
@@ -936,36 +938,36 @@ const AsyncSearchPalette = () => {
 
 export const AsyncSearch = meta.story({
   ...noSnapshot,
-  render: () => <AsyncSearchPalette />,
+  render: ({ defaultOpen }) => <AsyncSearchPalette defaultOpen={defaultOpen} />,
 });
 
+// Real events instead of `userEvent`, see `realEvents`.
 AsyncSearch.test(
   'Keeps the first result active as async results change',
-  async ({ canvas, step, userEvent }) => {
-    await userEvent.click(
-      canvas.getByRole('button', { name: /search characters/i })
-    );
-    await canvas.findByRole('searchbox');
+  { args: { defaultOpen: true } },
+  async ({ canvas, step }) => {
+    const input = await canvas.findByRole<HTMLInputElement>('searchbox');
 
     await step('Typing activates the first result', async () => {
-      await userEvent.keyboard('r2');
+      for (const char of 'r2') typeChar(input, char);
       await expectFirstRowActive(canvas, 'R2-D2');
     });
 
     await step('Deleting activates the first of the new results', async () => {
-      await userEvent.keyboard('{Backspace}');
+      deleteBackward(input);
       await expectFirstRowActive(canvas, 'Luke Skywalker');
     });
 
     await step('New results reset a moved active row', async () => {
-      await userEvent.keyboard('{ArrowDown}{ArrowDown}');
+      press(input, 'keydown', 'ArrowDown');
+      press(input, 'keydown', 'ArrowDown');
       await waitFor(() =>
-        expect(canvas.getByRole('searchbox')).toHaveAttribute(
+        expect(input).toHaveAttribute(
           'aria-activedescendant',
           canvas.getAllByRole('menuitem')[2].id
         )
       );
-      await userEvent.keyboard('5');
+      typeChar(input, '5');
       await expectFirstRowActive(canvas, 'R5-D4');
     });
   }

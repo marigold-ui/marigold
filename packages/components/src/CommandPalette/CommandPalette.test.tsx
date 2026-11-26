@@ -1,11 +1,5 @@
-import {
-  act,
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { isAppleDevice } from '@react-aria/utils';
 import { renderWithOverlay } from '../test.utils';
@@ -14,6 +8,7 @@ import {
   MoreWithoutPrefix,
   PreviousResultsWhileLoading,
 } from './CommandPalette.stories';
+import { press, typeChar } from './realEvents';
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -55,49 +50,10 @@ test('warns when a group sets more without a prefix', async () => {
   expect(screen.queryByRole('menuitem', { name: /More events/ })).toBeNull();
 });
 
-// Typing without user-event
-// ---------------
-// When the row the input points at goes away, RAC blurs the input (virtual
-// focus) from an effect, then points the input at the next row. user-event
-// answers the blur of an edited input with a `change` wrapped in `act`, which
-// React rejects mid-commit ("Should not already be working"). The effect
-// stops there, and the input keeps pointing at the row that is gone, which
-// no browser does. This file never sets up user-event, so the keys here are
-// real events: `beforeinput` tells RAC the text was typed forward, the native
-// setter and `input` let React see the new value.
-const setValue = Object.getOwnPropertyDescriptor(
-  HTMLInputElement.prototype,
-  'value'
-)!.set!;
-
-const press = (input: HTMLInputElement, type: string, key: string) =>
-  input.dispatchEvent(
-    new KeyboardEvent(type, { key, bubbles: true, cancelable: true })
-  );
-
+// Typing without user-event, see `realEvents`. Each key in its own `act`, so
+// React renders between them.
 const type = (input: HTMLInputElement, text: string) => {
-  for (const char of text) {
-    act(() => {
-      press(input, 'keydown', char);
-      input.dispatchEvent(
-        new InputEvent('beforeinput', {
-          inputType: 'insertText',
-          data: char,
-          bubbles: true,
-          cancelable: true,
-        })
-      );
-      setValue.call(input, input.value + char);
-      input.dispatchEvent(
-        new InputEvent('input', {
-          inputType: 'insertText',
-          data: char,
-          bubbles: true,
-        })
-      );
-      press(input, 'keyup', char);
-    });
-  }
+  for (const char of text) act(() => typeChar(input, char));
 };
 
 const pressEnter = (input: HTMLInputElement) => {
@@ -120,6 +76,7 @@ const expectFirstRowActive = (name: string) =>
   });
 
 test('Enter runs the row on top after the previous rows went away', async () => {
+  const user = userEvent.setup();
   const onAction = vi.fn();
   renderWithOverlay(
     <PreviousResultsWhileLoading.Component defaultOpen onAction={onAction} />
@@ -134,7 +91,7 @@ test('Enter runs the row on top after the previous rows went away', async () => 
   await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
 
   // The next search shows them until its answer replaces them.
-  fireEvent.click(screen.getByRole('button', { name: /go to|search/i }));
+  await user.click(screen.getByRole('button', { name: /go to|search/i }));
   input = await screen.findByRole<HTMLInputElement>('searchbox');
   type(input, 'ord');
   await waitFor(() =>
@@ -146,4 +103,40 @@ test('Enter runs the row on top after the previous rows went away', async () => 
   await expectFirstRowActive('Orders');
   pressEnter(input);
   await waitFor(() => expect(onAction).toHaveBeenLastCalledWith('orders'));
+});
+
+test('Enter while results load runs the first new row once and closes', async () => {
+  const onAction = vi.fn();
+  renderWithOverlay(
+    <PreviousResultsWhileLoading.Component defaultOpen onAction={onAction} />
+  );
+
+  // Enter right after typing, before the answer arrives.
+  const input = await screen.findByRole<HTMLInputElement>('searchbox');
+  type(input, 'jazz');
+  pressEnter(input);
+  expect(onAction).not.toHaveBeenCalled();
+
+  await waitFor(() => expect(onAction).toHaveBeenCalledWith('event-42'));
+  await waitFor(() => expect(screen.queryByRole('dialog')).toBeNull());
+  expect(onAction).toHaveBeenCalledTimes(1);
+});
+
+test('a pointer on a row drops an Enter that waits for results', async () => {
+  const user = userEvent.setup();
+  const onAction = vi.fn();
+  renderWithOverlay(
+    <PreviousResultsWhileLoading.Component defaultOpen onAction={onAction} />
+  );
+
+  const input = await screen.findByRole<HTMLInputElement>('searchbox');
+  type(input, 'jazz');
+  pressEnter(input);
+  const [row] = screen.getAllByRole('menuitem');
+  await user.hover(row);
+
+  await screen.findByRole('menuitem', { name: /Jazz Night/ });
+  await pause(300);
+  expect(onAction).not.toHaveBeenCalled();
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
 });

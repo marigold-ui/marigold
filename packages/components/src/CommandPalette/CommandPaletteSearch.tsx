@@ -1,9 +1,9 @@
-import type { Ref } from 'react';
+import type { DOMAttributes } from 'react';
+import { useRef } from 'react';
 import { Button } from 'react-aria-components/Button';
 import { Input } from 'react-aria-components/Input';
 import { SearchField } from 'react-aria-components/SearchField';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { useObjectRef } from '@react-aria/utils';
 import { useClassNames } from '@marigold/system';
 import { ProgressCircle } from '../ProgressCircle/ProgressCircle';
 import { Search } from '../icons/Search';
@@ -16,7 +16,8 @@ import { useAutoFocus } from '../utils/useAutoFocus';
 interface CommandPaletteSearchProps {
   placeholder?: string;
   loading: boolean;
-  ref: Ref<HTMLInputElement>;
+  /** Handlers the palette adds to the input. */
+  inputProps: DOMAttributes<HTMLInputElement>;
 }
 
 // Component
@@ -28,11 +29,11 @@ interface CommandPaletteSearchProps {
 export const CommandPaletteSearch = ({
   placeholder,
   loading,
-  ref,
+  inputProps,
 }: CommandPaletteSearchProps) => {
   const classNames = useClassNames({ component: 'CommandPalette' });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
-  const inputRef = useObjectRef(ref);
+  const inputRef = useRef<HTMLInputElement>(null);
   // Not a native `autoFocus`, see `useAutoFocus`.
   useAutoFocus(inputRef);
 
@@ -45,6 +46,7 @@ export const CommandPaletteSearch = ({
         <>
           <Search aria-hidden="true" size="18" />
           <Input
+            {...inputProps}
             ref={inputRef}
             placeholder={
               placeholder ?? stringFormatter.format('commandPaletteGoTo')

@@ -38,7 +38,7 @@ import {
   CommandPaletteTriggerContext,
   MORE_KEY,
 } from './Context';
-import { useKeepFirstItemActive } from './useKeepFirstItemActive';
+import { ActiveRowContext, useActiveRow } from './useActiveRow';
 
 // Props
 // ---------------
@@ -311,20 +311,23 @@ const CommandPaletteBody = <T extends object>({
       next.term === '' || next.prefix !== settled.prefix,
   });
   // Rows from the app's own search are stale until it has answered the
-  // search, see `useKeepFirstItemActive`.
+  // search, see `useActiveRow`.
   const appSearches =
     onSearchChange !== undefined && (filter === false || unfiltered.size > 0);
   const appSearchWaiting = appSearches && searchWaiting;
-  const { inputRef, menuRef, searchReported } = useKeepFirstItemActive(
-    inputValue,
-    items,
-    { loading, searchWaiting: appSearchWaiting, appSearches }
-  );
+  const {
+    inputProps,
+    menuProps,
+    context: activeRow,
+  } = useActiveRow(inputValue, {
+    loading,
+    searchWaiting: appSearchWaiting,
+    search: appSearches ? settledSearch : null,
+  });
 
   // An effect, so the app also hears the empty search of a fresh opening.
   const reportSearch = useEffectEvent((next: CommandPaletteSearchState) => {
     onSearchChange?.(next);
-    if (appSearches) searchReported();
   });
   useEffect(() => {
     reportSearch(settledSearch);
@@ -350,50 +353,52 @@ const CommandPaletteBody = <T extends object>({
 
   return (
     <CommandPaletteContext value={context}>
-      <SearchableCollection
-        filter={match}
-        inputValue={inputValue}
-        onInputChange={setInputValue}
-      >
-        <CommandPaletteSearch
-          ref={inputRef}
-          placeholder={placeholder}
-          loading={loading}
-        />
-        <Menu
-          // Narrowing to a group starts the list over, so RAC activates the
-          // group's first row as on open. Typing removed the active row and
-          // RAC would activate nothing.
-          key={scope ?? ''}
-          ref={menuRef}
-          items={items}
-          dependencies={dependencies}
-          className={classNames.list}
-          // The first row is active on open, so Enter runs it right away.
-          // Focus stays in the input, the row only gets virtual focus.
-          autoFocus="first"
-          // RAC passes more than the key, the public handler takes the key.
-          // A group's "more" row is the palette's own, not the app's.
-          onAction={key => {
-            if (!String(key).startsWith(MORE_KEY)) onAction?.(key);
-          }}
-          // Called after an item's action, unless the item sets
-          // `shouldCloseOnSelect={false}`.
-          onClose={close}
-          renderEmptyState={() => (
-            <EmptyState
-              className={classNames.empty}
-              announceFor={emptyAnnouncement}
-            >
-              {loading
-                ? loadingMessage
-                : (emptyState ?? <DefaultEmptyState query={query} />)}
-            </EmptyState>
-          )}
+      <ActiveRowContext value={activeRow}>
+        <SearchableCollection
+          filter={match}
+          inputValue={inputValue}
+          onInputChange={setInputValue}
         >
-          {children}
-        </Menu>
-      </SearchableCollection>
+          <CommandPaletteSearch
+            inputProps={inputProps}
+            placeholder={placeholder}
+            loading={loading}
+          />
+          <Menu
+            // Narrowing to a group starts the list over, so RAC activates the
+            // group's first row as on open. Typing removed the active row and
+            // RAC would activate nothing.
+            key={scope ?? ''}
+            {...menuProps}
+            items={items}
+            dependencies={dependencies}
+            className={classNames.list}
+            // The first row is active on open, so Enter runs it right away.
+            // Focus stays in the input, the row only gets virtual focus.
+            autoFocus="first"
+            // RAC passes more than the key, the public handler takes the key.
+            // A group's "more" row is the palette's own, not the app's.
+            onAction={key => {
+              if (!String(key).startsWith(MORE_KEY)) onAction?.(key);
+            }}
+            // Called after an item's action, unless the item sets
+            // `shouldCloseOnSelect={false}`.
+            onClose={close}
+            renderEmptyState={() => (
+              <EmptyState
+                className={classNames.empty}
+                announceFor={emptyAnnouncement}
+              >
+                {loading
+                  ? loadingMessage
+                  : (emptyState ?? <DefaultEmptyState query={query} />)}
+              </EmptyState>
+            )}
+          >
+            {children}
+          </Menu>
+        </SearchableCollection>
+      </ActiveRowContext>
     </CommandPaletteContext>
   );
 };
