@@ -1,4 +1,5 @@
 import { comboBoxValueProps } from '../transforms/combobox-value-props.js';
+import { dateImports } from '../transforms/date-imports.js';
 import { systemSvg } from '../transforms/system-svg.js';
 import { systemTextClassMaps } from '../transforms/system-text-class-maps.js';
 import { trayGroupSelector } from '../transforms/tray-group-selector.js';
@@ -21,6 +22,9 @@ import { v18 } from './v18.js';
 //   which `system-text-class-maps` replaces in application code.
 // - `@marigold/system` dropped `<SVG>` (DST-1393), which `system-svg` turns
 //   into a native `<svg>` that renders the same.
+// - `@marigold/components` re-exports the date values and helpers
+//   (DST-1994), so `date-imports` moves those imports off
+//   `@internationalized/date`. Optional: the old imports keep working.
 //
 // `slots` mirrors the v19 `Theme` type: the v18 sets plus the new Popover,
 // Stepper, Tray, Sheet and CommandPalette shapes. `theme-drift.test.ts` pins
@@ -137,5 +141,6 @@ export const v19: MigrationManifest = {
     trayGroupSelector,
     systemTextClassMaps,
     systemSvg,
+    dateImports,
   ],
 };
