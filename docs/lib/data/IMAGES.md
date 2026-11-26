@@ -1,8 +1,12 @@
-# Demo venue images
+# Demo images
 
-How the venue photos in `public/venues/` were made, so the set can be extended in the same look. They are AI-generated with Gemini, one fresh chat per image and no reference image, and every venue in them is invented (see the comment at the top of `venues.ts` and /impressum).
+How the AI-generated images in `public/` were made, so each set can be extended or redone in the same look: the venue photos, the people portraits and the two marigold images in the Aspect demos. All of them are made with Gemini, and every venue and person in them is invented (see the comments at the top of `venues.ts` and `people.ts`, and /impressum).
 
-## How to make a new one
+## Venues
+
+The photos in `public/venues/`, one per venue in `venues.ts`. One fresh chat per image and no reference image.
+
+### How to make a new one
 
 1. Start a new Gemini chat. Do not upload a reference image: it made results flatter and pulled every image toward the reference.
 2. Send one prompt: the venue line, then the base, the camera and light blocks for the shot, then the tail. Mix the light and camera so a new image does not repeat its neighbours in the list.
@@ -12,7 +16,7 @@ How the venue photos in `public/venues/` were made, so the set can be extended i
 
 Outdoor venues and clubs are shown with an event under way, the guests seen from behind and the side; formal and rustic venues are shown set up just before the doors open. That is how venues present themselves in their own listings: in use, not empty.
 
-## Blocks
+### Blocks
 
 **Base** (every image)
 
@@ -51,7 +55,7 @@ Outdoor venues and clubs are shown with an event under way, the guests seen from
 
 > Polished like a professional's delivered edit but believable as a real photograph: natural materials and skin, no HDR halos, no oversaturation, no glow, no lens flare, no heavy vignette, no artificial bokeh. No guests yet; at most one or two staff, small and busy, making final touches. 4:3 landscape, main subject in the centre. No readable text, no logos, no signs.
 
-## Venue lines
+### Venue lines
 
 | File                            | Light | Camera | Venue line                                                                                                                                                                                                                                                                                                           |
 | ------------------------------- | ----- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -105,3 +109,56 @@ Outdoor venues and clubs are shown with an event under way, the guests seen from
 | `chuckleton-tithe-barn`         | `IS4` | `V1`   | a venue in an English town, set up for its typical event moments before the doors open, at most one or two staff in the distance. A fourteenth-century stone tithe barn with oak trusses and a walled garden, booked for weddings and candlelit concerts.                                                            |
 | `bandstand-green`               | `OE3` | `V3`   | a venue in an English town, with an event under way. A village green with a Victorian iron bandstand, deckchairs for hire and room for a marquee.                                                                                                                                                                    |
 | `electric-theatre`              | `IS3` | `V2`   | a venue in an English town, set up for its typical event moments before the doors open, at most one or two staff in the distance. An Edwardian cinema restored as a theatre and comedy venue, with a tiled foyer, a small circle and modern sound.                                                                   |
+
+## People
+
+The portraits in `public/people/`, one per person in `people.ts`. Each is a natural headshot of the person at their workplace, so the set reads like one events company's team page.
+
+### How to make a new one
+
+1. Start a new Gemini chat for each portrait.
+2. **For an existing person**, attach their current portrait and send the reference block, then their line, then the style block. The reference block names glasses and accessories on purpose: with a looser version, Gemini dropped George's glasses.
+3. **For a new person**, attach nothing. Their line starts with a short description of the person (age, background, hair, one detail), followed by the style block.
+4. Reject it if the face no longer matches the old portrait, if there is readable text or a logo, if the skin looks retouched or glowing, or if the background is sharp enough to compete with the face.
+5. Export a square around the head and shoulders at 400 px, WebP: `cwebp -q 75 -m 6 -sharp_yuv -crop <x> <y> <size> <size> -resize 400 400 -metadata none in.jpeg -o out.webp`. Avatars are shown at 128 px at most, so 400 px covers a 3× screen. The files come out at 9 to 18 KB.
+6. Name the file after the person (`/people/<first>-<last>.webp`) and set it as `avatar` in `people.ts`.
+
+### Blocks
+
+**Reference** (existing people only, before their line)
+
+> Use the attached photo only for who this person is: keep exactly the same face, age, hairstyle, facial hair and skin tone, and add no glasses or accessories that are not in the photo. Change only the clothes, setting and light as described.
+
+**Style** (every portrait, after the line)
+
+> Photorealistic environmental headshot for a company team page. Square 1:1 image, head and shoulders, the person centred and looking into the camera with a relaxed, natural smile. Shot on a full-frame camera with an 85mm lens at f/2, the workplace behind them softly out of focus. Soft natural light from one side, true-to-life skin with pores and fine lines, no retouching glow, no HDR, no studio backdrop. Everyday work clothes without logos. No readable text or signs anywhere. It should look like a real photo a colleague took on a good day.
+
+### People lines
+
+The first eight were made from their earlier portrait, so their line starts with "New photo: the person as". The last four are new people and describe the person instead.
+
+| File                  | Reference | Line                                                                                                                                                                                                                                                                                                                                                                                       |
+| --------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `chip-patterson`      | yes       | New photo: the person as the Head of Programming at an events company, in a small booking office in the late afternoon, a wall of framed concert posters heavily blurred far behind them (no readable text), warm window light from the side. Dark crew-neck sweater under a casual wool jacket.                                                                                           |
+| `alex-chen`           | yes       | New photo: the person as an artist liaison at an events company, standing in a backstage corridor outside the dressing rooms before a show, warm bulbs of a make-up mirror and a flight case heavily blurred behind, soft warm light. Smart casual: a dark overshirt over a plain t-shirt.                                                                                                 |
+| `sandy-vega`          | yes       | New photo: the person as the director of venue operations, standing in an empty concert hall during the day, rows of seats and the stage heavily blurred behind her, soft daylight from high windows mixed with warm house lights. A dark fleece jacket with a two-way radio clipped to the collar.                                                                                        |
+| `diana-martinez`      | yes       | New photo: the person as a stage manager, standing in the wings backstage just before a show, black stage curtains and a cue desk with a small blue work lamp heavily blurred behind her, the warm spill of stage light from one side. Black long-sleeve top, a communication headset resting around her neck. Natural lips, light everyday make-up.                                       |
+| `evan-wilson`         | yes       | New photo: the person as the box office lead of a theatre, standing in front of the box office counter in the early evening, the warmly lit foyer with a few arriving guests heavily blurred behind him. Navy knit polo shirt under an open grey cardigan.                                                                                                                                 |
+| `fiona-chen`          | yes       | New photo: the person as a ticketing analyst, sitting at her desk in a bright open-plan office of an events company in the morning, a monitor and colleagues heavily blurred behind her, soft daylight from a large window. A soft light-blue shirt.                                                                                                                                       |
+| `george-smith`        | yes       | New photo: the person as a production technician, framed close from the chest up, on a concert stage during the afternoon load-in, black flight cases and a lighting truss heavily blurred behind him, cool daylight from an open loading door mixed with a warm work light. Black t-shirt under an open dark work shirt.                                                                  |
+| `hannah-white`        | yes       | New photo: the person as the social media lead of an events company, at an outdoor summer festival in the late afternoon, a crowd and a small stage heavily blurred behind her, golden backlight in her hair, a phone in one hand held low. Light denim jacket over a white t-shirt. Keep her small nose ring.                                                                             |
+| `margarete-lindqvist` | no        | A woman of about 60, Scandinavian, silver-grey chin-length bob, a few laugh lines, small pearl stud earrings. She is the head of partnerships at an events company, standing at the bar of an elegant theatre foyer in the early evening, warm chandelier light and the bar heavily blurred behind her. A tailored navy blazer over a cream silk blouse.                                   |
+| `tobias-okafor`       | no        | A man of about 35, Black, Nigerian-German, short tidy hair, clean-shaven, warm expression. He is the front of house manager of a theatre, standing in the foyer half an hour before doors open, the empty ticket-scanning lanes and warm wall lights heavily blurred behind him. A charcoal button-down shirt under a dark grey suit jacket, no tie, a small clear earpiece in one ear.    |
+| `priya-raman`         | no        | A woman of about 28, South Indian, long dark hair in a loose low ponytail, small gold stud earrings, friendly open smile. She is a guest services coordinator at an events company, standing behind the guest welcome desk in a bright conference-centre lobby in the morning, the lobby heavily blurred behind her, soft daylight. A soft mustard-yellow cardigan over a plain black top. |
+| `klaus-brenner`       | no        | A man of about 55, Swiss-German, weathered face, short grey hair, grey stubble, calm half-smile. He is the caretaker of a concert hall, standing at the loading dock behind the building at dusk, a roll-up door, stacked chairs and a hand truck heavily blurred behind him, cool blue dusk light mixed with one warm work lamp. A dark green work jacket over a grey henley shirt.       |
+
+## Marigold images
+
+The two flower photos in `public/` that the Aspect demos crop (`aspect-ratio`, `aspect-image`, `aspect-max-width`). One fresh chat each, no reference image. Reject a result that looks painted, has sun flare or glow, or carries a watermark; check at full size, because Gemini's watermark is small.
+
+Export at 1024 px wide, WebP: `cwebp -q 75 -m 6 -sharp_yuv -resize 1024 0 -metadata none in.jpeg -o out.webp`. Keep the file names, the demos point at them.
+
+| File                | Prompt                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `marigold-abstract` | Generate an image: A real macro photograph of a single orange marigold bloom covered in fine morning dew, seen slightly from above so the whole flower head fills most of a square frame with a little space around it. Natural soft morning daylight from the side, true-to-life colour, gentle shadows between the ruffled petals, a calm out-of-focus green garden background. Shot on a full-frame camera with a 100 mm macro lens at f/5.6, crisp detail on the petals and droplets, lightly edited like a professional nature photograph, not a painting or a render. Square 1:1 format. No lens flare, no glow, no HDR, no oversaturation, no text, no watermark.                                                                                |
+| `marigold-field`    | Generate an image: A real photograph of a wide field of orange and yellow marigolds in full bloom under a clear bright blue sky on a sunny morning, seen from standing height. Tall portrait 9:16 format: the upper part of the frame is open blue sky with a few soft white clouds, a distant line of trees on the horizon in the middle, and the lower half is dense marigold flowers, sharp in the foreground. Natural daylight from the side, true-to-life colour, everything crisp. Shot on a full-frame camera with a 24 mm lens at f/8, lightly edited like a professional landscape photograph, not a painting or a render. No lens flare, no sun in frame, no glow, no HDR, no oversaturation, no people, no buildings, no text, no watermark. |
