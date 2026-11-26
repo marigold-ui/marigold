@@ -15,6 +15,7 @@ import {
   TopNavigation,
 } from '@marigold/components';
 import { Logo } from '@/ui/Logo';
+import { currentUser, organisation } from './demo-data';
 import type { NavNode, RailTile, ShellConfig } from './shell-types';
 import { UserMenu } from './user-menu';
 
@@ -134,12 +135,12 @@ const UserSection = () => (
     <Stack>
       <Inline space="tight" alignY="center" noWrap>
         <Text size="sm" weight="bold">
-          Jane Doe
+          {currentUser.name}
         </Text>
         <Badge variant="master">Master</Badge>
       </Inline>
       <Text size="xs" variant="muted">
-        Acme Inc.
+        {organisation.name}
       </Text>
     </Stack>
     <UserMenu />

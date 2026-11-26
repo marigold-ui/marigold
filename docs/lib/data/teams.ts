@@ -27,6 +27,14 @@ export const teams = [
       'Fills the seats: campaigns, social media, sponsors and press.',
     memberIds: ['hype', 'sponsor'],
   },
+  {
+    // No members yet, so the examples show a team in its empty state.
+    id: 'finance',
+    name: 'Finance',
+    description:
+      'Pays artists and venues, invoices partners and keeps the books.',
+    memberIds: [],
+  },
 ] as const;
 
 export type Team = (typeof teams)[number];

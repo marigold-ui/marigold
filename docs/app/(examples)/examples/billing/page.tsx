@@ -16,7 +16,7 @@ import {
   Text,
   Title,
 } from '@marigold/components';
-import { invoices } from './invoices';
+import { getInvoices } from './invoices';
 
 const statusVariant = {
   paid: 'success',
@@ -25,6 +25,7 @@ const statusVariant = {
 } as const;
 
 const BillingPage = () => {
+  const invoices = getInvoices();
   const failedInvoice = invoices.find(invoice => invoice.status === 'failed');
 
   return (
@@ -93,7 +94,7 @@ const BillingPage = () => {
               <Text variant="muted" fontSize="xs">
                 Billing email
               </Text>
-              <Text weight="semibold">billing@acme.example.com</Text>
+              <Text weight="semibold">billing@example.com</Text>
             </Stack>
           </Stack>
         </Panel.Content>
@@ -122,10 +123,7 @@ const BillingPage = () => {
                   <Table.Cell>{invoice.id}</Table.Cell>
                   <Table.Cell>{invoice.period}</Table.Cell>
                   <Table.Cell>
-                    <DateFormat
-                      value={new Date(invoice.date)}
-                      dateStyle="medium"
-                    />
+                    <DateFormat value={invoice.date} dateStyle="medium" />
                   </Table.Cell>
                   <Table.Cell alignX="right">{invoice.amount}</Table.Cell>
                   <Table.Cell>

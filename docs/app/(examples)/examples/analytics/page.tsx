@@ -4,6 +4,7 @@ import { venues } from '@/lib/data/venues';
 import {
   Card,
   Columns,
+  DateFormat,
   Description,
   NumericFormat,
   Page,
@@ -14,6 +15,7 @@ import {
   Tiles,
   Title,
 } from '@marigold/components';
+import { daysAgo, ticketsSoldByVenue } from '../../_shared/demo-data';
 
 const stats = [
   { label: 'Sessions', value: '48,920', hint: '+9.4% vs last month' },
@@ -21,22 +23,6 @@ const stats = [
   { label: 'Avg. rating', value: '4.6', hint: 'across 1,200 reviews' },
   { label: 'Refund rate', value: '1.2%', hint: '-0.3pt vs last month' },
 ];
-
-// Tickets sold per venue for the reporting period, keyed by venue id. This is
-// the metric the "Top venues" ranking is built on — keying by id keeps the
-// ranking correct if the underlying dataset changes.
-const ticketsSoldByVenue: Record<string, number> = {
-  '1': 4120,
-  '2': 1860,
-  '3': 920,
-  '4': 5240,
-  '5': 2670,
-  '6': 3480,
-  '7': 1530,
-  '8': 2090,
-  '9': 760,
-  '10': 4480,
-};
 
 // Venues with the most tickets sold this period: attach the metric, rank by it, take the top 6.
 const topVenues = venues
@@ -85,7 +71,8 @@ const AnalyticsPage = () => (
     <Page.Header>
       <Title>Analytics</Title>
       <Description>
-        Sessions, top venues, and traffic sources for June 2026.
+        Sessions, top venues, and traffic sources for{' '}
+        <DateFormat value={daysAgo(0)} month="long" year="numeric" />.
       </Description>
     </Page.Header>
 

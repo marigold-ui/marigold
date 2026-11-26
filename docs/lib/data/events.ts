@@ -45,6 +45,25 @@ export interface Event {
   reservations: number;
 }
 
+// The dates below are written as if today were 2 June 2026. `asOfToday` moves
+// an event by the days since then, so the bulk-actions list always looks ahead
+// from the real today. The API route applies it per request; the data here stays
+// fixed, so docs demos that import `events` directly render the same on the
+// server and in the browser.
+const WRITTEN_FOR = Date.UTC(2026, 5, 2);
+const DAY = 24 * 60 * 60 * 1000;
+
+export const asOfToday = (event: Event, now = new Date()): Event => {
+  const today = Date.UTC(
+    now.getUTCFullYear(),
+    now.getUTCMonth(),
+    now.getUTCDate()
+  );
+  const shift = Math.round((today - WRITTEN_FOR) / DAY) * DAY;
+  const date = new Date(Date.parse(`${event.date}T00:00:00Z`) + shift);
+  return { ...event, date: date.toISOString().slice(0, 10) };
+};
+
 export const events: Event[] = [
   {
     id: '1',
