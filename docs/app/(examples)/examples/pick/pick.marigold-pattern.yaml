@@ -14,6 +14,23 @@ brief: >-
   density needs.
 patterns:
   - user-input/pick
+mock_data:
+  - alias: '@/lib/data/venues'
+    shape: |
+      // Replace with the consumer's own data source. `type` indexes into
+      // `venueTypes`; `price.from` is the lowest day rate in EUR.
+      export const venueTypes: readonly string[];
+      export const venues: Array<{
+        id: string;
+        name: string;
+        type: number;
+        city: string;
+        country: string;
+        capacity: number;
+        price: { from: number; to: number };
+        /** Average guest rating, 1 to 5. */
+        rating: number;
+      }>;
 key_files:
   - PickVenuesDialog.tsx
   - ReportVenues.tsx

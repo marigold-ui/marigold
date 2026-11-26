@@ -18,8 +18,8 @@ import {
   Text,
 } from '@marigold/components';
 
-// The shared demo venues, with their type index resolved to a label.
-const venues = sharedVenues.map(venue => ({
+// The first ten shared demo venues, with their type index resolved to a label.
+const venues = sharedVenues.slice(0, 10).map(venue => ({
   ...venue,
   type: venueTypes[venue.type],
 }));
