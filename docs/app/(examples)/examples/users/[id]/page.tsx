@@ -35,18 +35,18 @@ const activity = [
   {
     id: 'a1',
     date: '2026-06-01',
-    text: 'Merged "Refine Page header spacing".',
+    text: 'Confirmed the line-up for "Summer Sound Festival".',
   },
-  { id: 'a2', date: '2026-05-28', text: 'Reviewed 4 pull requests.' },
+  { id: 'a2', date: '2026-05-28', text: 'Approved 4 artist contracts.' },
   {
     id: 'a3',
     date: '2026-05-24',
-    text: 'Published the Panel slot guidelines.',
+    text: 'Published the autumn season programme.',
   },
   {
     id: 'a4',
     date: '2026-05-19',
-    text: 'Joined the Design Systems team sync.',
+    text: 'Joined the show-day briefing.',
   },
 ];
 

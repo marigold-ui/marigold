@@ -185,7 +185,7 @@ export const Inventory = () => (
             <Select
               label="Assign to User"
               placeholder="Select a user"
-              defaultValue="crash"
+              defaultValue="cue"
             >
               {people.map(person => (
                 <Select.Option
