@@ -138,7 +138,7 @@ export const events: Event[] = [
   },
   {
     id: '10',
-    name: 'Flohmarkt am Main Street Park Amphitheater',
+    name: 'Flohmarkt im Park',
     date: '2026-08-30',
     venue: 'Main Street Park Amphitheater',
     category: 'Market',
