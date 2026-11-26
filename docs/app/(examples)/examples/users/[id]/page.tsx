@@ -20,32 +20,28 @@ import {
   Title,
 } from '@marigold/components';
 import { Field } from '../../../_shared';
+import { daysAgo, userStatus } from '../../../_shared/demo-data';
 
 // The member detail is the drill-in from the Users list (the "Detail / record"
 // layout): a primary column with the member's content and a narrower secondary
 // "Overview" column for status and metadata. Because `Page.Header` has no slot
 // for a status badge, the member's state lives in that secondary panel.
-const statusVariant = {
-  active: 'success',
-  invited: 'info',
-  suspended: 'error',
-} as const;
-
-const activity = [
+// A function, so the dates are worked out on every render, not once per server.
+const getActivity = () => [
   {
     id: 'a1',
-    date: '2026-06-01',
+    date: daysAgo(1),
     text: 'Confirmed the line-up for "Summer Sound Festival".',
   },
-  { id: 'a2', date: '2026-05-28', text: 'Approved 4 artist contracts.' },
+  { id: 'a2', date: daysAgo(5), text: 'Approved 4 artist contracts.' },
   {
     id: 'a3',
-    date: '2026-05-24',
+    date: daysAgo(9),
     text: 'Published the autumn season programme.',
   },
   {
     id: 'a4',
-    date: '2026-05-19',
+    date: daysAgo(14),
     text: 'Joined the show-day briefing.',
   },
 ];
@@ -116,13 +112,10 @@ const UserDetailPage = () => {
             </Panel.Header>
             <Panel.Content>
               <Stack space="regular">
-                {activity.map(entry => (
+                {getActivity().map(entry => (
                   <Inline key={entry.id} space="regular" alignY="center" noWrap>
                     <Text variant="muted" fontSize="sm">
-                      <DateFormat
-                        value={new Date(entry.date)}
-                        dateStyle="medium"
-                      />
+                      <DateFormat value={entry.date} dateStyle="medium" />
                     </Text>
                     <Text>{entry.text}</Text>
                   </Inline>
@@ -140,8 +133,8 @@ const UserDetailPage = () => {
           <Panel.Content>
             <Stack space="regular">
               <Inline space="related" alignY="center">
-                <Badge variant={statusVariant[person.status]}>
-                  {person.status}
+                <Badge variant={userStatus[person.status].variant}>
+                  {userStatus[person.status].label}
                 </Badge>
               </Inline>
               <Field label="Role">{person.role}</Field>

@@ -20,16 +20,16 @@ interface Partner {
 }
 
 const ORG_DEFAULT_PARTNERS: Partner[] = [
-  { id: 'goethe', name: 'Goethe-Institut Freiburg' },
-  { id: 'stadt-freiburg', name: 'Stadt Freiburg' },
+  { id: 'laughville-arts', name: 'Laughville Arts Council' },
+  { id: 'laughville-city', name: 'City of Laughville' },
 ];
 
 const PARTNER_POOL: Partner[] = [
-  { id: 'theater-fr', name: 'Theater Freiburg' },
-  { id: 'uni-fr', name: 'Universität Freiburg' },
-  { id: 'stadtwerke', name: 'Stadtwerke Freiburg' },
-  { id: 'kulturboerse', name: 'Freiburger Kulturbörse' },
-  { id: 'oberrhein', name: 'Zentrum Oberrhein' },
+  { id: 'shakytown-players', name: 'Shakytown Players' },
+  { id: 'port-funsies-college', name: 'Port Funsies College' },
+  { id: 'hee-haw-utilities', name: 'Hee-Haw City Utilities' },
+  { id: 'culture-exchange', name: 'Riverside Culture Exchange' },
+  { id: 'harborfront-assoc', name: 'Harborfront Merchants Association' },
 ];
 
 export const CoOrganizers = () => {

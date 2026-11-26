@@ -24,17 +24,17 @@ export const OrganizerInfo = () => (
     </Panel.Header>
     <Panel.Content>
       <Stack space="regular">
-        <Inline space="related" noWrap>
+        <Inline space="related">
           <TextField
             label="First Name"
             description="The primary contact for this event."
-            width="1/2"
+            width={64}
             required
             errorMessage="First name is required."
           />
           <TextField
             label="Last Name"
-            width="1/2"
+            width={64}
             required
             errorMessage="Last name is required."
           />
@@ -49,22 +49,23 @@ export const OrganizerInfo = () => (
           description="Displayed alongside the organizer name, e.g. 'Event Manager' or 'Head of Conferences'."
           width={64}
         />
-        <Inline space="related" noWrap>
+        <Inline space="related">
           <TextField
             label="Email"
             type="email"
-            defaultValue="info@riverside-events.de"
+            defaultValue="info@example.com"
             description="Used for attendee inquiries and order-related communication."
-            width="1/2"
+            width={72}
             required
             errorMessage="A valid email address is required."
           />
           <TextField
             label="Phone"
             type="tel"
-            defaultValue="+49 761 555 0800"
+            // Reserved for fiction by the Bundesnetzagentur (030 23125 000-999).
+            defaultValue="+49 30 23125 080"
             description="Optional. Shown on the event page for urgent questions."
-            width="1/2"
+            width={56}
           />
         </Inline>
         <TextArea

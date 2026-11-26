@@ -85,7 +85,7 @@ export const GeneralSettings = () => {
             </Select>
             <TextArea
               label="Default Footer Text"
-              defaultValue="Powered by Riverside Events. For questions, contact info@riverside-events.de."
+              defaultValue="Powered by Riverside Events. For questions, contact info@example.com."
               description="Appears at the bottom of every event page and confirmation email."
               rows={2}
             />
@@ -117,7 +117,7 @@ export const GeneralSettings = () => {
               <TextField
                 label="URL Slug Prefix"
                 defaultValue="riverside"
-                description="Used in event URLs, e.g. riverside-events.de/riverside-summer-fest."
+                description="Used in event URLs, e.g. example.com/riverside-summer-fest."
                 width={56}
               />
               <Checkbox

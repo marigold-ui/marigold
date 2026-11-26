@@ -8,6 +8,7 @@ import {
   Description,
   Divider,
   Inline,
+  NumericFormat,
   Page,
   Panel,
   SectionMessage,
@@ -16,7 +17,7 @@ import {
   Text,
   Title,
 } from '@marigold/components';
-import { invoices } from './invoices';
+import { getInvoices } from './invoices';
 
 const statusVariant = {
   paid: 'success',
@@ -24,7 +25,12 @@ const statusVariant = {
   failed: 'error',
 } as const;
 
+const Money = ({ value }: { value: number }) => (
+  <NumericFormat value={value} style="currency" currency="EUR" />
+);
+
 const BillingPage = () => {
+  const invoices = getInvoices();
   const failedInvoice = invoices.find(invoice => invoice.status === 'failed');
 
   return (
@@ -43,9 +49,15 @@ const BillingPage = () => {
           <SectionMessage.Content>
             <Stack space="related" alignX="left">
               <Text>
-                Your {failedInvoice.period} payment of {failedInvoice.amount}{' '}
-                could not be processed. Update your payment method to retry and
-                avoid an interruption to your service.
+                Your{' '}
+                <DateFormat
+                  value={failedInvoice.date}
+                  month="long"
+                  year="numeric"
+                />{' '}
+                payment of <Money value={failedInvoice.amount} /> could not be
+                processed. Update your payment method to retry and avoid an
+                interruption to your service.
               </Text>
               <Button variant="primary" size="small">
                 Update payment method
@@ -93,7 +105,7 @@ const BillingPage = () => {
               <Text variant="muted" fontSize="xs">
                 Billing email
               </Text>
-              <Text weight="semibold">billing@acme.example.com</Text>
+              <Text weight="semibold">billing@example.com</Text>
             </Stack>
           </Stack>
         </Panel.Content>
@@ -120,14 +132,19 @@ const BillingPage = () => {
               {invoices.map(invoice => (
                 <Table.Row key={invoice.id}>
                   <Table.Cell>{invoice.id}</Table.Cell>
-                  <Table.Cell>{invoice.period}</Table.Cell>
                   <Table.Cell>
                     <DateFormat
-                      value={new Date(invoice.date)}
-                      dateStyle="medium"
+                      value={invoice.date}
+                      month="long"
+                      year="numeric"
                     />
                   </Table.Cell>
-                  <Table.Cell alignX="right">{invoice.amount}</Table.Cell>
+                  <Table.Cell>
+                    <DateFormat value={invoice.date} dateStyle="medium" />
+                  </Table.Cell>
+                  <Table.Cell alignX="right">
+                    <Money value={invoice.amount} />
+                  </Table.Cell>
                   <Table.Cell>
                     <Badge variant={statusVariant[invoice.status]}>
                       {invoice.status}
@@ -138,7 +155,7 @@ const BillingPage = () => {
                       {invoice.status === 'failed' && (
                         <Button
                           size="small"
-                          aria-label={`Retry payment for ${invoice.period}`}
+                          aria-label={`Retry payment for ${invoice.id}`}
                         >
                           Retry payment
                         </Button>

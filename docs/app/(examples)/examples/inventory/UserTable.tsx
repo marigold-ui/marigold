@@ -24,6 +24,7 @@ export const UserTable = () => (
     </Panel.Header>
     <Panel.Content bleed>
       <Table
+        aria-label="Users"
         selectionMode="multiple"
         defaultSelectedKeys={[people[0].id, people[1].id]}
       >
@@ -36,7 +37,7 @@ export const UserTable = () => (
         </Table.Header>
         <Table.Body>
           {people.map(person => (
-            <Table.Row key={person.id}>
+            <Table.Row key={person.id} id={person.id}>
               <Table.Cell textValue={person.name}>
                 <Text weight="semibold">{person.name}</Text>
               </Table.Cell>

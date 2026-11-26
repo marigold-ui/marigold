@@ -27,7 +27,7 @@ export const Settings = () => (
       </Text>
     </Stack>
     <Tabs>
-      <Tabs.List>
+      <Tabs.List aria-label="Account settings">
         <Tabs.Item id="profile">
           <UserRound className="size-4" /> Profile
         </Tabs.Item>
@@ -47,7 +47,7 @@ export const Settings = () => (
             </Description>
           </Panel.Header>
           <Panel.Content>
-            <Columns columns={['fit', 1]} space="group">
+            <Columns columns={['fit', 1]} space="group" collapseAt="30em">
               <div className="w-32">
                 <img
                   src={user.avatar}

@@ -1,6 +1,7 @@
 'use client';
 
-import { BookOpen, LifeBuoy } from 'lucide-react';
+import { CONSENT_BANNER_ENABLED, openConsentSettings } from '@/lib/consent';
+import { BookOpen, LifeBuoy, Scale } from 'lucide-react';
 import type { PropsWithChildren, ReactNode } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import {
@@ -16,6 +17,7 @@ import {
 } from '@marigold/components';
 import { Logo } from '@/ui/Logo';
 import { AppPalette } from './app-palette';
+import { currentUser } from './demo-data';
 import type { NavNode, RailTile, ShellConfig } from './shell-types';
 import { UserMenu } from './user-menu';
 import { WorkspaceProvider, useWorkspace } from './workspace';
@@ -138,7 +140,7 @@ const UserSection = () => {
       <Stack>
         <Inline space="tight" alignY="center" noWrap>
           <Text size="sm" weight="bold">
-            Jane Doe
+            {currentUser.name}
           </Text>
           <Badge variant="master">Master</Badge>
         </Inline>
@@ -263,6 +265,23 @@ export const ShellLayout = ({
                     href="/getting-started/get-in-touch"
                   >
                     Help
+                  </Sidebar.RailItem>
+                  {/* The examples are public pages, so they need the legal links
+                      the docs footer carries elsewhere. Cookie settings exist
+                      only where the consent banner runs. */}
+                  <Sidebar.RailItem id="legal" icon={<Scale />}>
+                    Legal
+                    <Sidebar.Nav aria-label="Legal">
+                      <Sidebar.Item href="/impressum">Impressum</Sidebar.Item>
+                      <Sidebar.Item href="/datenschutz">
+                        Datenschutz
+                      </Sidebar.Item>
+                      {CONSENT_BANNER_ENABLED && (
+                        <Sidebar.Item onPress={openConsentSettings}>
+                          Cookie settings
+                        </Sidebar.Item>
+                      )}
+                    </Sidebar.Nav>
                   </Sidebar.RailItem>
                 </Sidebar.Footer>
               </Sidebar.Rail>

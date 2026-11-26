@@ -10,7 +10,6 @@ import {
   Description,
   Inline,
   Page,
-  Stack,
   Text,
   Tiles,
   Title,
@@ -36,36 +35,46 @@ const TeamsPage = () => (
       {teams.map(team => {
         const members = membersOf(team.memberIds);
         return (
-          <Card key={team.id} stretch>
-            <Card.Content>
-              <Stack space="tight">
-                <Text fontSize="xl" weight="semibold">
-                  {team.name}
-                </Text>
-                <Text variant="muted" fontSize="sm">
-                  {team.description}
-                </Text>
-              </Stack>
-            </Card.Content>
-            <Card.Footer>
-              <Inline space="related" alignY="center" noWrap>
-                <Inline space="collapsed" alignY="center" noWrap>
-                  {members.map(member => (
-                    <img
-                      key={member.id}
-                      src={member.avatar}
-                      alt={member.name}
-                      className="block size-8 rounded-full ring-2 ring-white"
-                    />
-                  ))}
+          <Card key={team.id} stretch headingLevel={2}>
+            <Card.Header>
+              <Title>{team.name}</Title>
+              <Description>{team.description}</Description>
+            </Card.Header>
+            {members.length === 0 ? (
+              // An empty team keeps the card's shape: the footer row that
+              // would list members offers the next step instead.
+              <Card.Footer>
+                <Inline space="related" alignY="center">
+                  <Text variant="muted" fontSize="sm">
+                    No members yet
+                  </Text>
+                  <Button size="small">
+                    <Plus />
+                    Add members
+                  </Button>
                 </Inline>
-                <Text variant="muted" fontSize="sm">
-                  {members.length === 1
-                    ? '1 member'
-                    : `${members.length} members`}
-                </Text>
-              </Inline>
-            </Card.Footer>
+              </Card.Footer>
+            ) : (
+              <Card.Footer>
+                <Inline space="related" alignY="center" noWrap>
+                  <Inline space="collapsed" alignY="center" noWrap>
+                    {members.map(member => (
+                      <img
+                        key={member.id}
+                        src={member.avatar}
+                        alt={member.name}
+                        className="block size-8 rounded-full ring-2 ring-white"
+                      />
+                    ))}
+                  </Inline>
+                  <Text variant="muted" fontSize="sm">
+                    {members.length === 1
+                      ? '1 member'
+                      : `${members.length} members`}
+                  </Text>
+                </Inline>
+              </Card.Footer>
+            )}
           </Card>
         );
       })}

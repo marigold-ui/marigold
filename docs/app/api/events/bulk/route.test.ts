@@ -35,7 +35,7 @@ describe('POST /api/events/bulk', () => {
       action: 'publish',
       ids: [withoutVenue.id],
       session: {
-        overrides: { [withoutVenue.id]: { venue: 'Jazzhaus' } },
+        overrides: { [withoutVenue.id]: { venue: 'Cellar Lounge' } },
         deleted: [],
       },
     });

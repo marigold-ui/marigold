@@ -1,12 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import {
-  Badge,
   Button,
   DateFormat,
   Description,
   Form,
-  Inline,
   Page,
   Panel,
   Stack,
@@ -17,33 +16,39 @@ import {
   Title,
   useToast,
 } from '@marigold/components';
+import { daysAgo } from '../../_shared/demo-data';
 
-const sessions = [
+// A function, so the dates are worked out on every render, not once per server.
+const getSessions = () => [
   {
     id: 'sess-1',
-    device: 'MacBook Pro · Chrome',
+    device: 'MacBook Pro',
+    browser: 'Chrome',
     location: 'Berlin, Germany',
-    lastActive: '2026-06-02',
+    lastActive: daysAgo(0),
     current: true,
   },
   {
     id: 'sess-2',
-    device: 'iPhone 15 · Safari',
+    device: 'iPhone 15',
+    browser: 'Safari',
     location: 'Berlin, Germany',
-    lastActive: '2026-06-01',
+    lastActive: daysAgo(1),
     current: false,
   },
   {
     id: 'sess-3',
-    device: 'Windows · Edge',
+    device: 'Windows PC',
+    browser: 'Edge',
     location: 'Munich, Germany',
-    lastActive: '2026-05-20',
+    lastActive: daysAgo(13),
     current: false,
   },
 ];
 
 const SecurityPage = () => {
   const { addToast } = useToast();
+  const [newPassword, setNewPassword] = useState('');
 
   return (
     <Page>
@@ -68,15 +73,40 @@ const SecurityPage = () => {
         <Panel size="form">
           <Panel.Header>
             <Title>Password</Title>
-            <Description>Use at least 12 characters.</Description>
           </Panel.Header>
           <Panel.Content>
             <Stack space="regular">
-              <TextField label="Current password" type="password" width={56} />
-              <TextField label="New password" type="password" width={56} />
+              <TextField
+                label="Current password"
+                name="currentPassword"
+                type="password"
+                autoComplete="current-password"
+                required
+                width={56}
+              />
+              <TextField
+                label="New password"
+                name="newPassword"
+                type="password"
+                autoComplete="new-password"
+                description="At least 12 characters."
+                required
+                minLength={12}
+                value={newPassword}
+                onChange={setNewPassword}
+                width={56}
+              />
               <TextField
                 label="Confirm new password"
+                name="confirmPassword"
                 type="password"
+                autoComplete="new-password"
+                required
+                validate={value =>
+                  value && value !== newPassword
+                    ? 'The passwords do not match.'
+                    : null
+                }
                 width={56}
               />
             </Stack>
@@ -120,22 +150,21 @@ const SecurityPage = () => {
               <Table.Column alignX="right">&nbsp;</Table.Column>
             </Table.Header>
             <Table.Body>
-              {sessions.map(session => (
+              {getSessions().map(session => (
                 <Table.Row key={session.id}>
                   <Table.Cell textValue={session.device}>
-                    <Inline space="related" alignY="center" noWrap>
+                    <Stack>
                       <Text weight="semibold">{session.device}</Text>
-                      {session.current && (
-                        <Badge variant="success">This device</Badge>
-                      )}
-                    </Inline>
+                      <Text variant="muted" fontSize="xs">
+                        {session.current
+                          ? `${session.browser} · This device`
+                          : session.browser}
+                      </Text>
+                    </Stack>
                   </Table.Cell>
                   <Table.Cell>{session.location}</Table.Cell>
                   <Table.Cell>
-                    <DateFormat
-                      value={new Date(session.lastActive)}
-                      dateStyle="medium"
-                    />
+                    <DateFormat value={session.lastActive} dateStyle="medium" />
                   </Table.Cell>
                   <Table.Cell alignX="right">
                     <Button

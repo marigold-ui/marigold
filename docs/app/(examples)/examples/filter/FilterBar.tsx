@@ -170,11 +170,14 @@ const FilterForm = ({
             maxValue={MAX_CAPACITY}
             step={100}
           />
+          {/* Step 500: 100 stops from 0 to MAX_PRICE, so the track and the
+              arrow keys stay usable, with 20 stops below 10,000 where most
+              venues sit. */}
           <Slider
             label="Max. Price"
             name="price"
             defaultValue={filter.price}
-            step={100}
+            step={500}
             maxValue={MAX_PRICE}
             formatOptions={{
               style: 'currency',

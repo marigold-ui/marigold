@@ -1,7 +1,9 @@
 'use client';
 
 import { people } from '@/lib/data/people';
+import { venues } from '@/lib/data/venues';
 import { CalendarPlus } from 'lucide-react';
+import type { ReactNode } from 'react';
 import {
   Badge,
   Card,
@@ -10,6 +12,7 @@ import {
   Description,
   Inline,
   LinkButton,
+  NumericFormat,
   Page,
   Panel,
   Scrollable,
@@ -20,38 +23,63 @@ import {
   Title,
 } from '@marigold/components';
 import { useWorkspace } from '../_shared';
+import { businessNumbers, daysAgo } from '../_shared/demo-data';
 
 const stats = [
-  { label: 'Events this month', value: '128', hint: '+12% vs last month' },
-  { label: 'Tickets sold', value: '8,540', hint: '+5.2% vs last month' },
-  { label: 'Active venues', value: '32', hint: '3 added this month' },
-  { label: 'Revenue', value: '€94,200', hint: '+8.1% vs last month' },
+  {
+    label: 'Events on sale',
+    value: <NumericFormat value={businessNumbers.eventsOnSale} />,
+    hint: '+3 vs last month',
+  },
+  {
+    label: 'Tickets sold',
+    value: <NumericFormat value={businessNumbers.ticketsSold} />,
+    hint: '+5.2% vs last month',
+  },
+  {
+    label: 'Active venues',
+    value: <NumericFormat value={venues.length} />,
+    hint: '1 added this month',
+  },
+  {
+    label: 'Revenue',
+    value: (
+      <NumericFormat
+        value={businessNumbers.revenue}
+        style="currency"
+        currency="EUR"
+        maximumFractionDigits={0}
+      />
+    ),
+    hint: '+8.1% vs last month',
+  },
 ];
 
-const activity = [
+// A function, so the dates are worked out on every render, not once per server.
+const getActivity = () => [
   {
     id: 'r1',
     who: 'soundcheck',
     action: 'published "Summer Sound Festival"',
-    date: '2026-06-01',
+    date: daysAgo(1),
   },
   {
     id: 'r2',
     who: 'turnstile',
     action: 'opened the box office for the autumn season',
-    date: '2026-05-31',
+    date: daysAgo(2),
   },
   {
     id: 'r3',
     who: 'cue',
     action: 'signed off 7 stage plans',
-    date: '2026-05-30',
+    date: daysAgo(3),
   },
   {
     id: 'r4',
     who: 'sponsor',
     action: 'signed the brewery sponsorship',
-    date: '2026-05-29',
+    date: daysAgo(4),
   },
 ];
 
@@ -63,10 +91,10 @@ const Stat = ({
   hint,
 }: {
   label: string;
-  value: string;
+  value: ReactNode;
   hint: string;
 }) => (
-  <Card stretch>
+  <Card stretch aria-label={label}>
     <Card.Content>
       <Stack space="tight">
         <Text variant="muted" fontSize="sm">
@@ -122,15 +150,12 @@ const DashboardPage = () => {
                   <Table.Column width={130}>When</Table.Column>
                 </Table.Header>
                 <Table.Body>
-                  {activity.map(entry => (
+                  {getActivity().map(entry => (
                     <Table.Row key={entry.id}>
                       <Table.Cell>{byId(entry.who)?.name}</Table.Cell>
                       <Table.Cell>{entry.action}</Table.Cell>
                       <Table.Cell>
-                        <DateFormat
-                          value={new Date(entry.date)}
-                          dateStyle="medium"
-                        />
+                        <DateFormat value={entry.date} dateStyle="medium" />
                       </Table.Cell>
                     </Table.Row>
                   ))}

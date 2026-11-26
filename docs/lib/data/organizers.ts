@@ -13,8 +13,9 @@ export interface Organizer {
 
 export const organizers: Organizer[] = [
   {
-    id: 'acme',
-    name: 'Acme Inc.',
+    // First, so it is the default: the customer every example belongs to.
+    id: 'riverside',
+    name: 'Riverside Events GmbH',
     customerNumber: '10001',
     city: 'Laughville',
   },

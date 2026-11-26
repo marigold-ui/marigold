@@ -17,7 +17,7 @@ export interface ColumnsProps extends AriaRegionProps {
    */
   columns: Array<number | 'fit'>;
   /**
-   * Collapse children into a vertical layout at given width. Note that `collapseAt` is based on the total element width, and not the window width. With a default value of "0" columns will not collapse by default.
+   * Collapse children into a vertical layout at given width. Note that `collapseAt` is based on the total element width, and not the window width. With a default value of "0" columns will not collapse by default. Ratio columns never wrap on their own: below `collapseAt` all columns stack, above it ratio columns stay in one row in their ratio. A `fit` column without room left in the row still moves onto its own line.
    */
   collapseAt?: string;
   /**
@@ -43,17 +43,20 @@ export const Columns = ({
 
   return (
     <div
-      className={cn(
-        'flex flex-wrap items-stretch gap-(--space)',
-        stretch && 'h-full'
-      )}
+      className={cn('flex flex-wrap gap-(--space)', stretch && 'h-full')}
       style={createSpacingVar('space', `${space}`)}
       {...props}
     >
       {Children.map(children, (child, idx) => (
         <div
           className={cn(
-            columns[idx] === 'fit' ? 'flex h-fit w-fit' : 'flex-(--columnSize)',
+            // A ratio column must be allowed below its content's width, or wide
+            // content breaks the ratio, wraps single columns and overflows the
+            // row. A `fit` column has no grow, so `min-width: auto` is the only
+            // thing giving it its content's width: cap it, never zero it.
+            columns[idx] === 'fit'
+              ? 'flex h-fit w-fit max-w-full'
+              : 'min-w-0 grow-(--columnSize)',
             'basis-[calc((var(--collapseAt)-100%)*999)]'
           )}
           style={createVar({

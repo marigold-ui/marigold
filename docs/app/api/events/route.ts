@@ -1,5 +1,5 @@
 import type { EventStatus } from '@/lib/data/events';
-import { eventStatuses } from '@/lib/data/events';
+import { asOfToday, eventStatuses } from '@/lib/data/events';
 import {
   type EventQueryParams,
   parseSession,
@@ -48,5 +48,10 @@ export const GET = async (request: NextRequest) => {
     await sleep(Math.min(delay, 5000));
   }
 
-  return Response.json(queryEvents(params));
+  // Dates are moved to today here, per request, rather than in the fixture.
+  const result = queryEvents(params);
+  return Response.json({
+    ...result,
+    items: result.items.map(event => asOfToday(event)),
+  });
 };
