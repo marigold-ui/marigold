@@ -182,12 +182,12 @@ const PriceTable = () => (
       <Headline level="4">Fee</Headline>
     </Columns>
     <Columns columns={[1, 1, 1]} space={2}>
-      <Stack>
+      <Stack space={2}>
         {data.map(({ name }) => (
           <TextField key={crypto.randomUUID()} defaultValue={name} />
         ))}
       </Stack>
-      <Stack>
+      <Stack space={2}>
         {data.map(({ price }) => (
           <NumberField
             key={crypto.randomUUID()}
@@ -198,7 +198,7 @@ const PriceTable = () => (
           />
         ))}
       </Stack>
-      <Stack>
+      <Stack space={2}>
         {data.map(({ fee }) => (
           <NumberField
             key={crypto.randomUUID()}
