@@ -16,7 +16,7 @@ import {
   Title,
 } from '@marigold/components';
 
-const user = people.find(person => person.id === 'chippy')!;
+const user = people.find(person => person.id === 'headliner')!;
 
 export const Settings = () => (
   <Stack space="regular">

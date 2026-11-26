@@ -30,26 +30,26 @@ const stats = [
 const activity = [
   {
     id: 'r1',
-    who: 'sandy',
+    who: 'soundcheck',
     action: 'published "Summer Sound Festival"',
     date: '2026-06-01',
   },
   {
     id: 'r2',
-    who: 'pipes',
-    action: 'updated the checkout pipeline',
+    who: 'turnstile',
+    action: 'opened the box office for the autumn season',
     date: '2026-05-31',
   },
   {
     id: 'r3',
-    who: 'crash',
-    action: 'closed 7 bug reports',
+    who: 'cue',
+    action: 'signed off 7 stage plans',
     date: '2026-05-30',
   },
   {
     id: 'r4',
-    who: 'gizmo',
-    action: 'shipped the new tickets API',
+    who: 'sponsor',
+    action: 'signed the brewery sponsorship',
     date: '2026-05-29',
   },
 ];

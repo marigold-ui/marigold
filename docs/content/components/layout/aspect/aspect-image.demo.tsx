@@ -5,14 +5,14 @@ export default () => (
     <Aspect ratio="ultrawide">
       <img
         src="/marigold-field.webp"
-        className="object-cover object-bottom"
+        className="size-full object-cover object-bottom"
         alt="a field of marigold flowers and a bright blue sky"
       />
     </Aspect>
     <Aspect ratio="ultrawide">
       <img
         src="/marigold-field.webp"
-        className="object-cover object-top"
+        className="size-full object-cover object-top"
         alt="a field of marigold flowers and a bright blue sky"
       />
     </Aspect>
