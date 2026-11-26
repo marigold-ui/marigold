@@ -1,4 +1,3 @@
-import { SiteFooter } from '@/app/_components/SiteFooter';
 import { NuqsAdapter } from 'nuqs/adapters/next/app';
 import type { PropsWithChildren } from 'react';
 import { Wrapper } from './wrapper';
@@ -10,14 +9,11 @@ export const dynamic = 'force-dynamic';
 
 // Layout
 // ---------------
-// Footer on the group layout: every /examples route is public, so all of them
-// need the legal links. Outside `Wrapper` to keep fumadocs chrome, not `rui`.
+// No docs footer: an example is a standalone app. The legal links every
+// public page needs sit in the shell's rail footer instead (`ShellLayout`).
 const Layout = ({ children }: PropsWithChildren) => (
   <NuqsAdapter>
     <Wrapper className="min-h-dvh">{children}</Wrapper>
-    <div className="mx-auto w-full max-w-(--breakpoint-lg) px-(--page-padding-md) xl:px-(--page-padding-xl)">
-      <SiteFooter />
-    </div>
   </NuqsAdapter>
 );
 
