@@ -10,6 +10,7 @@ import { MarigoldProvider } from '../Provider/MarigoldProvider';
 import { Text } from '../Text/Text';
 import { TextValue } from '../TextValue/TextValue';
 import { ListView } from './ListView';
+import type { ListViewProps } from './ListView';
 import {
   Basic,
   EmptyState,
@@ -678,6 +679,66 @@ describe('ListView', () => {
       expect(
         screen.getByRole('checkbox', { name: 'Select all' })
       ).toHaveAccessibleDescription('0 of 1 selected Venues');
+    });
+  });
+
+  describe('types', () => {
+    interface Venue {
+      id: string;
+      name: string;
+    }
+    const venues: Venue[] = [
+      { id: 'a', name: 'Alte Oper' },
+      { id: 'b', name: 'Bürgerhaus' },
+    ];
+    const renderThemed = (ui: ReactNode) =>
+      render(<MarigoldProvider theme={theme}>{ui}</MarigoldProvider>);
+
+    test('infers the item type from items and passes it to the render function', () => {
+      renderThemed(
+        <ListView aria-label="Venues" items={venues}>
+          {venue => {
+            expectTypeOf(venue).toEqualTypeOf<Venue>();
+            return <ListView.Item id={venue.id}>{venue.name}</ListView.Item>;
+          }}
+        </ListView>
+      );
+
+      expect(screen.getAllByRole('row')).toHaveLength(2);
+    });
+
+    test('accepts a render function typed with the item type', () => {
+      const renderVenue = (venue: Venue) => (
+        <ListView.Item id={venue.id}>{venue.name}</ListView.Item>
+      );
+
+      renderThemed(
+        <ListView aria-label="Venues" items={venues}>
+          {renderVenue}
+        </ListView>
+      );
+
+      expect(screen.getAllByRole('row')).toHaveLength(2);
+    });
+
+    test('keeps the patterns that compiled before', () => {
+      const props: ListViewProps = { 'aria-label': 'Venues', items: venues };
+      expectTypeOf(props.items).toEqualTypeOf<Iterable<object> | undefined>();
+
+      renderThemed(
+        <>
+          <ListView {...props}>
+            {(item: object) => (
+              <ListView.Item id={(item as Venue).id}>row</ListView.Item>
+            )}
+          </ListView>
+          <ListView aria-label="Any" items={venues as any[]}>
+            {(item: any) => <ListView.Item id={item.id}>row</ListView.Item>}
+          </ListView>
+        </>
+      );
+
+      expect(screen.getAllByRole('row')).toHaveLength(4);
     });
   });
 });
