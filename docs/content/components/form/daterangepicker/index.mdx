@@ -50,11 +50,11 @@ The same booking captures one value on the left and two on the right. The range 
 
 <ComponentDemo name="date-range-picker-vs-fields" />
 
-<Callout title="@internationalized/date" type="info">
-  Marigold represents dates with the `DateValue` type from
-  `@internationalized/date` rather than the native JavaScript `Date`, which
-  avoids the timezone and parsing problems that come with `Date`. It is a peer
-  dependency, so install it if it is not already in your project.
+<Callout title="Date values" type="info">
+  Marigold represents dates with the `DateValue` type rather than the native
+  JavaScript `Date`, which avoids the timezone and parsing problems that come
+  with `Date`. Import `DateValue`, `CalendarDate`, `parseDate` and the other
+  date helpers from `@marigold/components`.
 </Callout>
 
 ### Limiting the range

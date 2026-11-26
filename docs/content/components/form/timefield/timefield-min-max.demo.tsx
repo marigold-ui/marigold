@@ -1,5 +1,4 @@
-import { parseTime } from '@internationalized/date';
-import { TimeField, TimeFieldProps } from '@marigold/components';
+import { TimeField, TimeFieldProps, parseTime } from '@marigold/components';
 
 export default (props: TimeFieldProps) => (
   <TimeField

@@ -1,5 +1,4 @@
-import { getLocalTimeZone, today } from '@internationalized/date';
-import { DateRangePicker } from '@marigold/components';
+import { DateRangePicker, getLocalTimeZone, today } from '@marigold/components';
 
 export default () => {
   const now = today(getLocalTimeZone());

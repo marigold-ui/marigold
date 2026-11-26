@@ -1,6 +1,5 @@
-import type { DateValue } from '@internationalized/date';
 import { useState } from 'react';
-import { DatePicker, Stack } from '@marigold/components';
+import { DatePicker, type DateValue, Stack } from '@marigold/components';
 
 export default () => {
   const [from, setFrom] = useState<DateValue | null>(null);

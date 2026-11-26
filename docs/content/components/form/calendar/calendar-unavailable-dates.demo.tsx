@@ -1,7 +1,5 @@
-import type { DateValue } from '@internationalized/date';
-import { isWeekend } from '@internationalized/date';
 import { useLocale } from '@react-aria/i18n';
-import { Calendar } from '@marigold/components';
+import { Calendar, type DateValue, isWeekend } from '@marigold/components';
 
 export default () => {
   const { locale } = useLocale();

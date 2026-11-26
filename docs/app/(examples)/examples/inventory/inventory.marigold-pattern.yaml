@@ -47,5 +47,4 @@ key_files:
 scaffolding_files:
   - page.tsx
 peer_deps:
-  - '@internationalized/date'
   - lucide-react

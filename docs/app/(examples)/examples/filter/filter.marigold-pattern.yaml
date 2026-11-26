@@ -108,7 +108,6 @@ key_files:
 scaffolding_files:
   - page.tsx
 peer_deps:
-  - '@internationalized/date'
   - '@marigold/icons'
   - '@marigold/system'
   - '@tanstack/react-query'

@@ -1,6 +1,5 @@
-import type { DateValue } from '@internationalized/date';
 import { useState } from 'react';
-import { DateRangePicker } from '@marigold/components';
+import { DateRangePicker, type DateValue } from '@marigold/components';
 
 const MIN_NIGHTS = 2;
 const MAX_NIGHTS = 14;

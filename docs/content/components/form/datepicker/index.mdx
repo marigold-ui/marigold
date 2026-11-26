@@ -52,9 +52,9 @@ The `value` and `onChange` props can be used to control the `DatePicker`.
 
 When using a datepicker, relying on the standard JavaScript `Date` object for its value can result in timezone inconsistencies and incorrect date display. That's why the datepicker uses a specific `DateValue` type from [@internationalized/date](https://react-spectrum.adobe.com/internationalized/date/) instead. This library handles correct international date manipulation across calendars, time zones, and other localization concerns.
 
-<Callout title="@internationalized/date" type="info">
-  `@internationalized/date` is a peer dependency. If it's not already in your
-  project, you'll need to install it.
+<Callout title="Date values" type="info">
+  Import `CalendarDate`, `parseDate`, `today` and the other date helpers from
+  `@marigold/components`. There is no extra package to install.
 </Callout>
 
 The simplest way to parse a Date for the datepicker is by using `parseAbsoluteToLocal`. This function converts an absolute date and time into the current user's local time zone.
