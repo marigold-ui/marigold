@@ -123,6 +123,7 @@ test('Enter while results load runs the first new row once and closes', async ()
 });
 
 test('a pointer on a row drops an Enter that waits for results', async () => {
+  const user = userEvent.setup();
   const onAction = vi.fn();
   renderWithOverlay(
     <PreviousResultsWhileLoading.Component defaultOpen onAction={onAction} />
@@ -132,9 +133,7 @@ test('a pointer on a row drops an Enter that waits for results', async () => {
   type(input, 'jazz');
   pressEnter(input);
   const [row] = screen.getAllByRole('menuitem');
-  act(() => {
-    row.dispatchEvent(new PointerEvent('pointermove', { bubbles: true }));
-  });
+  await user.hover(row);
 
   await screen.findByRole('menuitem', { name: /Jazz Night/ });
   await pause(300);
