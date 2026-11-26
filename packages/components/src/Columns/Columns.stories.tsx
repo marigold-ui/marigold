@@ -7,6 +7,7 @@ import { Headline } from '../Headline/Headline';
 import { NumberField } from '../NumberField/NumberField';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
+import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { Columns } from './Columns';
 
@@ -217,82 +218,148 @@ export const TableLike = meta.story({
   ),
 });
 
+const Cell = ({ children }: { children: ReactNode }) => (
+  <div className="flex h-10 items-center justify-center rounded bg-[#e9ecef] text-xs">
+    {children}
+  </div>
+);
+
+const Example = ({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description: string;
+  children: ReactNode;
+}) => (
+  <Stack space={2}>
+    <Stack space={0.5}>
+      <Headline level="5">{title}</Headline>
+      <Text size="xs" variant="muted">
+        {description}
+      </Text>
+    </Stack>
+    {children}
+  </Stack>
+);
+
 /**
- * A narrow container, such as a side panel. Columns keep their ratios however
- * wide their content is, so rows line up and nothing pushes the row past the
- * container. Stacking only happens through `collapseAt`.
+ * Columns in a 240px wide side panel (the dashed frame). Each example says what
+ * you should see. Before DST-1610, wide content broke the ratio, wrapped single
+ * columns onto the next line and pushed the row out of the frame.
  */
 export const NarrowContainer = meta.story({
   tags: ['component-test'],
   render: () => (
-    <div className="w-60">
-      <Stack space={6}>
-        <Stack space={2}>
-          <Columns
-            role="region"
-            aria-label="Price table headings"
-            columns={[1, 1, 1]}
-            space={2}
+    <Stack space={2}>
+      <Text size="sm" variant="muted">
+        A side panel, 240px wide. Nothing sticks out of the dashed frame.
+      </Text>
+      <div className="w-60 rounded border border-dashed border-[#adb5bd] p-2">
+        <Stack space={8}>
+          <Example
+            title="1. Rows line up"
+            description="Three equal columns. Each field sits right below its heading, all in one row. Fields shrink to their column, so a long value such as “Standard” is cut off."
           >
-            <Headline level="4">Name</Headline>
-            <Headline level="4">Price</Headline>
-            <Headline level="4">Fee</Headline>
-          </Columns>
-          <Columns
-            role="region"
-            aria-label="Price table fields"
-            columns={[1, 1, 1]}
-            space={2}
+            <Stack space={2}>
+              <Columns
+                role="region"
+                aria-label="Price table headings"
+                columns={[1, 1, 1]}
+                space={2}
+              >
+                <Text size="sm" weight="bold">
+                  Name
+                </Text>
+                <Text size="sm" weight="bold">
+                  Price
+                </Text>
+                <Text size="sm" weight="bold">
+                  Fee
+                </Text>
+              </Columns>
+              <Columns
+                role="region"
+                aria-label="Price table fields"
+                columns={[1, 1, 1]}
+                space={2}
+              >
+                <TextField aria-label="Name" defaultValue="Standard" />
+                <NumberField
+                  aria-label="Price"
+                  defaultValue={2.5}
+                  hideStepper
+                  width={20}
+                  formatOptions={{ style: 'currency', currency: 'EUR' }}
+                />
+                <NumberField
+                  aria-label="Fee"
+                  defaultValue={3}
+                  hideStepper
+                  width={20}
+                  formatOptions={{ style: 'currency', currency: 'EUR' }}
+                />
+              </Columns>
+            </Stack>
+          </Example>
+          <Example
+            title="2. Wide content scrolls inside its column"
+            description="The left column holds a 600px strip, yet it keeps 2 parts and the right column 1 part. Scroll the strip sideways to reach cell 12."
           >
-            <TextField aria-label="Name" defaultValue="Standard" />
-            <NumberField
-              aria-label="Price"
-              defaultValue={2.5}
-              hideStepper
-              width={20}
-              formatOptions={{ style: 'currency', currency: 'EUR' }}
-            />
-            <NumberField
-              aria-label="Fee"
-              defaultValue={3}
-              hideStepper
-              width={20}
-              formatOptions={{ style: 'currency', currency: 'EUR' }}
-            />
-          </Columns>
+            <Columns
+              role="region"
+              aria-label="Wide content"
+              columns={[2, 1]}
+              space={2}
+            >
+              <div className="overflow-x-auto rounded">
+                <div className="flex w-[600px]">
+                  {Array.from({ length: 12 }, (_, idx) => (
+                    <div
+                      key={idx}
+                      className="flex h-10 w-[50px] shrink-0 items-center justify-center bg-[#e9ecef] text-xs odd:bg-[#ced4da]"
+                    >
+                      {idx + 1}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <Cell>1 part</Cell>
+            </Columns>
+          </Example>
+          <Example
+            title="3. A fit column keeps its content width"
+            description="The button keeps its full width. The search field takes the rest of the row."
+          >
+            <Columns
+              role="region"
+              aria-label="Fit column"
+              columns={[1, 'fit']}
+              space={2}
+            >
+              <TextField aria-label="Search" />
+              <Button>Search</Button>
+            </Columns>
+          </Example>
+          <Example
+            title="4. collapseAt stacks every column"
+            description='The panel is narrower than collapseAt="40em", so both columns stack, each as wide as the panel.'
+          >
+            <Columns
+              role="region"
+              aria-label="Collapsed"
+              columns={[1, 1]}
+              space={2}
+              collapseAt="40em"
+            >
+              <Cell>Column 1</Cell>
+              <Cell>Column 2</Cell>
+            </Columns>
+          </Example>
         </Stack>
-        <Columns
-          role="region"
-          aria-label="Wide content"
-          columns={[2, 1]}
-          space={2}
-        >
-          <div className="overflow-x-auto">
-            <div className="h-10 w-[600px] bg-[#e9ecef]" />
-          </div>
-          <div className="h-10 bg-[#e9ecef]" />
-        </Columns>
-        <Columns
-          role="region"
-          aria-label="Fit column"
-          columns={[1, 'fit']}
-          space={2}
-        >
-          <TextField aria-label="Search" />
-          <Button>Search</Button>
-        </Columns>
-        <Columns
-          role="region"
-          aria-label="Collapsed"
-          columns={[1, 1]}
-          space={2}
-          collapseAt="40em"
-        >
-          <div className="h-10 bg-[#e9ecef]" />
-          <div className="h-10 bg-[#e9ecef]" />
-        </Columns>
-      </Stack>
-    </div>
+      </div>
+    </Stack>
   ),
 });
 
