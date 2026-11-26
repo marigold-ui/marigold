@@ -27,6 +27,7 @@ import {
   exists,
   firstExisting,
 } from '../lib/fs-utils.js';
+import { createProgress } from '../lib/progress.js';
 
 // Thrown when the user aborts the interactive wizard. `bin/marigold.ts`
 // catches by `.name` so the exit code becomes 130 (SIGINT convention) and
@@ -339,13 +340,13 @@ export const runInit = async (
   ];
 
   if (canInstall) {
-    const spinner = prompts.spinner();
-    spinner.start(`Installing with ${project.packageManager}`);
+    const progress = createProgress();
+    progress.start(`Installing with ${project.packageManager}`);
     try {
       await runInstall(project.packageManager, allPkgs, cwd);
-      spinner.stop(pc.green('Packages installed.'));
+      progress.stop(pc.green('Packages installed.'));
     } catch (err) {
-      spinner.stop(pc.red('Install failed.'));
+      progress.stop(pc.red('Install failed.'));
       throw err;
     }
   }
