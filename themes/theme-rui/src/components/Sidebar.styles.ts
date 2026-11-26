@@ -1,11 +1,12 @@
 import { type ThemeComponent, cva } from '@marigold/system';
 
 /**
- * Two charcoal tiers of ink. Rows are `foreground`; the active row is set apart
- * by its `selected` pill and medium weight, not by colour. Group labels are the
- * quieter `secondary` tier (charcoal-600, 5:1). It is already the lightest that
- * passes AA for 12px (charcoal-500 is 3.3:1), so labels sit back because the
- * rows come forward, together with size, weight and the gap above them.
+ * Panel text is one ink, `foreground`. The active row is set apart by its
+ * `selected` pill and medium weight, not by colour. Group labels share the
+ * rows' ink and are told apart by size, weight and the gap above them: grey
+ * `secondary` captions read weaker than the rows they head (DSTSUP-337).
+ * `secondary` stays on the rail's idle tiles, where the ink lift on hover and
+ * for the current section needs a quieter resting state.
  */
 export const Sidebar: ThemeComponent<'Sidebar'> = {
   // The full-width sheet covers the page, so there is nothing to dim.
@@ -85,16 +86,17 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   separator: cva({ base: 'bg-border mx-3 my-1.5 h-px border-0' }),
   groupLabel: cva({
     // Caption aligned to the pill's item text (16px): 12px semibold
-    // `secondary` in sentence case, a landmark rather than a shout. Without
-    // uppercase, weight carries "heading" and colour carries "not a link":
-    // grey against the rows' `foreground`. The gap does the
+    // `foreground` in sentence case, a landmark rather than a shout. Without
+    // uppercase, weight carries "heading" and the smaller size carries "not a
+    // link". Not `secondary`: a grey heading read weaker than the rows it
+    // heads (DSTSUP-337). The gap does the
     // separating — pt-6 (24px) is 0.8 of a 30px row, so a group break reads
     // as one even without a separator; pt-4 was half a row and groups ran
     // together once the list outgrew the viewport (see the LongNavigation
     // story). A leading caption has nothing above to separate from, so drop
     // to `first:pt-[7px]` — the offset that centres its 16px line box on the
     // same axis as a first item's text.
-    base: 'pl-4 pr-3 pt-6 first:pt-[7px] pb-1.5 text-xs font-semibold text-secondary',
+    base: 'pl-4 pr-3 pt-6 first:pt-[7px] pb-1.5 text-xs font-semibold text-foreground',
   }),
   navPanel: cva({
     base: [
@@ -130,10 +132,9 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
       'transition-[background-color,box-shadow]',
       'motion-reduce:transition-none',
       'outline-none focus-visible:ui-state-focus-item',
-      // Idle `foreground`: clickable rows must out-rank the `secondary`
-      // groupLabel captions, which can't go lighter (see the top comment), so
-      // the rows take full ink. Idle and active share the colour; the pill and
-      // medium weight mark the active row, and hover previews the fill.
+      // Idle `foreground`, the same ink as the groupLabel captions (see the
+      // top comment). Idle and active share the colour; the pill and medium
+      // weight mark the active row, and hover previews the fill.
       'text-foreground hover:bg-hover',
       'data-active:bg-selected data-active:font-medium',
       // Ancestor of the current page: the only marker on this level.
@@ -210,7 +211,10 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // the back/forward swipe that guards has no block-axis twin.
   rail: cva({
     base: [
-      'flex flex-col gap-0.5 flex-1 min-h-0 overflow-x-hidden py-1.5',
+      // gap-tight (6px) keeps the tiles apart so sections don't run together
+      // (DSTSUP-337); the tiles' own padding stays, so fills and the collapsed
+      // 44px target are unchanged.
+      'flex flex-col gap-tight flex-1 min-h-0 overflow-x-hidden py-1.5',
       'ui-scrollbar ui-scroll-mask-y ui-scroll-seam-timeline',
       'scroll-py-(--sc-mask-width) motion-safe:scroll-smooth',
     ],
@@ -263,7 +267,8 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
   // usually fits, so pinning it on would be wrong more often than right.
   railFooter: cva({
     base: [
-      'shrink-0 flex flex-col gap-0.5 py-1.5',
+      // Same gap-tight as the rail above: its tiles are the same railItem.
+      'shrink-0 flex flex-col gap-tight py-1.5',
       'ui-scroll-seam-footer [--seam-fallback-color:transparent]',
       // The drawer list usually overflows: keep the hairline.
       'max-sm:[--seam-fallback-color:var(--seam-color)]',
@@ -280,9 +285,9 @@ export const Sidebar: ThemeComponent<'Sidebar'> = {
     ],
   }),
   // Section heading atop the panel; also the focus target when the panel swaps.
-  // Full-strength ink like the rows, a step above them in weight, and above the
-  // `secondary` groupLabel captions in size and colour: semibold 14px
-  // `foreground` against their semibold 12px `secondary`.
+  // Full-strength ink like the rows and the groupLabel captions, a step above
+  // the rows in weight and above the captions in size: semibold 14px against
+  // their semibold 12px.
   panelTitle: cva({
     base: [
       // Centered via line-height, not flex: ellipsis needs a block container.

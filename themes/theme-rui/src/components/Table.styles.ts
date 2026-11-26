@@ -189,7 +189,8 @@ export const Table: ThemeComponent<'Table'> = {
     base: [
       // Ghost icon button. The wash is `bg-current/10`, so it blends on any
       // ground including the group row's own fill.
-      'ui-button-base col-start-1',
+      // `relative` paints it above a truncated cell's padding, which reaches into its track.
+      'ui-button-base relative col-start-1',
       // Keeps the 32px target while the caret itself sits where the column's
       // values do, so its margin box still measures exactly one track.
       'size-(--tree-chevron-size) -ms-(--tree-caret-inset)',

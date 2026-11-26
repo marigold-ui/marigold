@@ -1,29 +1,31 @@
 export const teams = [
   {
-    id: 'design',
-    name: 'Design Systems',
+    id: 'programming',
+    name: 'Programming & Booking',
     description:
-      'Owns the component library, design tokens, and accessibility guidelines.',
-    memberIds: ['chippy', 'token', 'sandy'],
+      'Books the acts and plans the season, from first offer to signed contract.',
+    memberIds: ['headliner', 'encore'],
   },
   {
-    id: 'platform',
-    name: 'Platform Engineering',
-    description: 'Builds and runs the infrastructure, pipelines, and APIs.',
-    memberIds: ['pipes', 'gizmo'],
-  },
-  {
-    id: 'frontend',
-    name: 'Frontend Guild',
+    id: 'venues',
+    name: 'Venue Operations',
     description:
-      'Ships product surfaces and keeps the front end fast and reliable.',
-    memberIds: ['crash', 'flex'],
+      'Runs the venues on show day: stages, crews, safety and the building itself.',
+    memberIds: ['soundcheck', 'cue', 'rigger', 'nightshift'],
   },
   {
-    id: 'data',
-    name: 'Data & Insights',
-    description: 'Turns raw events into dashboards, metrics, and reports.',
-    memberIds: ['query'],
+    id: 'ticketing',
+    name: 'Ticketing & Box Office',
+    description:
+      'Sells the tickets, builds the seating plans and looks after guests on the night.',
+    memberIds: ['turnstile', 'seatmap', 'doors', 'clipboard'],
+  },
+  {
+    id: 'marketing',
+    name: 'Marketing & Partnerships',
+    description:
+      'Fills the seats: campaigns, social media, sponsors and press.',
+    memberIds: ['hype', 'sponsor'],
   },
 ] as const;
 

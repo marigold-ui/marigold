@@ -6,38 +6,41 @@ export default () => (
       <img
         src="/marigold-abstract.webp"
         className="object-cover"
-        alt="an abstract marigold flower"
+        alt="a marigold flower covered in morning dew"
       />
     </Aspect>
     <Aspect ratio="square">
-      <img src="/marigold-abstract.webp" alt="an abstract marigold flower" />
+      <img
+        src="/marigold-abstract.webp"
+        alt="a marigold flower covered in morning dew"
+      />
     </Aspect>
     <Aspect ratio="landscape">
       <img
         src="/marigold-abstract.webp"
         className="object-cover"
-        alt="an abstract marigold flower"
+        alt="a marigold flower covered in morning dew"
       />
     </Aspect>
     <Aspect ratio="golden">
       <img
         src="/marigold-abstract.webp"
         className="object-cover"
-        alt="an abstract marigold flower"
+        alt="a marigold flower covered in morning dew"
       />
     </Aspect>
     <Aspect ratio="widescreen">
       <img
         src="/marigold-abstract.webp"
         className="object-cover"
-        alt="an abstract marigold flower"
+        alt="a marigold flower covered in morning dew"
       />
     </Aspect>
     <Aspect ratio="ultrawide">
       <img
         src="/marigold-abstract.webp"
         className="object-cover"
-        alt="an abstract marigold flower"
+        alt="a marigold flower covered in morning dew"
       />
     </Aspect>
   </div>
