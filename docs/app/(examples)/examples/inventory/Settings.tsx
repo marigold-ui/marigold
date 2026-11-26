@@ -27,7 +27,7 @@ export const Settings = () => (
       </Text>
     </Stack>
     <Tabs>
-      <Tabs.List>
+      <Tabs.List aria-label="Account settings">
         <Tabs.Item id="profile">
           <UserRound className="size-4" /> Profile
         </Tabs.Item>

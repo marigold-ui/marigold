@@ -27,7 +27,7 @@ export const LocationSettings = () => (
         <Stack space="regular">
           <TextField
             label="Venue Name"
-            description="Name of the building or location, e.g. 'Konzerthaus Freiburg'."
+            description="Name of the building or location, e.g. 'Maple Court Theatre'."
           />
           <TextField
             label="Street"

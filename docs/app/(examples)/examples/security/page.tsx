@@ -1,12 +1,11 @@
 'use client';
 
+import { useState } from 'react';
 import {
-  Badge,
   Button,
   DateFormat,
   Description,
   Form,
-  Inline,
   Page,
   Panel,
   Stack,
@@ -21,21 +20,24 @@ import {
 const sessions = [
   {
     id: 'sess-1',
-    device: 'MacBook Pro · Chrome',
+    device: 'MacBook Pro',
+    browser: 'Chrome',
     location: 'Berlin, Germany',
     lastActive: '2026-06-02',
     current: true,
   },
   {
     id: 'sess-2',
-    device: 'iPhone 15 · Safari',
+    device: 'iPhone 15',
+    browser: 'Safari',
     location: 'Berlin, Germany',
     lastActive: '2026-06-01',
     current: false,
   },
   {
     id: 'sess-3',
-    device: 'Windows · Edge',
+    device: 'Windows PC',
+    browser: 'Edge',
     location: 'Munich, Germany',
     lastActive: '2026-05-20',
     current: false,
@@ -44,6 +46,7 @@ const sessions = [
 
 const SecurityPage = () => {
   const { addToast } = useToast();
+  const [newPassword, setNewPassword] = useState('');
 
   return (
     <Page>
@@ -68,15 +71,40 @@ const SecurityPage = () => {
         <Panel size="form">
           <Panel.Header>
             <Title>Password</Title>
-            <Description>Use at least 12 characters.</Description>
           </Panel.Header>
           <Panel.Content>
             <Stack space="regular">
-              <TextField label="Current password" type="password" width={56} />
-              <TextField label="New password" type="password" width={56} />
+              <TextField
+                label="Current password"
+                name="currentPassword"
+                type="password"
+                autoComplete="current-password"
+                required
+                width={56}
+              />
+              <TextField
+                label="New password"
+                name="newPassword"
+                type="password"
+                autoComplete="new-password"
+                description="At least 12 characters."
+                required
+                minLength={12}
+                value={newPassword}
+                onChange={setNewPassword}
+                width={56}
+              />
               <TextField
                 label="Confirm new password"
+                name="confirmPassword"
                 type="password"
+                autoComplete="new-password"
+                required
+                validate={value =>
+                  value && value !== newPassword
+                    ? 'The passwords do not match.'
+                    : null
+                }
                 width={56}
               />
             </Stack>
@@ -123,12 +151,14 @@ const SecurityPage = () => {
               {sessions.map(session => (
                 <Table.Row key={session.id}>
                   <Table.Cell textValue={session.device}>
-                    <Inline space="related" alignY="center" noWrap>
+                    <Stack>
                       <Text weight="semibold">{session.device}</Text>
-                      {session.current && (
-                        <Badge variant="success">This device</Badge>
-                      )}
-                    </Inline>
+                      <Text variant="muted" fontSize="xs">
+                        {session.current
+                          ? `${session.browser} · This device`
+                          : session.browser}
+                      </Text>
+                    </Stack>
                   </Table.Cell>
                   <Table.Cell>{session.location}</Table.Cell>
                   <Table.Cell>

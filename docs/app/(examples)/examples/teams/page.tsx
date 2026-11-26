@@ -10,7 +10,6 @@ import {
   Description,
   Inline,
   Page,
-  Stack,
   Text,
   Tiles,
   Title,
@@ -36,17 +35,11 @@ const TeamsPage = () => (
       {teams.map(team => {
         const members = membersOf(team.memberIds);
         return (
-          <Card key={team.id} stretch>
-            <Card.Content>
-              <Stack space="tight">
-                <Text fontSize="xl" weight="semibold">
-                  {team.name}
-                </Text>
-                <Text variant="muted" fontSize="sm">
-                  {team.description}
-                </Text>
-              </Stack>
-            </Card.Content>
+          <Card key={team.id} stretch headingLevel={2}>
+            <Card.Header>
+              <Title>{team.name}</Title>
+              <Description>{team.description}</Description>
+            </Card.Header>
             <Card.Footer>
               <Inline space="related" alignY="center" noWrap>
                 <Inline space="collapsed" alignY="center" noWrap>

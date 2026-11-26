@@ -26,28 +26,28 @@ const initialEvents: Event[] = [
   {
     id: '1',
     name: 'Jazz Night',
-    venue: 'Jazzhaus',
+    venue: 'Cellar Lounge',
     category: 'Concert',
     price: 24,
   },
   {
     id: '2',
     name: 'Blues Session',
-    venue: 'Vorderhaus',
+    venue: 'Maple Court Theatre',
     category: 'Concert',
     price: 19,
   },
   {
     id: '3',
     name: 'Swing Evening',
-    venue: 'Alte Wache',
+    venue: 'Oak Ridge Barn',
     category: 'Concert',
     price: 24,
   },
   {
     id: '4',
     name: 'Wine Tasting',
-    venue: 'Alte Wache',
+    venue: 'Oak Ridge Barn',
     category: 'Culinary',
     price: 45,
   },
@@ -99,9 +99,11 @@ const BulkEditForm = ({
             value={venue}
             onChange={key => setVenue(String(key))}
           >
-            <Select.Option id="Jazzhaus">Jazzhaus</Select.Option>
-            <Select.Option id="Vorderhaus">Vorderhaus</Select.Option>
-            <Select.Option id="Alte Wache">Alte Wache</Select.Option>
+            <Select.Option id="Cellar Lounge">Cellar Lounge</Select.Option>
+            <Select.Option id="Maple Court Theatre">
+              Maple Court Theatre
+            </Select.Option>
+            <Select.Option id="Oak Ridge Barn">Oak Ridge Barn</Select.Option>
           </Select>
           <Select
             label="Category"

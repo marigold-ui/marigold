@@ -27,7 +27,7 @@ export const Newsletter = () => (
         <Stack space="regular">
           <Inline noWrap space="related">
             <TextField
-              arial-label="Email"
+              aria-label="Email"
               placeholder="Enter your email"
               type="email"
             />

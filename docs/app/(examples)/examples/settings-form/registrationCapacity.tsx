@@ -80,7 +80,7 @@ export const RegistrationCapacity = () => {
               <TextField
                 label="Terms & Conditions URL"
                 type="url"
-                defaultValue="https://riverside-events.de/agb"
+                defaultValue="https://example.com/terms"
                 description="Attendees must accept these before completing registration."
               />
               <TextField

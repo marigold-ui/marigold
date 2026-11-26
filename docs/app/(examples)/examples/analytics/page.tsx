@@ -38,7 +38,7 @@ const ticketsSoldByVenue: Record<string, number> = {
   '10': 4480,
 };
 
-// Highest-grossing venues this period: attach the metric, rank by it, take the top 6.
+// Venues with the most tickets sold this period: attach the metric, rank by it, take the top 6.
 const topVenues = venues
   .map(venue => ({
     ...venue,
@@ -63,7 +63,7 @@ const Stat = ({
   value: string;
   hint: string;
 }) => (
-  <Card stretch>
+  <Card stretch aria-label={label}>
     <Card.Content>
       <Stack space="tight">
         <Text variant="muted" fontSize="sm">
@@ -117,7 +117,7 @@ const AnalyticsPage = () => (
                   <Table.Cell alignX="right">
                     <NumericFormat value={venue.ticketsSold} />
                   </Table.Cell>
-                  <Table.Cell alignX="right">{`★ ${venue.rating}`}</Table.Cell>
+                  <Table.Cell alignX="right">{`★ ${venue.rating.toFixed(1)}`}</Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>

@@ -12,7 +12,7 @@ Good spacing and a clear visual hierarchy help people move through a form withou
 
 ### Overall form layout
 
-Left-align your forms to match natural reading flow. Keep the width at 800px max (use the `container` spacing token) so nothing gets too wide to read comfortably.
+Left-align your forms to match natural reading flow. Cap the width so nothing gets too wide to read comfortably. A form inside a `<Panel size="form">` gets that cap from the panel.
 
 Whitespace matters more than most people think. Enough breathing room between sections and fields keeps the form scannable and prevents everything from blurring together. Use our spacing tokens to keep that whitespace consistent.
 
@@ -22,8 +22,8 @@ Whitespace matters more than most people think. Enough breathing room between se
       <ul>
         <li>Align form content to the left.</li>
         <li>
-          Cap the form width at 800px (spacing token `container`) so lines stay
-          readable.
+          Cap the form width, for example with `<Panel size="form">`, so lines
+          stay readable.
         </li>
         <li>
           Leave enough whitespace around and within the form that the hierarchy

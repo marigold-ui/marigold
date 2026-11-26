@@ -76,7 +76,7 @@ export const RegistrationSettings = () => (
             <TextField
               label="Contact email"
               type="email"
-              defaultValue="info@riverside-events.de"
+              defaultValue="info@example.com"
               description="Shown on the registration page for inquiries."
               errorMessage="Please enter a valid email address."
               width={80}
@@ -105,7 +105,7 @@ export const RegistrationSettings = () => (
           <TextField
             label="Terms & Conditions URL"
             type="url"
-            defaultValue="https://riverside-events.de/agb"
+            defaultValue="https://example.com/terms"
             description="Pre-filled from your event settings. Override it if this event needs different terms."
             errorMessage="Please enter a valid URL (e.g. https://example.com/terms)."
           />

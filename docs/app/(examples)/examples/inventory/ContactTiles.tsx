@@ -15,7 +15,7 @@ export const ContactTiles = () => (
     <Headline level={2}>Our Team</Headline>
     <Tiles stretch equalHeight tilesWidth="250px" space="regular">
       {people.map(person => (
-        <Card key={person.id} stretch>
+        <Card key={person.id} stretch aria-label={person.name}>
           <Card.Content>
             <Stack space="regular" alignX="center">
               <img

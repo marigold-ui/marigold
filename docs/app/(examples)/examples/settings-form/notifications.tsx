@@ -98,7 +98,7 @@ export const Notifications = () => {
             <TextField
               label="CC recipient"
               type="email"
-              description="Send a copy of every notification to this address, e.g. a shared team inbox like events@riverside-events.de."
+              description="Send a copy of every notification to this address, e.g. a shared team inbox like events@example.com."
               width={80}
             />
             <Checkbox

@@ -65,7 +65,7 @@ const Stat = ({
   value: string;
   hint: string;
 }) => (
-  <Card stretch>
+  <Card stretch aria-label={label}>
     <Card.Content>
       <Stack space="tight">
         <Text variant="muted" fontSize="sm">
