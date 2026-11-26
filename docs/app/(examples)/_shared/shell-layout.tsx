@@ -65,7 +65,7 @@ const tileLanding = (tile: RailTile, base: string): string => {
 };
 
 // Match the slug against the tiles' destinations, falling back to progressively
-// shorter path prefixes. A drill-in like `users/token` has no leaf of its own,
+// shorter path prefixes. A drill-in like `users/headliner` has no leaf of its own,
 // so it resolves to the parent `users` leaf and returns the leftover segments as
 // `trailing` — the parent stays highlighted and the trailing segments become
 // extra crumbs.
