@@ -3,7 +3,7 @@ import { Card, Headline, Stack, Text, Tiles } from '@marigold/components';
 
 export default () => (
   <Tiles tilesWidth="200px" space={2}>
-    {venues.slice(5).map(venue => (
+    {venues.slice(5, 10).map(venue => (
       <Card key={crypto.randomUUID()}>
         <Card.Media>
           <img src={venue.image} alt={venue.name} width={200} height={200} />

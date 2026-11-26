@@ -2,7 +2,7 @@
 
 // TODO: Types and options should be key value pairs not an array.
 
-// Bounds for the static demo dataset. They match the actual data range and
+// Bounds for the static demo dataset. They round up from the data range and
 // serve as the slider/number-field upper limits as well as the "no filter"
 // sentinel for price. Defined here (the dependency-free data module) so both
 // the client filter hooks and the server-side query logic can share them. If
@@ -95,7 +95,7 @@ const rawVenues = [
     description:
       'A restored timber barn with modern amenities, ideal for rustic weddings, small concerts, and community gatherings.',
     street: '789 Oak Road',
-    postcode: 'H3J 2R8',
+    postcode: 'Q3J 2R8',
     city: 'Hee-Haw City',
     country: 'Canada',
     capacity: 150,
@@ -179,7 +179,7 @@ const rawVenues = [
     description:
       'A comfortable mid‑size theatre with raked seating and modern AV, designed for comedy, theatre, and lectures.',
     street: '404 Maple Court',
-    postcode: 'H3H 3M4',
+    postcode: 'Q3H 3M4',
     city: 'Hee-Haw City',
     country: 'Canada',
     capacity: 400,
@@ -494,7 +494,7 @@ const rawVenues = [
     description:
       "A timber-roofed open pavilion in a lakeside park, hosting folk nights, markets and the city's summer comedy festival.",
     street: '1 Pavilion Road',
-    postcode: 'H3H 1P1',
+    postcode: 'Q3H 1P1',
     city: 'Hee-Haw City',
     country: 'Canada',
     capacity: 1_200,
@@ -515,7 +515,7 @@ const rawVenues = [
     description:
       'A modern arts centre with a 650-seat main hall, a studio theatre and a gallery foyer for receptions.',
     street: '250 Gallery Street',
-    postcode: 'H3H 2A6',
+    postcode: 'Q3H 2A6',
     city: 'Hee-Haw City',
     country: 'Canada',
     capacity: 650,
@@ -536,7 +536,7 @@ const rawVenues = [
     description:
       'A third-floor loft over a bakery, with exposed brick, big factory windows and a bar, used for launches, comedy and DJ nights.',
     street: '88 King Street',
-    postcode: 'H3H 4K8',
+    postcode: 'Q3H 4K8',
     city: 'Hee-Haw City',
     country: 'Canada',
     capacity: 200,
@@ -557,7 +557,7 @@ const rawVenues = [
     description:
       'A log lodge in the woods north of the city, with a stone fireplace, a great room for dinners and cabins for overnight guests.',
     street: '17 Cedar Hollow Trail',
-    postcode: 'H3J 7C2',
+    postcode: 'Q3J 7C2',
     city: 'Hee-Haw City',
     country: 'Canada',
     capacity: 180,
@@ -578,7 +578,7 @@ const rawVenues = [
     description:
       'A 1950s concrete bandshell facing a lawn on the lake, used for brass bands, outdoor theatre and the Canada Day concert.',
     street: '3 Shoreline Drive',
-    postcode: 'H3H 9L3',
+    postcode: 'Q3H 9L3',
     city: 'Hee-Haw City',
     country: 'Canada',
     capacity: 3_000,
@@ -914,7 +914,7 @@ const rawVenues = [
     description:
       'A legion hall with a maple floor, a small stage and a kitchen, booked for dances, fundraisers and comedy nights.',
     street: '77 Veterans Way',
-    postcode: 'M8R 2L7',
+    postcode: 'W8R 2L7',
     city: 'Merriford',
     country: 'Canada',
     capacity: 250,
@@ -935,7 +935,7 @@ const rawVenues = [
     description:
       'A snug pub back room with gas-style lamps, a wooden stage and room for about a hundred on a busy night.',
     street: '3 Lantern Lane',
-    postcode: 'M8R 1A4',
+    postcode: 'W8R 1A4',
     city: 'Merriford',
     country: 'Canada',
     capacity: 110,
@@ -956,7 +956,7 @@ const rawVenues = [
     description:
       'A riverside arts centre with a raked main theatre, a rehearsal studio and a glass lobby that opens onto a terrace.',
     street: '500 Riverside Avenue',
-    postcode: 'M8R 5C9',
+    postcode: 'W8R 5C9',
     city: 'Merriford',
     country: 'Canada',
     capacity: 750,
@@ -977,7 +977,7 @@ const rawVenues = [
     description:
       'A waterfront park with a floating stage, a boardwalk and grass terraces, used for festivals and summer theatre.',
     street: 'Harbourside Drive',
-    postcode: 'M8S 0H2',
+    postcode: 'W8S 0H2',
     city: 'Merriford',
     country: 'Canada',
     capacity: 2_000,
