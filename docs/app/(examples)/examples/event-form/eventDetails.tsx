@@ -43,14 +43,14 @@ export const EventDetails = () => {
             <DatePicker
               label="Start Date"
               description="Displayed on tickets and the event page."
-              width="1/4"
+              width={44}
               required
               errorMessage="A start date is required."
             />
             <DatePicker
               label="End Date"
               description="Optional. Leave empty for single-day events."
-              width="1/4"
+              width={44}
             />
           </Inline>
           <Select

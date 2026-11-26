@@ -1,46 +1,22 @@
-export const invoices = [
-  {
-    id: 'INV-2026-006',
-    period: 'June 2026',
-    date: '2026-06-01',
-    amount: '€480.00',
-    status: 'due',
-  },
-  {
-    id: 'INV-2026-005',
-    period: 'May 2026',
-    date: '2026-05-01',
-    amount: '€480.00',
-    status: 'paid',
-  },
-  {
-    id: 'INV-2026-004',
-    period: 'April 2026',
-    date: '2026-04-01',
-    amount: '€480.00',
-    status: 'paid',
-  },
-  {
-    id: 'INV-2026-003',
-    period: 'March 2026',
-    date: '2026-03-01',
-    amount: '€420.00',
-    status: 'paid',
-  },
-  {
-    id: 'INV-2026-002',
-    period: 'February 2026',
-    date: '2026-02-01',
-    amount: '€420.00',
-    status: 'failed',
-  },
-  {
-    id: 'INV-2026-001',
-    period: 'January 2026',
-    date: '2026-01-01',
-    amount: '€420.00',
-    status: 'paid',
-  },
+import { monthsAgo } from '../../_shared/demo-data';
+
+// Monthly invoices for the last six months, newest first. Each is issued on the
+// first of the month it covers, worked out from today, so the newest invoice is
+// always this month's. Amounts are in EUR.
+const history = [
+  { amount: 480, status: 'due' },
+  { amount: 480, status: 'paid' },
+  { amount: 480, status: 'paid' },
+  { amount: 420, status: 'paid' },
+  { amount: 420, status: 'failed' },
+  { amount: 420, status: 'paid' },
 ] as const;
 
-export type Invoice = (typeof invoices)[number];
+export const getInvoices = () =>
+  history.map((invoice, index) => {
+    const date = monthsAgo(index);
+    const month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    return { id: `INV-${date.getUTCFullYear()}-${month}`, date, ...invoice };
+  });
+
+export type Invoice = ReturnType<typeof getInvoices>[number];

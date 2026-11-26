@@ -26,8 +26,11 @@ describe('queryEvents', () => {
     const byName = queryEvents({ q: 'jazz night', pageSize: 'all' });
     expect(byName.totalItems).toBeGreaterThan(0);
 
-    const byVenue = queryEvents({ q: 'jazzhaus', pageSize: 'all' });
-    expect(byVenue.items.every(event => event.venue === 'Jazzhaus')).toBe(true);
+    const byVenue = queryEvents({ q: 'cellar lounge', pageSize: 'all' });
+    expect(byVenue.totalItems).toBeGreaterThan(0);
+    expect(byVenue.items.every(event => event.venue === 'Cellar Lounge')).toBe(
+      true
+    );
   });
 
   it('filters by status', () => {
@@ -72,7 +75,7 @@ describe('authorizeBulk', () => {
   it('lets publish pass once the session assigned a venue', () => {
     const session: EventsSession = {
       ...emptySession,
-      overrides: { [withoutVenue.id]: { venue: 'Jazzhaus' } },
+      overrides: { [withoutVenue.id]: { venue: 'Cellar Lounge' } },
     };
 
     const result = authorizeBulk('publish', [withoutVenue.id], session);

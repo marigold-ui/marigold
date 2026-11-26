@@ -8,6 +8,7 @@ brief: >-
   string so views are shareable and survive reloads.
 patterns:
   - user-input/filter
+  - data/fetching-and-mutations
 mock_data:
   - alias: '@/lib/data/venues'
     shape: |
@@ -105,6 +106,8 @@ key_files:
   - VenuesPagination.tsx
   - FetchingIndicator.tsx
   - csv.ts
+  - hooks/useDeleteVenue.ts
+  - hooks/useDeletedVenues.tsx
 scaffolding_files:
   - page.tsx
 peer_deps:

@@ -10,12 +10,28 @@ import {
 import { Archive, Tag } from '@marigold/icons';
 
 const events = [
-  { id: '1', name: 'Jazz Night', detail: 'Aug 12, 2026 · Jazzhaus Freiburg' },
-  { id: '2', name: 'Open Air Kino', detail: 'Aug 15, 2026 · Mensagarten' },
-  { id: '3', name: 'Poetry Slam', detail: 'Aug 21, 2026 · Vorderhaus' },
-  { id: '4', name: 'Herbstmarkt', detail: 'Sep 5, 2026 · Messe Freiburg' },
-  { id: '5', name: 'Wine Tasting', detail: 'Sep 12, 2026 · Alte Wache' },
-  { id: '6', name: 'Klassik im Park', detail: 'Sep 19, 2026 · Stadtgarten' },
+  { id: '1', name: 'Jazz Night', detail: 'Aug 12, 2026 · Cellar Lounge' },
+  {
+    id: '2',
+    name: 'Open Air Kino',
+    detail: 'Aug 15, 2026 · Bloomfield Garden Lawn',
+  },
+  {
+    id: '3',
+    name: 'Poetry Slam',
+    detail: 'Aug 21, 2026 · Maple Court Theatre',
+  },
+  {
+    id: '4',
+    name: 'Herbstmarkt',
+    detail: 'Sep 5, 2026 · Broadway Community Center',
+  },
+  { id: '5', name: 'Wine Tasting', detail: 'Sep 12, 2026 · Oak Ridge Barn' },
+  {
+    id: '6',
+    name: 'Klassik im Park',
+    detail: 'Sep 19, 2026 · Main Street Park Amphitheater',
+  },
 ];
 
 export default () => {

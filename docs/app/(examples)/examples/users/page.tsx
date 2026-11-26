@@ -16,15 +16,10 @@ import {
   Text,
   Title,
 } from '@marigold/components';
+import { userStatus } from '../../_shared/demo-data';
 
 // A members list is the "List / index" layout: a single full-width Panel
 // wrapping a table. Each row links to the member detail drill-in.
-const statusVariant = {
-  active: 'success',
-  invited: 'info',
-  suspended: 'error',
-} as const;
-
 const UsersPage = () => (
   <Page>
     <Page.Header>
@@ -74,8 +69,8 @@ const UsersPage = () => (
                   <Table.Cell>{person.position}</Table.Cell>
                   <Table.Cell>{person.role}</Table.Cell>
                   <Table.Cell>
-                    <Badge variant={statusVariant[person.status]}>
-                      {person.status}
+                    <Badge variant={userStatus[person.status].variant}>
+                      {userStatus[person.status].label}
                     </Badge>
                   </Table.Cell>
                   <Table.Cell>

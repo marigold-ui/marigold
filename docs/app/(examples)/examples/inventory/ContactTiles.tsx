@@ -8,6 +8,7 @@ import {
   Stack,
   Text,
   Tiles,
+  Title,
 } from '@marigold/components';
 
 export const ContactTiles = () => (
@@ -20,13 +21,11 @@ export const ContactTiles = () => (
             <Stack space="regular" alignX="center">
               <img
                 src={person.avatar}
-                alt={person.name}
+                alt=""
                 className="block w-32 rounded-full"
               />
               <Stack alignX="center" space="tight">
-                <Text fontSize="xl" weight="semibold">
-                  {person.name}
-                </Text>
+                <Title>{person.name}</Title>
                 <Text
                   variant="muted"
                   align="center"
