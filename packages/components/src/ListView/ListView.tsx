@@ -21,8 +21,8 @@ type RemovedProps =
   | 'orientation'
   | 'layout';
 
-export interface ListViewProps extends Omit<
-  RAC.GridListProps<object>,
+export interface ListViewProps<T extends object = object> extends Omit<
+  RAC.GridListProps<T>,
   RemovedProps
 > {
   /**
@@ -57,11 +57,11 @@ export interface ListViewProps extends Omit<
 }
 
 interface ListViewComponent {
-  (props: ListViewProps): ReactNode;
+  <T extends object = object>(props: ListViewProps<T>): ReactNode;
   Item: typeof ListViewItem;
 }
 
-const ListViewBase = ({
+const ListViewBase = <T extends object>({
   variant,
   size,
   emptyState,
@@ -73,7 +73,7 @@ const ListViewBase = ({
   children,
   ref,
   ...rest
-}: ListViewProps) => {
+}: ListViewProps<T>) => {
   const classNames = useClassNames({ component: 'ListView', variant, size });
 
   const hasSelectAll = allowSelectAll === true && selectionMode === 'multiple';
