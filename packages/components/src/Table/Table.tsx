@@ -25,7 +25,11 @@ import {
 } from 'react-aria-components/Table';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { announce } from '@react-aria/live-announcer';
-import { getScrollParent, useResizeObserver } from '@react-aria/utils';
+import {
+  getScrollParent,
+  useObjectRef,
+  useResizeObserver,
+} from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { useActionBar } from '../ActionBar/useActionBar';
 import { intlMessages } from '../intl/messages';
@@ -35,6 +39,7 @@ import type { SkeletonColumn, StickyEdge } from './Context';
 import {
   TableContext,
   TableSkeletonContext,
+  TableSkeletonLinesContext,
   TableStickyContext,
   isSkeletonRowKey,
   noStickyColumns,
@@ -172,7 +177,6 @@ const skeletonColumnsFromChildren = (children: ReactNode): SkeletonColumn[] => {
           {
             key: child.props.id ?? `marigold-skeleton-column-${index}`,
             alignX: child.props.alignX,
-            skeleton: child.props.skeleton,
           },
         ]
       : []
@@ -221,12 +225,64 @@ const scrollFocusedRowClearOfActionBar = (e: FocusEvent<HTMLElement>) => {
   });
 };
 
+// The average keeps the table's total height, so nothing below it moves.
+const average = (values: number[]) =>
+  values.reduce((sum, value) => sum + value, 0) / values.length;
+
+const median = (values: number[]) =>
+  [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];
+
+/** Each column's median lines of text. A control, short of two lines, is one. */
+const measureLines = (
+  rows: HTMLTableRowElement[],
+  keys: RAC.Key[],
+  injected: number
+) =>
+  new Map(
+    keys.map((key, index) => {
+      const contents = rows.map(row =>
+        row.cells[injected + index]?.querySelector<HTMLElement>(
+          '[data-cell-content]'
+        )
+      );
+      const first = contents.find(Boolean);
+      if (!first) return [key, 1];
+      // A column's cells share their styles, so read them once.
+      const style = getComputedStyle(first);
+      const padding =
+        parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+      const lineHeight = parseFloat(style.lineHeight);
+      const lines = median(
+        contents.map(content =>
+          content
+            ? Math.floor(
+                (content.getBoundingClientRect().height - padding) /
+                  lineHeight +
+                  0.25
+              )
+            : 1
+        )
+      );
+      // `line-height: normal` gives NaN.
+      return [key, Number.isFinite(lines) ? Math.max(1, lines) : 1];
+    })
+  );
+
+const sameLines = (
+  a: ReadonlyMap<RAC.Key, number>,
+  b: ReadonlyMap<RAC.Key, number>
+) => a.size === b.size && [...b].every(([key, lines]) => a.get(key) === lines);
+
+const noLines: ReadonlyMap<RAC.Key, number> = new Map();
+
 interface TableElementProps extends ComponentProps<'table'> {
   loading: boolean;
   onMinWidthChange: (width: number) => void;
   /** Receives the columns as JSON, so an unchanged value skips the re-render. */
   onSkeletonColumnsChange: (columnsKey: string) => void;
   onShowsSkeletonsChange: (shows: boolean) => void;
+  /** The body's `skeletonRows`. Only then are real rows measured, and only that many. */
+  skeletonRows?: number;
 }
 
 /**
@@ -238,6 +294,7 @@ const TableElement = ({
   onMinWidthChange,
   onSkeletonColumnsChange,
   onShowsSkeletonsChange,
+  skeletonRows,
   ...props
 }: TableElementProps) => {
   const state = use(TableStateContext);
@@ -297,6 +354,27 @@ const TableElement = ({
     onShowsSkeletonsChange(showsSkeletons);
   }, [showsSkeletons, onShowsSkeletonsChange]);
 
+  // The next skeleton rows match the real ones: their average height and each
+  // column's line count. Read after paint, since only the next load needs them.
+  const collection = state?.collection;
+  const tableRef = useObjectRef(props.ref);
+  const [skeletonLines, setSkeletonLines] = useState(noLines);
+  useEffect(() => {
+    const table = tableRef.current;
+    const body = table?.tBodies[0];
+    if (!skeletonRows || showsSkeletons || !collection?.rows.length) return;
+    if (!table || !body) return;
+    const domRows = Array.from(body.rows).slice(0, skeletonRows);
+    // No render reads it, so it goes straight onto the element.
+    table.style.setProperty(
+      '--skeleton-row-height',
+      `${average(domRows.map(row => row.getBoundingClientRect().height))}px`
+    );
+    const keys = collection.columns.slice(injected).map(column => column.key);
+    const lines = measureLines(domRows, keys, injected);
+    setSkeletonLines(prev => (sameLines(prev, lines) ? prev : lines));
+  }, [collection, showsSkeletons, injected, skeletonRows, tableRef]);
+
   const first = columns.at(injected);
   const last = columns.at(-1);
   const edges = columns.map((column, index): StickyEdge | undefined =>
@@ -348,18 +426,21 @@ const TableElement = ({
 
   return (
     <TableStickyContext value={stickyColumns}>
-      <table
-        {...props}
-        style={{
-          ...props.style,
-          // Read by the cells that scroll, to keep focus clear of the sticky ones.
-          ...((stickyStart > 0 || stickyEnd > 0) && {
-            '--table-sticky-start': `${stickyStart}px`,
-            '--table-sticky-end': `${stickyEnd}px`,
-          }),
-        }}
-        aria-busy={loading || undefined}
-      />
+      <TableSkeletonLinesContext value={skeletonLines}>
+        <table
+          {...props}
+          ref={tableRef}
+          style={{
+            ...props.style,
+            // Read by the cells that scroll, to keep focus clear of the sticky ones.
+            ...((stickyStart > 0 || stickyEnd > 0) && {
+              '--table-sticky-start': `${stickyStart}px`,
+              '--table-sticky-end': `${stickyEnd}px`,
+            }),
+          }}
+          aria-busy={loading || undefined}
+        />
+      </TableSkeletonLinesContext>
     </TableStickyContext>
   );
 };
@@ -553,6 +634,10 @@ const TableRoot = ({
                   onMinWidthChange={setMinTableWidth}
                   onSkeletonColumnsChange={setMeasuredColumnsKey}
                   onShowsSkeletonsChange={setShowsSkeletons}
+                  skeletonRows={
+                    findChild<TableBodyProps>(props.children, TableBody)?.props
+                      .skeletonRows
+                  }
                 />
               )}
               {...props}

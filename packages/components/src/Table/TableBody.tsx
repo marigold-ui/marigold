@@ -1,20 +1,16 @@
-import type { ReactNode } from 'react';
 import { Children, use } from 'react';
 import type RAC from 'react-aria-components';
-import {
-  TableBody as RACTableBody,
-  TableStateContext,
-} from 'react-aria-components/Table';
+import { TableBody as RACTableBody } from 'react-aria-components/Table';
 import { cn } from '@marigold/system';
 import { Skeleton } from '../Skeleton/Skeleton';
-import type { SkeletonColumn } from './Context';
 import {
+  TableSkeletonLinesContext,
   skeletonRowKey,
   useTableContext,
   useTableSkeletonContext,
 } from './Context';
 import { TableCell } from './TableCell';
-import { TableRow } from './TableRow';
+import { TableRow, lineBox } from './TableRow';
 
 type RemovedProps = 'className' | 'style' | 'renderEmptyState';
 
@@ -28,9 +24,11 @@ export interface TableBodyProps<T extends object = object> extends Omit<
   emptyState?: RAC.TableBodyProps<T>['renderEmptyState'];
   /**
    * Number of skeleton rows to show while the table is `loading` and the body
-   * has no rows yet, for the first load. Each row holds a skeleton per column,
-   * which a column can shape with its `skeleton` prop, and none of them can be
-   * selected. Without it, a loading table with no rows shows its `emptyState`.
+   * has no rows yet, for the first load. Each row holds a skeleton per column
+   * and none of them can be selected. Before the first load a cell holds one
+   * line, after that as many lines as its column's real cells had, and a row
+   * is as tall as the real rows were on average.
+   * Without it, a loading table with no rows shows its `emptyState`.
    */
   skeletonRows?: number;
 }
@@ -47,16 +45,15 @@ export const isEmptyBody = <T extends object>({
   return Children.toArray(children).length === 0;
 };
 
-// Columns read from the collection carry no element: one in state would
-// rebuild the collection on every render. Look it up while the cell renders.
-const ColumnSkeleton = ({ column }: { column: SkeletonColumn }) => {
-  const state = use(TableStateContext);
-  const skeleton: ReactNode =
-    column.skeleton !== undefined
-      ? column.skeleton
-      : state?.collection.getItem(column.key)?.props.skeleton;
-  // Only a missing prop gets the default, so `null` leaves the cell empty.
-  return skeleton === undefined ? <Skeleton /> : skeleton;
+// One line box per bar, so stacked bars are spaced like the text. The last of
+// several ends shorter, like a paragraph.
+const SkeletonLines = ({ columnKey }: { columnKey: RAC.Key }) => {
+  const count = use(TableSkeletonLinesContext).get(columnKey) ?? 1;
+  return Array.from({ length: count }, (_, line) => (
+    <div key={line} className={lineBox}>
+      <Skeleton width={line > 0 && line === count - 1 ? '2/3' : 'full'} />
+    </div>
+  ));
 };
 
 const TableBody = <T extends object = object>({
@@ -83,7 +80,7 @@ const TableBody = <T extends object = object>({
                   textValue=""
                   alignX={column.alignX}
                 >
-                  <ColumnSkeleton column={column} />
+                  <SkeletonLines columnKey={column.key} />
                 </TableCell>
               ))}
             </TableRow>

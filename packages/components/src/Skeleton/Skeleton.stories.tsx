@@ -184,9 +184,9 @@ Composition.test(
 );
 
 const columns = [
-  { name: 'Name', width: '3/4', alignX: 'left' },
-  { name: 'Email', width: 'full', alignX: 'left' },
-  { name: 'Total', width: '1/2', alignX: 'right' },
+  { name: 'Name', alignX: 'left' },
+  { name: 'Email', alignX: 'left' },
+  { name: 'Total', alignX: 'right' },
 ] as const;
 
 /**
@@ -200,13 +200,8 @@ export const InTable = meta.story({
   render: () => (
     <Table aria-label="Orders" loading selectionMode="multiple">
       <Table.Header>
-        {columns.map(({ name, width, alignX }, i) => (
-          <Table.Column
-            key={name}
-            rowHeader={i === 0}
-            alignX={alignX}
-            skeleton={<Skeleton width={width} />}
-          >
+        {columns.map(({ name, alignX }, i) => (
+          <Table.Column key={name} rowHeader={i === 0} alignX={alignX}>
             {name}
           </Table.Column>
         ))}
@@ -222,21 +217,6 @@ InTable.test(
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvasElement }) => {
     await expect(skeletonsIn(canvasElement)).toHaveLength(15);
-  }
-);
-
-InTable.test(
-  'follows the alignment of its column',
-  { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvasElement }) => {
-    // The last placeholder sits in the right-aligned "Total" column.
-    const skeleton = skeletonsIn(canvasElement).at(-1)!;
-    const cell = skeleton.closest<HTMLElement>('[data-cell-content]')!;
-
-    await expect(skeleton.getBoundingClientRect().right).toBeCloseTo(
-      cell.getBoundingClientRect().right,
-      0
-    );
   }
 );
 

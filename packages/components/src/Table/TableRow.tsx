@@ -13,7 +13,11 @@ import { cn, useClassNames } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { GripVertical } from '../icons/GripVertical';
 import { verticalAlign } from '../utils/styleProps';
-import { TableRowLevelContext, useTableContext } from './Context';
+import {
+  TableRowLevelContext,
+  isSkeletonRowKey,
+  useTableContext,
+} from './Context';
 import type { TableContextProps } from './Context';
 import { renderStickyCell } from './TableStickyCell';
 
@@ -23,7 +27,7 @@ type RemovedProps = 'className' | 'style';
 // neighbouring text's first or last line instead of flushing it to the cell's
 // edge. The zero-width strut gives the box a text baseline for `baseline`.
 // `String.raw` so the class Tailwind scans is the one that renders.
-const lineBox = String.raw`flex h-lh items-center before:content-['\200b']`;
+export const lineBox = String.raw`flex h-lh items-center before:content-['\200b']`;
 
 export interface TableRowProps<T extends object = object> extends Omit<
   RAC.RowProps<T>,
@@ -157,7 +161,12 @@ const TableRow = <T extends object>({
   return (
     <Row
       id={id}
-      className={cn('group/row', classNames.row)}
+      className={cn(
+        'group/row',
+        // Table sets the variable once it has measured real rows.
+        id != null && isSkeletonRowKey(id) && 'h-(--skeleton-row-height)',
+        classNames.row
+      )}
       {...expandableProps}
       {...otherProps}
       {...levelProps}

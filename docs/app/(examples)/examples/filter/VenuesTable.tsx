@@ -12,7 +12,6 @@ import {
   Button,
   Center,
   Inline,
-  Skeleton,
   Stack,
   Table,
   Text,
@@ -66,9 +65,6 @@ const NoDataEmptyState = () => (
     </Center>
   </div>
 );
-
-// Skeleton for the badge columns, shaped like a single badge.
-const badgeSkeleton = <Skeleton width={16} height={5} variant="rounded" />;
 
 // Renders up to `max` badges and collapses the rest into a single "+N" badge,
 // so multi-value cells stay a consistent height instead of ballooning the row.
@@ -222,83 +218,37 @@ export const VenuesTable = () => {
         )}
       >
         <Table.Header>
-          <Table.Column
-            id="name"
-            rowHeader
-            allowsSorting
-            width="2fr"
-            skeleton={<Skeleton width="3/4" />}
-          >
+          <Table.Column id="name" rowHeader allowsSorting width="2fr">
             Name
           </Table.Column>
-          <Table.Column
-            id="type"
-            width="1fr"
-            skeleton={<Skeleton width="2/3" />}
-          >
+          <Table.Column id="type" width="1fr">
             Type
           </Table.Column>
-          <Table.Column
-            id="address"
-            width="2fr"
-            // The address always holds two lines.
-            skeleton={
-              <Stack space={2}>
-                <Skeleton width="3/4" />
-                <Skeleton width="1/2" />
-              </Stack>
-            }
-          >
+          <Table.Column id="address" width="2fr">
             Address
           </Table.Column>
-          <Table.Column
-            id="capacity"
-            alignX="right"
-            allowsSorting
-            width="1fr"
-            skeleton={<Skeleton width="1/2" />}
-          >
+          <Table.Column id="capacity" alignX="right" allowsSorting width="1fr">
             Capacity
           </Table.Column>
-          <Table.Column
-            id="price"
-            alignX="right"
-            allowsSorting
-            width="1fr"
-            skeleton={<Skeleton width="1/2" />}
-          >
+          <Table.Column id="price" alignX="right" allowsSorting width="1fr">
             Max. Price
           </Table.Column>
-          <Table.Column id="traits" width="1.5fr" skeleton={badgeSkeleton}>
+          <Table.Column id="traits" width="1.5fr">
             Traits
           </Table.Column>
-          <Table.Column id="amenities" width="1.5fr" skeleton={badgeSkeleton}>
+          <Table.Column id="amenities" width="1.5fr">
             Amenities
           </Table.Column>
-          <Table.Column id="parking" width="1fr" skeleton={badgeSkeleton}>
+          <Table.Column id="parking" width="1fr">
             Parking
           </Table.Column>
-          <Table.Column
-            id="rating"
-            alignX="right"
-            width="1fr"
-            skeleton={<Skeleton width="1/2" />}
-          >
+          <Table.Column id="rating" alignX="right" width="1fr">
             Rating
           </Table.Column>
-          <Table.Column
-            id="available"
-            width="1fr"
-            skeleton={<Skeleton width="3/4" />}
-          >
+          <Table.Column id="available" width="1fr">
             Available
           </Table.Column>
-          <Table.Column
-            id="actions"
-            width="1fr"
-            // Small button.
-            skeleton={<Skeleton width={8} height={8} />}
-          >
+          <Table.Column id="actions" width="1fr">
             <VisuallyHidden>Actions</VisuallyHidden>
           </Table.Column>
         </Table.Header>

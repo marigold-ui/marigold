@@ -17,13 +17,13 @@ import { NumberField } from '../NumberField/NumberField';
 import { Panel } from '../Panel/Panel';
 import { Scrollable } from '../Scrollable/Scrollable';
 import { Select } from '../Select/Select';
-import { Skeleton } from '../Skeleton/Skeleton';
 import { Slider } from '../Slider/Slider';
 import { Stack } from '../Stack/Stack';
 import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { Title } from '../Title/Title';
+import { VisuallyHidden } from '../VisuallyHidden/VisuallyHidden';
 import {
   expectFocusRingContrast,
   expectInsetFocusRingContrast,
@@ -951,12 +951,7 @@ const SkeletonRowsTable = (args: TableProps) => {
         <Table.Header>
           <Table.Column rowHeader>Name</Table.Column>
           <Table.Column>Email</Table.Column>
-          <Table.Column
-            alignX="right"
-            skeleton={<Skeleton width={16} height={5} variant="rounded" />}
-          >
-            Status
-          </Table.Column>
+          <Table.Column alignX="right">Status</Table.Column>
         </Table.Header>
         <Table.Body
           lang="en"
@@ -1043,21 +1038,6 @@ SkeletonRows.test(
 );
 
 SkeletonRows.test(
-  "Uses a column's own skeleton",
-  { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvasElement }) => {
-    const [name, , status] = skeletonsIn(canvasElement);
-
-    await expect(status.style.getPropertyValue('--width')).not.toBe(
-      name.style.getPropertyValue('--width')
-    );
-    await expect(status.style.getPropertyValue('--height')).not.toBe(
-      name.style.getPropertyValue('--height')
-    );
-  }
-);
-
-SkeletonRows.test(
   'Replaces the skeletons with the data, nothing selected',
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvas, canvasElement, userEvent }) => {
@@ -1108,42 +1088,10 @@ SkeletonRows.test(
   }
 );
 
-/** A column can opt out of its skeleton with `skeleton={null}`. */
-export const SkeletonRowsEmptyColumn = meta.story({
-  tags: ['component-test'],
-  parameters: { chromatic: { disableSnapshot: true } },
-  render: args => (
-    <Table aria-label="Orders" loading {...args}>
-      <Table.Header>
-        <Table.Column rowHeader>Name</Table.Column>
-        <Table.Column skeleton={null}>Actions</Table.Column>
-      </Table.Header>
-      <Table.Body skeletonRows={2}>{[]}</Table.Body>
-    </Table>
-  ),
-});
-
-SkeletonRowsEmptyColumn.test(
-  'Leaves the cells of a column with skeleton={null} empty',
-  async ({ canvas, canvasElement }) => {
-    // One skeleton per row, for the "Name" column only.
-    await expect(skeletonsIn(canvasElement)).toHaveLength(2);
-    for (const row of canvas.getAllByRole('row').slice(1)) {
-      await expect(
-        within(row).getAllByRole('gridcell').at(-1)
-      ).toHaveTextContent('');
-    }
-  }
-);
-
 const composedColumns = ['Name', 'Email', 'Status'];
 
 // A wrapper of the kind apps write: the table can't see through it.
-const StatusColumn = () => (
-  <Table.Column skeleton={<Skeleton width={16} height={5} variant="rounded" />}>
-    Status
-  </Table.Column>
-);
+const StatusColumn = () => <Table.Column>Status</Table.Column>;
 
 const ComposedSkeletonTable = ({
   header,
@@ -1186,6 +1134,209 @@ const ComposedSkeletonTable = ({
     </Table>
   );
 };
+
+/** Rows taller than one line of text, loaded and then reloaded. */
+const MeasuredSkeletonRowsTable = (args: TableProps) => {
+  const [rows, setRows] = useState<typeof users>([]);
+
+  return (
+    <Stack space={4}>
+      <Table aria-label="Orders" loading={rows.length === 0} {...args}>
+        <Table.Header>
+          <Table.Column rowHeader>Name</Table.Column>
+          <Table.Column>Actions</Table.Column>
+        </Table.Header>
+        <Table.Body items={rows} skeletonRows={2}>
+          {user => (
+            <Table.Row id={user.email}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>
+                <Button size="small" variant="ghost">
+                  Edit
+                </Button>
+              </Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+      <Button onPress={() => setRows(users.slice(0, 2))}>Finish load</Button>
+      <Button onPress={() => setRows([])}>Reload</Button>
+    </Stack>
+  );
+};
+
+export const SkeletonRowsMeasured = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => <MeasuredSkeletonRowsTable {...args} />,
+});
+
+SkeletonRowsMeasured.test(
+  'Sizes the next skeleton rows like the real rows',
+  async ({ canvas, step, userEvent }) => {
+    const bodyRow = () => canvas.getAllByRole('row')[1];
+    const firstLoad = bodyRow().getBoundingClientRect().height;
+
+    await step('Real rows with a button are taller than one line', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Finish load' })
+      );
+
+      await expect(bodyRow().getBoundingClientRect().height).toBeGreaterThan(
+        firstLoad
+      );
+    });
+
+    await step('The next skeleton rows take their height', async () => {
+      const realRow = bodyRow().getBoundingClientRect().height;
+
+      await userEvent.click(canvas.getByRole('button', { name: 'Reload' }));
+
+      await expect(skeletonsIn(bodyRow())).not.toHaveLength(0);
+      await expect(bodyRow().getBoundingClientRect().height).toBeCloseTo(
+        realRow,
+        0
+      );
+    });
+  }
+);
+
+/**
+ * Starts with data. The button swaps the rows for skeleton rows and back, so
+ * you can compare both: the skeleton rows take the real rows' average height.
+ * `multiLine` gives cells of two and three lines, so the real rows differ.
+ */
+const SkeletonRowsToggleTable = ({
+  multiLine,
+  ...args
+}: TableProps & { multiLine?: boolean }) => {
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <Stack space={4} alignX="left">
+      <Button onPress={() => setLoading(!loading)}>
+        {loading ? 'Show data' : 'Show skeleton'}
+      </Button>
+      <Table aria-label="Users" loading={loading} {...args}>
+        <Table.Header>
+          {multiLine ? (
+            <>
+              <Table.Column rowHeader>User</Table.Column>
+              <Table.Column>Contact</Table.Column>
+            </>
+          ) : (
+            <>
+              <Table.Column rowHeader>Name</Table.Column>
+              <Table.Column>Email</Table.Column>
+              <Table.Column>Location</Table.Column>
+            </>
+          )}
+          <Table.Column>Status</Table.Column>
+          <Table.Column alignX="right">Balance</Table.Column>
+          <Table.Column alignX="right">
+            <VisuallyHidden>Actions</VisuallyHidden>
+          </Table.Column>
+        </Table.Header>
+        <Table.Body items={loading ? [] : users} skeletonRows={users.length}>
+          {user => (
+            <Table.Row id={user.email}>
+              {multiLine ? (
+                <>
+                  <Table.Cell textValue={user.name}>
+                    <Stack>
+                      <Text weight="medium">{user.name}</Text>
+                      <Text color="secondary">{user.handle}</Text>
+                    </Stack>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Stack>
+                      <Text>{user.email}</Text>
+                      <Text color="secondary">{user.location}</Text>
+                      {/* Only some rows have a third line. */}
+                      {user.balance > 1000 && (
+                        <Text color="secondary">Key account</Text>
+                      )}
+                    </Stack>
+                  </Table.Cell>
+                </>
+              ) : (
+                <>
+                  <Table.Cell>{user.name}</Table.Cell>
+                  <Table.Cell>{user.email}</Table.Cell>
+                  <Table.Cell>{user.location}</Table.Cell>
+                </>
+              )}
+              <Table.Cell>
+                <Badge>{user.status}</Badge>
+              </Table.Cell>
+              <Table.Cell alignX="right">
+                <NumericFormat
+                  style="currency"
+                  currency="EUR"
+                  value={user.balance}
+                />
+              </Table.Cell>
+              <Table.Cell alignX="right">
+                <ActionMenu
+                  aria-label={`Actions for ${user.name}`}
+                  variant="ghost"
+                  size="small"
+                >
+                  <ActionMenu.Item id="edit">Edit</ActionMenu.Item>
+                  <ActionMenu.Item id="delete">Delete</ActionMenu.Item>
+                </ActionMenu>
+              </Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+    </Stack>
+  );
+};
+
+export const SkeletonRowsToggle = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { selectionMode: 'multiple' },
+  render: args => <SkeletonRowsToggleTable {...args} />,
+});
+
+export const SkeletonRowsToggleMultiLine = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { selectionMode: 'multiple' },
+  render: args => <SkeletonRowsToggleTable {...args} multiLine />,
+});
+
+SkeletonRowsToggleMultiLine.test(
+  'Gives each skeleton cell as many lines as its column had',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Show skeleton' })
+    );
+
+    const row = within(canvas.getAllByRole('row')[1]);
+    const user = row.getByRole('rowheader');
+    const [, contact, status] = row.getAllByRole('gridcell');
+    await expect(skeletonsIn(user)).toHaveLength(2);
+    await expect(skeletonsIn(contact)).toHaveLength(2);
+    await expect(skeletonsIn(status)).toHaveLength(1);
+  }
+);
+
+SkeletonRowsToggleMultiLine.test(
+  'Keeps the table as tall as the data while the skeleton shows',
+  async ({ canvas, userEvent }) => {
+    const bodyHeight = () =>
+      canvas.getAllByRole('rowgroup')[1].getBoundingClientRect().height;
+    const loaded = bodyHeight();
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Show skeleton' })
+    );
+
+    await expect(bodyHeight()).toBeCloseTo(loaded, 0);
+  }
+);
 
 /** Columns inside a Fragment, and body children that are `false` while loading. */
 export const SkeletonRowsInFragment = meta.story({

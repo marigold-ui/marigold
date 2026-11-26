@@ -6,7 +6,6 @@ import {
   Badge,
   Button,
   Center,
-  Skeleton,
   Table,
   Text,
   VisuallyHidden,
@@ -177,64 +176,30 @@ export const EventsTable = () => {
         actionBar={() => <BulkActionBar />}
       >
         {/* Columns with predictable short content get a fixed width; the two
-            text columns share the rest, weighted toward the event name. Each
-            column's skeleton is shaped like its content for the first load. */}
+            text columns share the rest, weighted toward the event name. */}
         <Table.Header>
-          <Table.Column
-            id="name"
-            rowHeader
-            width="2fr"
-            minWidth={200}
-            skeleton={<Skeleton width="3/4" />}
-          >
+          <Table.Column id="name" rowHeader width="2fr" minWidth={200}>
             Event
           </Table.Column>
-          <Table.Column
-            id="date"
-            width={120}
-            skeleton={<Skeleton width="3/4" />}
-          >
+          <Table.Column id="date" width={120}>
             Date
           </Table.Column>
-          <Table.Column
-            id="venue"
-            width="1fr"
-            minWidth={140}
-            skeleton={<Skeleton width="2/3" />}
-          >
+          <Table.Column id="venue" width="1fr" minWidth={140}>
             Venue
           </Table.Column>
-          <Table.Column
-            id="category"
-            width={110}
-            skeleton={<Skeleton width="3/4" />}
-          >
+          <Table.Column id="category" width={110}>
             Category
           </Table.Column>
           <Table.Column id="price" alignX="right" width={80}>
             Price
           </Table.Column>
-          <Table.Column
-            id="status"
-            width={100}
-            skeleton={<Skeleton width={16} height={5} variant="rounded" />}
-          >
+          <Table.Column id="status" width={100}>
             Status
           </Table.Column>
-          <Table.Column
-            id="reservations"
-            alignX="right"
-            width={120}
-            skeleton={<Skeleton width="1/2" />}
-          >
+          <Table.Column id="reservations" alignX="right" width={120}>
             Reservations
           </Table.Column>
-          <Table.Column
-            id="actions"
-            width={56}
-            // Small button, sets the row height.
-            skeleton={<Skeleton width={8} height={8} />}
-          >
+          <Table.Column id="actions" width={56}>
             <VisuallyHidden>Actions</VisuallyHidden>
           </Table.Column>
         </Table.Header>

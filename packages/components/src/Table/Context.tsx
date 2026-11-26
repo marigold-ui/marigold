@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import { createContext, use } from 'react';
 import type RAC from 'react-aria-components';
 import type { ComponentClassNames } from '@marigold/system';
@@ -43,9 +42,12 @@ export interface TableSkeletonContextProps {
 export interface SkeletonColumn {
   key: RAC.Key;
   alignX?: keyof typeof textAlign;
-  /** The column's own skeleton, when read from the header before the collection exists. */
-  skeleton?: ReactNode;
 }
+
+/** Lines of text per consumer column, measured from the last real rows. */
+export const TableSkeletonLinesContext = createContext<
+  ReadonlyMap<RAC.Key, number>
+>(new Map());
 
 const skeletonPrefix = 'marigold-skeleton-row-';
 export const skeletonRowKey = (index: number) => `${skeletonPrefix}${index}`;
