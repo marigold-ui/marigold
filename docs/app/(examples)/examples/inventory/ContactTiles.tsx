@@ -8,6 +8,7 @@ import {
   Stack,
   Text,
   Tiles,
+  Title,
 } from '@marigold/components';
 
 export const ContactTiles = () => (
@@ -15,18 +16,16 @@ export const ContactTiles = () => (
     <Headline level={2}>Our Team</Headline>
     <Tiles stretch equalHeight tilesWidth="250px" space="regular">
       {people.map(person => (
-        <Card key={person.id} stretch aria-label={person.name}>
+        <Card key={person.id} stretch>
           <Card.Content>
             <Stack space="regular" alignX="center">
               <img
                 src={person.avatar}
-                alt={person.name}
+                alt=""
                 className="block w-32 rounded-full"
               />
               <Stack alignX="center" space="tight">
-                <Text fontSize="xl" weight="semibold">
-                  {person.name}
-                </Text>
+                <Title>{person.name}</Title>
                 <Text
                   variant="muted"
                   align="center"

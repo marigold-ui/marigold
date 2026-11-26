@@ -62,7 +62,8 @@ export const OrganizerInfo = () => (
           <TextField
             label="Phone"
             type="tel"
-            defaultValue="+49 761 555 0800"
+            // Reserved for fiction by the Bundesnetzagentur (030 23125 000-999).
+            defaultValue="+49 30 23125 080"
             description="Optional. Shown on the event page for urgent questions."
             width={56}
           />

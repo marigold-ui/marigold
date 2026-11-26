@@ -104,7 +104,14 @@ const AnalyticsPage = () => (
                   <Table.Cell alignX="right">
                     <NumericFormat value={venue.ticketsSold} />
                   </Table.Cell>
-                  <Table.Cell alignX="right">{`★ ${venue.rating.toFixed(1)}`}</Table.Cell>
+                  <Table.Cell alignX="right">
+                    ★{' '}
+                    <NumericFormat
+                      value={venue.rating}
+                      minimumFractionDigits={1}
+                      maximumFractionDigits={1}
+                    />
+                  </Table.Cell>
                 </Table.Row>
               ))}
             </Table.Body>

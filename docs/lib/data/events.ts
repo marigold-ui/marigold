@@ -93,7 +93,7 @@ export const events: Event[] = [
   },
   {
     id: '4',
-    name: 'Weinprobe am Münster',
+    name: 'Weinprobe am Marktplatz',
     date: '2026-08-16',
     venue: null,
     category: 'Culinary',
