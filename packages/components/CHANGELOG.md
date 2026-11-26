@@ -1,5 +1,29 @@
 # @marigold/components
 
+## 18.6.0
+
+### Minor Changes
+
+- 3244580: fix(DST-1610): keep `Columns` in their ratio and inside their container at every width
+
+  A column with content wider than its share used to take that width anyway. This broke the ratio, so two `Columns` stacked as a table stopped lining up, single columns dropped onto the next line, and a column wider than the row overflowed its container. Columns now keep the ratio from `columns` at every width, and wide content stays inside its column. A `fit` column still sizes to its content, capped at the row width.
+
+  Check your `Columns` on small screens. Three things render differently:
+
+  - Ratio columns no longer wrap by themselves when their content does not fit. They stay in one row. Set `collapseAt` to stack them below a width of your choice. A `fit` column without room left in the row still moves onto its own line.
+  - A field with a `width` now shrinks to its column. If the column's share is smaller, the value can be cut off. Give that column a larger ratio, use `fit` for it, or set `collapseAt`.
+  - Content that cannot shrink, such as an image or a plain `<table>`, now spills into the next column instead of widening the row. Give it a horizontal scroll area.
+
+### Patch Changes
+
+- 1904db5: fix(DSTSUP-339): keep the focus ring of a control in a truncated table cell visible
+
+  In a `Table` with `overflow="truncate"`, or a cell with that override, the cell clipped the top and bottom of the focus ring of a button or link inside it. The ring now shows in full. Cell size and where text truncates are unchanged, and the expand chevron of an expandable row keeps its full click target. Nothing to change on your side.
+
+- Updated dependencies [2954f0c]
+  - @marigold/types@1.4.1
+  - @marigold/system@18.6.0
+
 ## 18.5.0
 
 ### Minor Changes

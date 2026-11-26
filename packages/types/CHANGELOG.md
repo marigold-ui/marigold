@@ -1,5 +1,13 @@
 # @marigold/types
 
+## 1.4.1
+
+### Patch Changes
+
+- 2954f0c: chore(DST-1998): `@marigold/types` no longer ships its test file
+
+  The published package contained `src/react.test.tsx`. It now holds only the type definitions.
+
 ## 1.4.0
 
 ### Minor Changes

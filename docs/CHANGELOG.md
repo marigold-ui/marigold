@@ -1,5 +1,64 @@
 # @marigold/docs
 
+## 18.6.0
+
+### Patch Changes
+
+- 3244580: fix(DST-1610): keep `Columns` in their ratio and inside their container at every width
+
+  A column with content wider than its share used to take that width anyway. This broke the ratio, so two `Columns` stacked as a table stopped lining up, single columns dropped onto the next line, and a column wider than the row overflowed its container. Columns now keep the ratio from `columns` at every width, and wide content stays inside its column. A `fit` column still sizes to its content, capped at the row width.
+
+  Check your `Columns` on small screens. Three things render differently:
+
+  - Ratio columns no longer wrap by themselves when their content does not fit. They stay in one row. Set `collapseAt` to stack them below a width of your choice. A `fit` column without room left in the row still moves onto its own line.
+  - A field with a `width` now shrinks to its column. If the column's share is smaller, the value can be cut off. Give that column a larger ratio, use `fit` for it, or set `collapseAt`.
+  - Content that cannot shrink, such as an image or a plain `<table>`, now spills into the next column instead of widening the row. Give it a horizontal scroll area.
+
+- d4f6413: fix(DST-2004): the docs search used by the `marigold-docs` MCP includes props tables again
+
+  The release job now builds the props tables before it rebuilds the search index, so a search for a component returns its props. Long props tables are split by rows into several search entries, each with the table header.
+
+- 6d0d1fb: docs(DST-2008): the Pick example lists invented venues instead of real ones
+
+  The Pick example and the venue demos share fifty invented venues with full records and photos, so no real venue appears next to an invented rating, status or day rate.
+
+- 4abbeef: docs(DST-2009): fix the defects the design review found in the examples
+
+  The examples no longer name real venues, organisations or domains, and their table rows, cards, tabs and fields all have accessible names. The password form refuses empty, short and mismatched passwords, the event form's date and contact fields fit a phone screen, and the event-form and filter pattern descriptions and the Forms and App Frame docs match the code again.
+
+- 4abbeef: docs(DST-2010): the examples share one fictional customer, its figures and dates relative to today
+
+  The examples now all belong to Riverside Events GmbH: the top bar shows its name and a signed-in staff member, Dashboard and Analytics read the same figures, and activity, sessions, invoices and the bulk-actions events are dated relative to today instead of June 2026. House rules for writing examples live in `docs/app/(examples)/CLAUDE.md`.
+
+- 2d3d1d6: docs(DST-2016): new marigold photos in the Aspect demos
+
+  The two marigold images are regenerated as real-looking photos, a dew-covered bloom and a field under a blue sky, at a fraction of the old file size. The image demo now sizes its image to the frame, so its top and bottom crops actually differ.
+
+- 85dc543: docs(DST-2016): remove images the docs no longer use
+
+  Deletes fifteen old venue photos and three other images that no page, demo or example references, about 2.6 MB.
+
+- c5d9ca1: docs(DST-2016): recast the demo people as Riverside Events staff with new portraits
+
+  The people in the docs demos and examples are now the twelve staff of Riverside Events, an event organiser, in four teams. All portraits and ten venue photos are regenerated in one photographic look and served as small WebP files.
+
+- 8923b47: docs(DST-2021): move the legal links into the examples' sidebar
+
+  The examples no longer show the docs footer below the app, so a page ends where the example ends. Impressum, Datenschutz and Cookie settings now sit under a Legal item at the bottom of the examples' sidebar.
+
+- 1904db5: docs(DSTSUP-339): note that ui-soft and ui-contrast draw on ::before
+
+  The elevation page now says that caps draw on `::before` and create a stacking context, so custom elements with `ui-soft` or `ui-contrast` should not use `::before` themselves or set `overflow: hidden`. Put the caps on elements that can hold content, such as `<button>` or `<a>`, not on `<input>`, where the cap doesn't show.
+
+- Updated dependencies [3244580]
+- Updated dependencies [f46e8fa]
+- Updated dependencies [1904db5]
+- Updated dependencies [1904db5]
+  - @marigold/components@18.6.0
+  - @marigold/theme-rui@6.4.1
+  - @marigold/system@18.6.0
+  - @marigold/icons@2.0.7
+
 ## 18.5.0
 
 ### Patch Changes

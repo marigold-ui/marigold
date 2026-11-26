@@ -1,5 +1,12 @@
 # @marigold/system
 
+## 18.6.0
+
+### Patch Changes
+
+- Updated dependencies [2954f0c]
+  - @marigold/types@1.4.1
+
 ## 18.5.0
 
 ### Patch Changes

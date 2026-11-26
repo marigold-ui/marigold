@@ -1,5 +1,33 @@
 # @marigold/cli
 
+## 3.0.3
+
+### Patch Changes
+
+- cbe5cb4: fix(DST-1986): `marigold validate` skips the rendered checks on files it cannot render, instead of timing out
+
+  With the default `--checks all`, `validate` rendered every file in a sandbox that loads only that one file. On an ordinary app file this failed in two ways:
+
+  - A file with a local import, such as `import { Header } from './Header'`, waited out the full 45 second render budget, then reported an error with a hint to install Playwright.
+  - A file whose component was only a named export reported "No component found" as an error.
+
+  Both made `validate` exit with an error on valid code.
+
+  **Now** `validate` checks the file before it starts the browser. When the file imports a local module, or has neither a default export nor a named export called `App`, it skips the layout and accessibility checks and prints one warning that says why. The static checks still run and decide the exit code. An import used only for types does not count, because it is removed before the file runs. When you ask for only the rendered checks, for example `--checks a11y`, the warning says that nothing was checked.
+
+  A file that does render but has an import the sandbox cannot resolve, such as a path alias, now fails within seconds instead of waiting out the budget. The hint under a render failure now matches its cause: install hints only when the render toolchain is missing.
+
+- 5c5c276: fix(DST-1992): `marigold validate` no longer rejects valid `Intl` options on `DateFormat` and `NumericFormat`
+
+  `validate` could report valid formatting options, such as `dateStyle` or `fractionalSecondDigits` on `<DateFormat>` and `notation`, `roundingMode` or `trailingZeroDisplay` on `<NumericFormat>`, as props that do not exist, depending on the packages installed in your app. They are accepted now, in every app, and a prop that really does not exist is still reported. `validate`'s TypeScript check now also accepts the newest JavaScript built-ins, such as `Array.prototype.toSorted`. Whether they run in your supported browsers is up to your own TypeScript setup and build. There is nothing to change in your app.
+
+- Updated dependencies [3244580]
+- Updated dependencies [f46e8fa]
+- Updated dependencies [1904db5]
+- Updated dependencies [1904db5]
+  - @marigold/components@18.6.0
+  - @marigold/theme-rui@6.4.1
+
 ## 3.0.2
 
 ### Patch Changes
