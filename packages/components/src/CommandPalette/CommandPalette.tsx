@@ -316,16 +316,18 @@ const CommandPaletteBody = <T extends object>({
     onSearchChange !== undefined && (filter === false || unfiltered.size > 0);
   const appSearchWaiting = appSearches && searchWaiting;
   const {
-    inputRef,
-    menuRef,
-    searchReported,
+    inputProps,
+    menuProps,
     context: activeRow,
-  } = useActiveRow(inputValue, { loading, searchWaiting: appSearchWaiting });
+  } = useActiveRow(inputValue, {
+    loading,
+    searchWaiting: appSearchWaiting,
+    search: appSearches ? settledSearch : null,
+  });
 
   // An effect, so the app also hears the empty search of a fresh opening.
   const reportSearch = useEffectEvent((next: CommandPaletteSearchState) => {
     onSearchChange?.(next);
-    if (appSearches) searchReported();
   });
   useEffect(() => {
     reportSearch(settledSearch);
@@ -358,7 +360,7 @@ const CommandPaletteBody = <T extends object>({
           onInputChange={setInputValue}
         >
           <CommandPaletteSearch
-            ref={inputRef}
+            inputProps={inputProps}
             placeholder={placeholder}
             loading={loading}
           />
@@ -367,7 +369,7 @@ const CommandPaletteBody = <T extends object>({
             // group's first row as on open. Typing removed the active row and
             // RAC would activate nothing.
             key={scope ?? ''}
-            ref={menuRef}
+            {...menuProps}
             items={items}
             dependencies={dependencies}
             className={classNames.list}

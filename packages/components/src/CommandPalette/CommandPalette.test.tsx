@@ -10,11 +10,11 @@ import { vi } from 'vitest';
 import { isAppleDevice } from '@react-aria/utils';
 import { renderWithOverlay } from '../test.utils';
 import {
-  AsyncSearch,
   Basic,
   MoreWithoutPrefix,
   PreviousResultsWhileLoading,
 } from './CommandPalette.stories';
+import { press, typeChar } from './realEvents';
 
 afterEach(() => {
   vi.restoreAllMocks();
@@ -56,74 +56,10 @@ test('warns when a group sets more without a prefix', async () => {
   expect(screen.queryByRole('menuitem', { name: /More events/ })).toBeNull();
 });
 
-// Typing without user-event
-// ---------------
-// When the row the input points at goes away, RAC blurs the input (virtual
-// focus) from an effect, then points the input at the next row. user-event
-// answers the blur of an edited input with a `change` wrapped in `act`, which
-// React rejects mid-commit ("Should not already be working"). The effect
-// stops there, and the input keeps pointing at the row that is gone, which
-// no browser does. This file never sets up user-event, so the keys here are
-// real events: `beforeinput` tells RAC the text was typed forward, the native
-// setter and `input` let React see the new value.
-const setValue = Object.getOwnPropertyDescriptor(
-  HTMLInputElement.prototype,
-  'value'
-)!.set!;
-
-const press = (input: HTMLInputElement, type: string, key: string) =>
-  input.dispatchEvent(
-    new KeyboardEvent(type, { key, bubbles: true, cancelable: true })
-  );
-
+// Typing without user-event, see `realEvents`. Each key in its own `act`, so
+// React renders between them.
 const type = (input: HTMLInputElement, text: string) => {
-  for (const char of text) {
-    act(() => {
-      press(input, 'keydown', char);
-      input.dispatchEvent(
-        new InputEvent('beforeinput', {
-          inputType: 'insertText',
-          data: char,
-          bubbles: true,
-          cancelable: true,
-        })
-      );
-      setValue.call(input, input.value + char);
-      input.dispatchEvent(
-        new InputEvent('input', {
-          inputType: 'insertText',
-          data: char,
-          bubbles: true,
-        })
-      );
-      press(input, 'keyup', char);
-    });
-  }
-};
-
-const deleteBackward = (input: HTMLInputElement) =>
-  act(() => {
-    press(input, 'keydown', 'Backspace');
-    input.dispatchEvent(
-      new InputEvent('beforeinput', {
-        inputType: 'deleteContentBackward',
-        bubbles: true,
-        cancelable: true,
-      })
-    );
-    setValue.call(input, input.value.slice(0, -1));
-    input.dispatchEvent(
-      new InputEvent('input', {
-        inputType: 'deleteContentBackward',
-        bubbles: true,
-      })
-    );
-    press(input, 'keyup', 'Backspace');
-  });
-
-const arrowDown = (input: HTMLInputElement) => {
-  act(() => press(input, 'keydown', 'ArrowDown'));
-  act(() => press(input, 'keyup', 'ArrowDown'));
+  for (const char of text) act(() => typeChar(input, char));
 };
 
 const pressEnter = (input: HTMLInputElement) => {
@@ -191,28 +127,22 @@ test('Enter while results load runs the first new row once and closes', async ()
   expect(onAction).toHaveBeenCalledTimes(1);
 });
 
-test('keeps the first result active as async results change', async () => {
-  renderWithOverlay(<AsyncSearch.Component />);
-  fireEvent.click(screen.getByRole('button', { name: /search characters/i }));
-  const input = await screen.findByRole<HTMLInputElement>('searchbox');
-
-  // Typing activates the first result.
-  type(input, 'r2');
-  await expectFirstRowActive('R2-D2');
-
-  // Deleting activates the first of the new results.
-  deleteBackward(input);
-  await expectFirstRowActive('Luke Skywalker');
-
-  // New results reset a row that was moved down.
-  arrowDown(input);
-  arrowDown(input);
-  await waitFor(() =>
-    expect(input).toHaveAttribute(
-      'aria-activedescendant',
-      screen.getAllByRole('menuitem')[2].id
-    )
+test('a pointer on a row drops an Enter that waits for results', async () => {
+  const onAction = vi.fn();
+  renderWithOverlay(
+    <PreviousResultsWhileLoading.Component defaultOpen onAction={onAction} />
   );
-  type(input, '5');
-  await expectFirstRowActive('R5-D4');
+
+  const input = await screen.findByRole<HTMLInputElement>('searchbox');
+  type(input, 'jazz');
+  pressEnter(input);
+  const [row] = screen.getAllByRole('menuitem');
+  act(() => {
+    row.dispatchEvent(new PointerEvent('pointermove', { bubbles: true }));
+  });
+
+  await screen.findByRole('menuitem', { name: /Jazz Night/ });
+  await pause(300);
+  expect(onAction).not.toHaveBeenCalled();
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
 });

@@ -1,10 +1,9 @@
-import type { ReactNode } from 'react';
+import type { KeyboardEvent, PointerEvent, ReactNode, RefObject } from 'react';
 import {
   createContext,
   use,
   useCallback,
   useEffect,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
@@ -17,8 +16,11 @@ import { useDevWarning } from '../utils/useDevWarning';
 // itself active when no row is, the active row is gone, or nobody picked a
 // row since the query changed. Enter waits while the app answers the search,
 // then runs the first new row. A picked row runs at once.
+//
+// RAC's autocomplete already activates the first row on open and while
+// typing forward. It leaves no row active after deleting, or when async
+// results replace the rows, and runs Enter on whatever row is active.
 
-// Keys that pick a row.
 const NAVIGATION_KEYS = new Set([
   'ArrowDown',
   'ArrowUp',
@@ -36,33 +38,23 @@ type Key = string | number;
 /** How long the app has to set `loading` after a search, in ms. */
 const ANSWER_GRACE = 100;
 
+/** What people did since the query last changed. */
+type Intent = 'none' | 'picked' | 'enterWaiting';
+
 interface SearchStatus {
-  /** Whether results are loading. */
   loading: boolean;
   /** Whether the app's search waits for people to pause typing. */
   searchWaiting: boolean;
+  /** The search last reported to the app, `null` when the app doesn't search. */
+  search: object | null;
 }
 
 interface ActiveRowContextValue {
-  /** Whether people picked a row since the query last changed. */
-  picked: () => boolean;
-  /** Whether an Enter waits for the app's answer. */
-  enterWaiting: () => boolean;
+  intent: () => Intent;
   /** Whether the app has answered the last search. */
-  answered: () => boolean;
+  answered: boolean;
   /** Runs the Enter that waited, on the given row. */
   releaseEnter: (row: HTMLElement) => void;
-  /**
-   * What the values above depend on. Nothing reads it: it gives the context
-   * a new identity when they change, so the rows re-render and check again.
-   * As a field it keeps them real `useMemo` dependencies for the lint rule.
-   */
-  status: {
-    query: string;
-    loading: boolean;
-    searchWaiting: boolean;
-    revision: number;
-  };
 }
 
 export const ActiveRowContext = createContext<ActiveRowContextValue | null>(
@@ -71,136 +63,106 @@ export const ActiveRowContext = createContext<ActiveRowContextValue | null>(
 
 export const useActiveRow = (
   inputValue: string,
-  { loading, searchWaiting }: SearchStatus
+  { loading, searchWaiting, search }: SearchStatus
 ) => {
-  const pickedRef = useRef(false);
-  const enterWaitingRef = useRef(false);
-  const statusRef = useRef({ loading, searchWaiting });
-  // How the app answered the last reported search. Answered up front, so
-  // without a reported search only `loading` and the pause hold Enter.
-  const answerRef = useRef({ sawLoading: false, graceOver: true });
-  const graceTimerRef = useRef<ReturnType<typeof setTimeout>>(undefined);
-  const [revision, setRevision] = useState(0);
-  const recheck = useCallback(() => setRevision(r => r + 1), []);
+  // A new search waits for the app's answer: `loading` going on and off, or
+  // `ANSWER_GRACE` passing without it (apps that set `loading` late, or
+  // never). Reset during render, so no commit sees the old answer.
+  const [answer, setAnswer] = useState(() => ({
+    search,
+    sawLoading: loading,
+    graceOver: search === null,
+  }));
+  if (answer.search !== search) {
+    setAnswer({ search, sawLoading: loading, graceOver: search === null });
+  } else if (loading && !answer.sawLoading) {
+    setAnswer({ ...answer, sawLoading: true });
+  }
+  useEffect(() => {
+    if (answer.graceOver) return;
+    const timer = setTimeout(
+      () =>
+        setAnswer(current =>
+          current.search === search ? { ...current, graceOver: true } : current
+        ),
+      ANSWER_GRACE
+    );
+    return () => clearTimeout(timer);
+  }, [answer.graceOver, search]);
+  const answered =
+    !loading && !searchWaiting && (answer.sawLoading || answer.graceOver);
 
-  // Answered once the search no longer waits for the pause and, since the
-  // palette reported it, `loading` went on and off again or `ANSWER_GRACE`
-  // passed without it (apps that set `loading` late, or never).
-  const answered = useCallback(() => {
-    const { loading, searchWaiting } = statusRef.current;
-    const { sawLoading, graceOver } = answerRef.current;
-    return !loading && !searchWaiting && (sawLoading || graceOver);
-  }, []);
-
-  // A callback ref, so the listeners follow the input whenever it mounts.
-  const inputCallbackRef = useCallback(
-    (input: HTMLInputElement | null) => {
-      if (!input) return;
-      // On the input itself, so it runs before RAC's handler, which React
-      // calls from the root.
-      const onKeyDown = (e: KeyboardEvent) => {
-        // RAC leaves Shift+Home/End to the input while no row is active, so
-        // they only select text there.
-        const selectsText =
-          e.shiftKey &&
-          (e.key === 'Home' || e.key === 'End') &&
-          !input.hasAttribute('aria-activedescendant');
-        if (NAVIGATION_KEYS.has(e.key) && !selectsText) {
-          pickedRef.current = true;
-          enterWaitingRef.current = false;
-        }
-        if (
-          e.key === 'Enter' &&
-          !e.isComposing &&
-          !pickedRef.current &&
-          // Another Enter while one waits joins it, the row runs once.
-          (!answered() || enterWaitingRef.current)
-        ) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          enterWaitingRef.current = true;
-        }
-      };
-      input.addEventListener('keydown', onKeyDown);
-      return () => {
-        input.removeEventListener('keydown', onKeyDown);
-      };
+  // Tagged with its query, so a new query starts over at `none`.
+  const intentRef = useRef<{ query: string; intent: Intent }>({
+    query: inputValue,
+    intent: 'none',
+  });
+  const intent = useCallback(
+    () =>
+      intentRef.current.query === inputValue
+        ? intentRef.current.intent
+        : 'none',
+    [inputValue]
+  );
+  const setIntent = useCallback(
+    (next: Intent) => {
+      intentRef.current = { query: inputValue, intent: next };
     },
-    [answered]
+    [inputValue]
   );
 
-  // A pointer that lands on a row picks it.
-  const menuCallbackRef = useCallback((menu: HTMLDivElement | null) => {
-    if (!menu) return;
-    const onPointerMove = (e: PointerEvent) => {
-      if (e.target instanceof Element && e.target.closest(rowSelector))
-        pickedRef.current = true;
-    };
-    menu.addEventListener('pointermove', onPointerMove);
-    return () => menu.removeEventListener('pointermove', onPointerMove);
-  }, []);
+  // A capture handler, so it runs before RAC's `onKeyDown` and can hold
+  // Enter back from it.
+  const onKeyDownCapture = (e: KeyboardEvent<HTMLInputElement>) => {
+    // RAC leaves Shift+Home/End to the input while no row is active, so
+    // they only select text there.
+    const selectsText =
+      e.shiftKey &&
+      (e.key === 'Home' || e.key === 'End') &&
+      !e.currentTarget.hasAttribute('aria-activedescendant');
+    if (NAVIGATION_KEYS.has(e.key) && !selectsText) {
+      setIntent('picked');
+    } else if (
+      e.key === 'Enter' &&
+      !e.nativeEvent.isComposing &&
+      intent() !== 'picked' &&
+      // Another Enter while one waits joins it, the row runs once.
+      (!answered || intent() === 'enterWaiting')
+    ) {
+      e.preventDefault();
+      e.stopPropagation();
+      setIntent('enterWaiting');
+    }
+  };
 
-  // A new query starts over: nothing picked, and an Enter that waited for
-  // the old one's rows is dropped. Before paint, so the rows check with it.
-  const queryRef = useRef(inputValue);
-  useLayoutEffect(() => {
-    if (queryRef.current === inputValue) return;
-    queryRef.current = inputValue;
-    pickedRef.current = false;
-    enterWaitingRef.current = false;
-  }, [inputValue]);
-
-  // The native Enter listener reads the status, so it updates before paint.
-  useLayoutEffect(() => {
-    statusRef.current = { loading, searchWaiting };
-    if (loading) answerRef.current.sawLoading = true;
-  }, [loading, searchWaiting]);
-
-  useEffect(() => () => clearTimeout(graceTimerRef.current), []);
-
-  // The palette calls this when it reports a search to the app.
-  const searchReported = useCallback(() => {
-    answerRef.current = {
-      sawLoading: statusRef.current.loading,
-      graceOver: false,
-    };
-    clearTimeout(graceTimerRef.current);
-    graceTimerRef.current = setTimeout(() => {
-      answerRef.current.graceOver = true;
-      recheck();
-    }, ANSWER_GRACE);
-  }, [recheck]);
+  const onPointerMove = (e: PointerEvent<HTMLDivElement>) => {
+    if (e.target instanceof Element && e.target.closest(rowSelector))
+      setIntent('picked');
+  };
 
   // RAC runs a row from its click handler, whether it was pressed, clicked
   // or reached with Enter: the row's `onAction`, the menu's, a link, and
   // closing. A click runs all of it, so the palette copies none of it.
   const releaseEnter = useCallback(
     (row: HTMLElement) => {
-      if (!enterWaitingRef.current || !answered()) return;
-      enterWaitingRef.current = false;
+      if (intent() !== 'enterWaiting' || !answered) return;
+      setIntent('none');
       row.click();
       // A click sets the modality to `virtual`. RAC sets it back after its
       // own Enter, so focus rings keep showing for keyboard users.
       setInteractionModality('keyboard');
     },
-    [answered]
+    [intent, setIntent, answered]
   );
 
   const context = useMemo<ActiveRowContextValue>(
-    () => ({
-      picked: () => pickedRef.current,
-      enterWaiting: () => enterWaitingRef.current,
-      answered,
-      releaseEnter,
-      status: { query: inputValue, loading, searchWaiting, revision },
-    }),
-    [answered, releaseEnter, inputValue, loading, searchWaiting, revision]
+    () => ({ intent, answered, releaseEnter }),
+    [intent, answered, releaseEnter]
   );
 
   return {
-    inputRef: inputCallbackRef,
-    menuRef: menuCallbackRef,
-    searchReported,
+    inputProps: { onKeyDownCapture },
+    menuProps: { onPointerMove },
     context,
   };
 };
@@ -227,13 +189,18 @@ const firstRowKey = (
   return null;
 };
 
-// Rendered in every row, inside the menu, where RAC provides its state. Only
-// the first row acts.
-const FirstRowRule = ({ id }: { id: Key }) => {
+interface FirstRowRuleProps {
+  id: Key;
+  /** The row this rule sits in, to run it. */
+  rowRef: RefObject<HTMLElement | null>;
+}
+
+// A component in the row's content: the item component itself only renders
+// while RAC builds the collection, where `MenuStateContext` doesn't exist.
+// Rendered in every row, only the first row acts.
+export const FirstRowRule = ({ id, rowRef }: FirstRowRuleProps): ReactNode => {
   const state = use(MenuStateContext);
   const active = use(ActiveRowContext);
-  // Finds the row this rule sits in, to run it.
-  const markerRef = useRef<HTMLSpanElement>(null);
   useDevWarning(
     !state,
     '[CommandPalette] The rows cannot reach `MenuStateContext`, so the ' +
@@ -250,7 +217,10 @@ const FirstRowRule = ({ id }: { id: Key }) => {
     const current = manager.focusedKey;
     const isActive = current === id && manager.isFocused;
     const gone = current != null && collection.getItem(current) == null;
-    if (!isActive && (current == null || gone || !active.picked())) {
+    if (
+      !isActive &&
+      (current == null || gone || active.intent() !== 'picked')
+    ) {
       manager.setFocused(true);
       manager.setFocusedKey(id);
       return;
@@ -261,20 +231,13 @@ const FirstRowRule = ({ id }: { id: Key }) => {
     // this microtask, and the new first row makes itself active there. RAC
     // reads `focusedKey` through a ref, so the check below sees that, while
     // `state` is still this render's: only the row that is still active runs.
-    if (isActive && active.enterWaiting())
+    if (isActive && active.intent() === 'enterWaiting')
       queueMicrotask(() => {
-        const row = markerRef.current?.closest<HTMLElement>(rowSelector);
-        if (manager.focusedKey === id && row) active.releaseEnter(row);
+        const row = rowRef.current;
+        if (manager.focusedKey === id && row?.isConnected)
+          active.releaseEnter(row);
       });
-  }, [state, active, id]);
+  }, [state, active, id, rowRef]);
 
-  return <span ref={markerRef} hidden />;
+  return null;
 };
-
-/** Adds the first-row rule to a row's content. */
-export const withFirstRowRule = (id: Key, content: ReactNode) => (
-  <>
-    {content}
-    <FirstRowRule id={id} />
-  </>
-);

@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { ReactNode, Ref } from 'react';
 import type RAC from 'react-aria-components';
 import { KeyboardContext } from 'react-aria-components/Keyboard';
 import { MenuItem as RACMenuItem } from 'react-aria-components/Menu';
@@ -90,7 +90,10 @@ export const MenuItemCore = ({
   textValue,
   classNames,
   ...props
-}: Omit<MenuItemProps, 'size'> & { classNames: MenuItemClassNames }) => (
+}: Omit<MenuItemProps, 'size'> & {
+  classNames: MenuItemClassNames;
+  ref?: Ref<HTMLDivElement>;
+}) => (
   <RACMenuItem
     {...props}
     textValue={textValue ?? getItemText(children)}

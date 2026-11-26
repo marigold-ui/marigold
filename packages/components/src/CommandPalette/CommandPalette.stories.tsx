@@ -26,6 +26,7 @@ import type {
   CommandPaletteProps,
   CommandPaletteSearchState,
 } from './CommandPalette';
+import { deleteBackward, press, typeChar } from './realEvents';
 
 // The palette's own callbacks, passed as args so Storybook resets them
 // between tests and lists them in the Actions panel.
@@ -906,7 +907,7 @@ const searchCharacters = (query: string, signal: AbortSignal) =>
     });
   });
 
-const AsyncSearchPalette = () => {
+const AsyncSearchPalette = ({ defaultOpen }: { defaultOpen?: boolean }) => {
   const list = useAsyncList<(typeof characters)[number]>({
     async load({ signal, filterText }) {
       if (!filterText) return { items: [] };
@@ -915,7 +916,7 @@ const AsyncSearchPalette = () => {
   });
 
   return (
-    <CommandPalette.Trigger>
+    <CommandPalette.Trigger defaultOpen={defaultOpen}>
       <CommandPalette.Button>Search characters…</CommandPalette.Button>
       <CommandPalette
         placeholder="Type a Star Wars name…"
@@ -937,8 +938,40 @@ const AsyncSearchPalette = () => {
 
 export const AsyncSearch = meta.story({
   ...noSnapshot,
-  render: () => <AsyncSearchPalette />,
+  render: ({ defaultOpen }) => <AsyncSearchPalette defaultOpen={defaultOpen} />,
 });
+
+// Real events instead of `userEvent`, see `realEvents`.
+AsyncSearch.test(
+  'Keeps the first result active as async results change',
+  { args: { defaultOpen: true } },
+  async ({ canvas, step }) => {
+    const input = await canvas.findByRole<HTMLInputElement>('searchbox');
+
+    await step('Typing activates the first result', async () => {
+      for (const char of 'r2') typeChar(input, char);
+      await expectFirstRowActive(canvas, 'R2-D2');
+    });
+
+    await step('Deleting activates the first of the new results', async () => {
+      deleteBackward(input);
+      await expectFirstRowActive(canvas, 'Luke Skywalker');
+    });
+
+    await step('New results reset a moved active row', async () => {
+      press(input, 'keydown', 'ArrowDown');
+      press(input, 'keydown', 'ArrowDown');
+      await waitFor(() =>
+        expect(input).toHaveAttribute(
+          'aria-activedescendant',
+          canvas.getAllByRole('menuitem')[2].id
+        )
+      );
+      typeChar(input, '5');
+      await expectFirstRowActive(canvas, 'R5-D4');
+    });
+  }
+);
 
 // Search one kind of record
 // ---------------

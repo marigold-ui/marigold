@@ -1,4 +1,4 @@
-import { Children } from 'react';
+import { Children, useRef } from 'react';
 import { useCollator } from '@react-aria/i18n';
 import { useClassNames } from '@marigold/system';
 import {
@@ -8,7 +8,7 @@ import {
 } from '../Menu/MenuItem';
 import { useDevWarning } from '../utils/useDevWarning';
 import { useCommandPalette } from './Context';
-import { withFirstRowRule } from './useActiveRow';
+import { FirstRowRule } from './useActiveRow';
 
 // Props
 // ---------------
@@ -71,6 +71,7 @@ export const CommandPaletteItem = ({
   ...props
 }: CommandPaletteItemProps) => {
   const { query: term, filter } = useCommandPalette();
+  const rowRef = useRef<HTMLDivElement>(null);
   const collator = useCollator({ usage: 'search', sensitivity: 'base' });
   const classNames = useClassNames({
     component: 'CommandPalette',
@@ -109,13 +110,17 @@ export const CommandPaletteItem = ({
   return (
     <MenuItemCore
       {...props}
+      ref={rowRef}
       variant={variant}
       textValue={text}
       classNames={classNames}
     >
-      {typeof label === 'function'
-        ? renderProps => withFirstRowRule(props.id, label(renderProps))
-        : withFirstRowRule(props.id, label)}
+      {renderProps => (
+        <>
+          {typeof label === 'function' ? label(renderProps) : label}
+          <FirstRowRule id={props.id} rowRef={rowRef} />
+        </>
+      )}
     </MenuItemCore>
   );
 };
