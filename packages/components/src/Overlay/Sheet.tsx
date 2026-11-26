@@ -64,10 +64,8 @@ const SHEET_MAX_HEIGHT =
   '[--sheet-available:calc(var(--visual-viewport-height)*0.95)] max-h-(--sheet-available)';
 
 /**
- * Layout per edge, for RAC's `Sheet` (the surface) and `SheetContent` (the
- * dialog). A bottom sheet lifts above the software keyboard, so its actions
- * stay reachable. A start sheet fills the height instead and gives up what
- * the keyboard covers, the same as the layout viewport the page sits in.
+ * Layout per edge: `surface` is RAC's `Sheet`, `content` its `SheetContent`.
+ * A bottom sheet lifts above the keyboard, a start sheet fills the height.
  */
 const SHEET_LAYOUT = {
   bottom: {
@@ -76,20 +74,12 @@ const SHEET_LAYOUT = {
     content: cn(SHEET_MAX_HEIGHT, '[--sheet-chrome:0px]'),
   },
   start: {
-    // `overscrollPadding` adds a viewport of padding toward the edge. Sized
-    // by content box, the width stays the visible part and the padding keeps
-    // the surface going while an overscroll bounces. RAC centres the sheet on
-    // the cross axis, `self-start` pins it to the top.
+    // Content box, so `overscrollPadding` adds to the width instead of
+    // eating it. `self-start` undoes RAC's vertical centring.
     surface:
       'box-content self-start h-[calc(100dvh-var(--sheet-keyboard,0px))]',
-    // RAC closes once its IntersectionObserver sees the dialog leave the
-    // screen. A full-width dialog swiped out ends exactly on the viewport
-    // edge, which still counts as intersecting, so the observer never fires:
-    // the exit hangs and the overlay keeps blocking the page. One pixel short
-    // of the far edge puts it past the edge instead (inline start aligns it,
-    // so the pixel is on the far side in both directions). The surface behind
-    // stays full width, so nothing shows. Important, because RAC sets
-    // `width: 100%` inline on the dialog.
+    // 1px short, so a swiped-out dialog ends past the viewport edge and RAC's
+    // IntersectionObserver sees it leave. `!` beats RAC's inline `width: 100%`.
     content: 'h-full w-[calc(100%-1px)]!',
   },
 } as const;

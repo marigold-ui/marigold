@@ -1,4 +1,10 @@
-import { render, renderHook, screen, waitFor } from '@testing-library/react';
+import {
+  render,
+  renderHook,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { vi } from 'vitest';
@@ -1350,8 +1356,12 @@ describe('mobile drawer', () => {
     await user.click(screen.getByRole('button', { name: 'Toggle navigation' }));
 
     const drawer = await screen.findByRole('dialog', { name: 'Sidebar' });
+    // The dialog carries the name now, the `aside` inside no longer does.
     expect(
-      screen.getByRole('navigation', { name: 'App navigation' })
+      screen.queryByRole('complementary', { name: 'Sidebar' })
+    ).not.toBeInTheDocument();
+    expect(
+      within(drawer).getByRole('navigation', { name: 'App navigation' })
     ).toBeInTheDocument();
     expect(drawer).toContainElement(
       screen.getByRole('button', { name: 'Close navigation' })
