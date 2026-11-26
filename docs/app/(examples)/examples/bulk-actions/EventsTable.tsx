@@ -6,8 +6,8 @@ import {
   Badge,
   Button,
   Center,
-  Inline,
-  Stack,
+  Skeleton,
+  type SkeletonProps,
   Table,
   Text,
   VisuallyHidden,
@@ -72,27 +72,34 @@ const NoDataEmptyState = () => (
   </div>
 );
 
-// Co-located skeleton that mirrors the table's row rhythm. Shown only for the
-// initial fetch (`isLoading`); background refetches keep the previous rows on
-// screen and surface activity through FetchingIndicator instead.
-export const EventsTableSkeleton = ({ rows = 10 }: { rows?: number }) => (
-  <>
-    <VisuallyHidden role="status">Loading events…</VisuallyHidden>
-    <div aria-hidden>
-      <Stack space={4}>
-        {Array.from({ length: rows }, (_, i) => `skeleton-${i}`).map(key => (
-          <Inline key={key} space={6} alignY="center">
-            <div className="h-4 w-1/4 animate-pulse rounded bg-current/10" />
-            <div className="h-4 w-1/6 animate-pulse rounded bg-current/10" />
-            <div className="h-4 grow animate-pulse rounded bg-current/10" />
-            <div className="h-4 w-16 animate-pulse rounded bg-current/10" />
-            <div className="h-4 w-12 animate-pulse rounded bg-current/10" />
-            <div className="h-4 w-6 animate-pulse rounded bg-current/10" />
-          </Inline>
-        ))}
-      </Stack>
-    </div>
-  </>
+// Placeholder rows for the initial fetch (`isLoading`), rendered inside the
+// real table so the header and column widths stay put. Background refetches
+// keep the previous rows on screen and show FetchingIndicator instead.
+const skeletonCells: ReadonlyArray<
+  { column: string } & Pick<SkeletonProps, 'width' | 'height' | 'variant'>
+> = [
+  { column: 'name', width: '3/4' },
+  { column: 'date', width: '3/4' },
+  { column: 'venue', width: '2/3' },
+  { column: 'category', width: '3/4' },
+  { column: 'price', width: 'full' },
+  { column: 'status', width: 16, height: 5, variant: 'rounded' },
+  { column: 'reservations', width: '1/2' },
+  { column: 'actions', width: 8, height: 8 }, // Small button, sets the row height
+];
+
+const skeletonRowIds = (count: number) =>
+  Array.from({ length: count }, (_, i) => `skeleton-${i}`);
+
+const EventSkeletonRow = ({ id }: { id: string }) => (
+  <Table.Row id={id}>
+    {skeletonCells.map(({ column, ...cell }, i) => (
+      // The row header needs a text value for type-to-select, and there is none yet.
+      <Table.Cell key={column} textValue={i === 0 ? '' : undefined}>
+        <Skeleton {...cell} />
+      </Table.Cell>
+    ))}
+  </Table.Row>
 );
 
 // Per-row menu for one-off operations (see the Table Records pattern). It
@@ -181,21 +188,29 @@ export const EventsTable = () => {
   const { items, totalItems, pageSize, isFiltered, isLoading } = useEvents();
   const { selected, setSelected } = useSelection();
 
-  if (isLoading) {
-    return <EventsTableSkeleton rows={pageSize} />;
-  }
-
-  const summary = `${totalItems} event${totalItems === 1 ? '' : 's'}`;
+  // The table announces the load itself (`loading`). This region announces the
+  // result, and stays mounted so only its text changes: a region mounted
+  // together with its text is often not announced.
+  const status = isLoading
+    ? ''
+    : `${totalItems} event${totalItems === 1 ? '' : 's'}`;
   const hasSelection = selected === 'all' || selected.size > 0;
+  const skeletonIds = isLoading ? skeletonRowIds(pageSize) : [];
 
   return (
     <div id={EVENTS_REGION_ID} className="scroll-mt-4">
-      <VisuallyHidden role="status">{summary}</VisuallyHidden>
+      <VisuallyHidden role="status">{status}</VisuallyHidden>
       <Table
         aria-label="Events"
+        loading={isLoading}
         selectionMode="multiple"
+        // Placeholder rows can't be selected, but the checkbox column stays.
+        disabledKeys={skeletonIds}
         selectedKeys={selected}
-        onSelectionChange={setSelected}
+        // "Select all" ignores disabled rows, so drop it while the placeholders show.
+        onSelectionChange={keys => {
+          if (!isLoading) setSelected(keys);
+        }}
         actionBar={() => <BulkActionBar />}
       >
         {/* Columns with predictable short content get a fixed width; the two
@@ -231,13 +246,15 @@ export const EventsTable = () => {
             isFiltered ? <FilterEmptyState /> : <NoDataEmptyState />
           }
         >
-          {items.map(event => (
-            <EventRow
-              key={event.id}
-              event={event}
-              actionsDisabled={hasSelection}
-            />
-          ))}
+          {isLoading
+            ? skeletonIds.map(id => <EventSkeletonRow key={id} id={id} />)
+            : items.map(event => (
+                <EventRow
+                  key={event.id}
+                  event={event}
+                  actionsDisabled={hasSelection}
+                />
+              ))}
         </Table.Body>
       </Table>
     </div>

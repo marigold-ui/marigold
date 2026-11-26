@@ -261,6 +261,7 @@ export const v18: MigrationManifest = {
     ],
     EmptyState: ['container', 'title', 'description', 'action'],
     ErrorState: ['container', 'title', 'description', 'action'],
+    Skeleton: null,
     ToggleButton: ['group', 'button'],
     SegmentedControl: ['group', 'list', 'field', 'option', 'indicator'],
     Sidebar: [

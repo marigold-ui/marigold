@@ -319,6 +319,8 @@ export type {
   TableDragPreviewProps,
 } from './Table/Table';
 
+export { Skeleton } from './Skeleton/Skeleton';
+export type { SkeletonProps } from './Skeleton/Skeleton';
 export { Sidebar } from './Sidebar/Sidebar';
 export type { SidebarProps } from './Sidebar/Sidebar';
 export type { SidebarProviderProps } from './Sidebar/Context';

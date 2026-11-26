@@ -1,6 +1,7 @@
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Stack } from '../Stack/Stack';
+import { alphaOf } from '../contrast.utils';
 import { Keyboard } from './Keyboard';
 
 const meta = preview.meta({
@@ -65,18 +66,6 @@ export const OnBackgrounds = meta.story({
     );
   },
 });
-
-/**
- * Paints a computed colour onto a transparent pixel and reads its alpha back,
- * so the check holds whatever colour syntax the browser serialises to.
- */
-const alphaOf = (color: string) => {
-  const ctx = document.createElement('canvas').getContext('2d');
-  if (!ctx) throw new Error('No 2D canvas context');
-  ctx.fillStyle = color;
-  ctx.fillRect(0, 0, 1, 1);
-  return ctx.getImageData(0, 0, 1, 1).data[3];
-};
 
 OnBackgrounds.test(
   'keeps the cap translucent and in the surrounding font on every ground',

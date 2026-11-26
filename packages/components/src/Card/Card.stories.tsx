@@ -2,6 +2,7 @@ import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
 import { Badge, Button, Inline, Stack, Text } from '@marigold/components';
 import { Description } from '../Description/Description';
+import { Skeleton } from '../Skeleton/Skeleton';
 import { Table } from '../Table/Table';
 import { Title } from '../Title/Title';
 import { Card } from './Card';
@@ -343,11 +344,18 @@ export const BareChildrenAntiPattern = meta.story({
 export const LoadingSkeleton = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   render: args => (
-    <Card aria-hidden="true" {...args}>
-      <Card.Content>
-        <Text>Loading…</Text>
-      </Card.Content>
-    </Card>
+    // Placeholders have no content width, so the card takes one from outside.
+    <div className="w-80">
+      <Card aria-hidden="true" stretch {...args}>
+        <Card.Content>
+          <Stack space="related">
+            <Skeleton width="1/2" height={5} />
+            <Skeleton />
+            <Skeleton width="3/4" />
+          </Stack>
+        </Card.Content>
+      </Card>
+    </div>
   ),
 });
 

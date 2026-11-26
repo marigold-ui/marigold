@@ -89,7 +89,7 @@ For the general rule behind all of this, see [Button: Visual hierarchy](/compone
 
 ### Best Practices
 
-Timing is critical when displaying empty states. Always show a loading indicator (Skeleton or Spinner) while data is being fetched, and only reveal the empty state after the request completes and confirms no results exist. This prevents the "Flash of Empty Content" - a jarring flicker that can confuse users and make the interface feel unstable.
+Timing is critical when displaying empty states. Always show a loading indicator ([Skeleton](/components/content/skeleton) or [Loader](/components/content/loader)) while data is being fetched, and only reveal the empty state after the request completes and confirms no results exist. This prevents the "Flash of Empty Content" - a jarring flicker that can confuse users and make the interface feel unstable.
 
 It's equally important to distinguish between empty and error states. Use the `<EmptyState>` component exclusively for successful operations that return no data. For system failures, network errors, or other exceptions, use an [ErrorState](/components/content/error-state) instead (see the [error boundaries pattern](/patterns/feedback/error-boundaries)). This clear separation helps users understand whether they need to take action or simply recognize that no content exists yet.
 

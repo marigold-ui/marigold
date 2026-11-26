@@ -95,9 +95,23 @@ Marigold does not currently have a progress bar to show more granular loading st
 - If the process is successful, continue as normal in the user's flow. Use feedback messages where appropriate to communicate system status.
 - If the process is unsuccessful, display an appropriate error message so the user knows why the process failed and what they can do next.
 
+### Skeletons
+
+<ComponentDemo name="skeleton-table" />
+
+[Skeletons](/components/content/skeleton) are placeholders in the shape of the content that is about to appear, such as table rows, a form or a card. Use them when:
+
+- content is loading for the first time and nothing is on screen yet.
+- you know the layout of the result, so the placeholders can mirror it.
+- people don't need to be blocked while the content loads.
+
+Don't use them when old content is already on screen and only being refreshed. Keep that content visible instead. When the shape of the result is unknown, or interaction must be blocked, use a section or fullscreen indicator.
+
+A skeleton is hidden from screen readers, so the load is announced once for the whole region. See [Skeleton accessibility](/components/content/skeleton#accessibility).
+
 ## Placement and appearance
 
-The loading indicator should always be placed in the center of its container.
+A [Loader](/components/content/loader) sits in the center of its container. [Skeletons](/components/content/skeleton) take the place of the content they stand in for.
 
 ## User interaction
 
@@ -127,6 +141,27 @@ Feedback messages that appear after the process has returned a result should cle
 
 <TeaserList
   items={[
+    {
+      title: 'Skeleton',
+      href: '/components/content/skeleton',
+      caption: 'Placeholders in the shape of content that is still loading.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <rect width="18" height="4" x="3" y="4" rx="1" />
+          <rect width="12" height="4" x="3" y="11" rx="1" />
+          <rect width="15" height="4" x="3" y="18" rx="1" />
+        </svg>
+      ),
+    },
     {
       title: 'Forms',
       href: '/patterns/user-input/forms',

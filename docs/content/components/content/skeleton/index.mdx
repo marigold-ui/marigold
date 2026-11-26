@@ -1,0 +1,266 @@
+---
+title: Skeleton
+description: A placeholder that holds the shape of content while it loads.
+badge: beta
+---
+
+import { SkeletonAnatomy } from './skeleton-anatomy';
+
+The `<Skeleton>` component draws a soft, pulsing shape where content will appear once it has loaded. Arrange several of them to mirror the layout they stand in for, such as table rows, a form or a card, so the page keeps its structure during the first load and nothing jumps when the real content arrives.
+
+## Anatomy
+
+<SkeletonAnatomy />
+
+A skeleton is a single placeholder with no parts of its own. You build the shape of a whole view by combining several of them.
+
+- **Placeholder:** The pulsing shape that stands in for one piece of content.
+- **Width and height:** Set by props, so each placeholder can match the size of the content it stands in for.
+- **Rounded variant:** Fully rounded ends, for avatars and badges.
+
+## Appearance
+
+<AppearanceDemo component={'Skeleton'} />
+
+<AppearanceTable component={'Skeleton'} />
+
+The fill is a translucent tint of the surrounding text color, so a skeleton stays visible on the page background, a white surface and a tinted row alike.
+
+| Variant   | Description                                            | When to use                                                              |
+| --------- | ------------------------------------------------------ | ------------------------------------------------------------------------ |
+| `default` | Slightly rounded corners. This is the default variant. | Text lines, headings, inputs, tags, images and other rectangular blocks. |
+| `rounded` | Fully rounded ends.                                    | Avatars (equal `width` and `height`) and badges.                         |
+
+## Usage
+
+Use a skeleton for the first load of content whose shape you already know, such as a table, a list, a form or a detail view. It shows people where the content will appear and roughly what it will look like, which makes the wait feel shorter than a spinner in an empty area.
+
+A skeleton is not the right choice for every wait:
+
+- **Background updates:** when data is refreshed while old data is still on screen, keep the old data visible instead of swapping it for a skeleton. See [Fetching and Mutations](/patterns/data/fetching-and-mutations).
+- **Short waits:** a skeleton that flashes for a fraction of a second reads as a flicker. Wait about a second before you show one, and once it is visible, keep it for at least a second, as the [Loading States](/patterns/feedback/loading-states) pattern recommends. Cached or fast responses then never show a skeleton at all.
+
+For waits with an unknown result or a running action, see [Alternative components](#alternative-components).
+
+### Show it while loading
+
+Render the skeleton in place of the content while it loads, and the content once it has arrived. Next to it, keep one status message for the region, as described under [Accessibility](#accessibility).
+
+```tsx
+const EventsContent = ({ events, isLoading, isError }: EventsContentProps) => {
+  if (isLoading) return <EventsSkeleton />;
+  if (isError) return <ErrorState title="Events could not be loaded" />;
+  if (events.length === 0) return <EmptyState title="No events yet" />;
+  return <EventList events={events} />;
+};
+
+const Events = () => {
+  const { data, isLoading, isError } = useEvents();
+  const events = data ?? [];
+
+  const status = isLoading
+    ? 'Loading events…'
+    : isError
+      ? 'Events could not be loaded'
+      : `${events.length} events`;
+
+  return (
+    <>
+      <VisuallyHidden role="status">{status}</VisuallyHidden>
+      <EventsContent events={events} isLoading={isLoading} isError={isError} />
+    </>
+  );
+};
+```
+
+Press "Reload" to watch the skeleton make way for the card in the same place and size:
+
+<ComponentDemo name="skeleton-loading" />
+
+A load does not always end with data, so the snippet covers all of its outcomes: an [EmptyState](/components/content/empty-state) when the request returns nothing, and an [ErrorState](/components/content/error-state) when it fails.
+
+### Mirror the layout
+
+Build the skeleton from the same layout components and the same spacing as the real content, and keep it next to the component it stands in for, so the two don't drift apart. Make the last line of a paragraph shorter so it reads as text.
+
+<ComponentDemo name="skeleton-composition" />
+
+These values match the default theme:
+
+| Stands in for        | `height`                   | `width`                       | `variant` |
+| -------------------- | -------------------------- | ----------------------------- | --------- |
+| Text line            | `4`                        | A fraction, last line shorter | `default` |
+| Label or description | `"3.5"`                    | Fixed, such as `32`           | `default` |
+| Title                | `5`                        | A fraction, such as `"1/2"`   | `default` |
+| Input or select      | `9`                        | `"full"`                      | `default` |
+| Button               | `9`, small `8`, large `10` | Fixed, such as `24`           | `default` |
+| Badge                | `5`                        | Fixed, such as `16`           | `rounded` |
+| Tag                  | `6`                        | Fixed, such as `20`           | `default` |
+| Avatar               | Same as `width`            | Fixed, such as `10`           | `rounded` |
+
+A text line at `4` is a bar thinner than the line itself. Stack lines with `space="related"` to match the rhythm of body text. Where the layout must not shift at all, use the full line height instead: `5` for small text such as card content, `6` for body text.
+
+`height` takes a spacing-scale value. Half steps are strings, such as `height="3.5"`. A bordered badge is exactly `5` tall. A filled badge, such as `success`, is 18px, which has no step on the scale. `4` and `5` are both 2px off, so pick the one that keeps the surrounding layout steady.
+
+How `width` behaves:
+
+- **Values:** a spacing-scale value (`32`), a fraction (`"1/2"`) or `"full"`, the default. Content-based keywords such as `"fit"` or `"auto"` are not accepted, because an empty placeholder has no content to take a size from.
+- **Fixed widths** keep their size in a row, so an avatar stays round next to text lines.
+- **Fractions** are relative to the container. A skeleton has no content that could give its container a size.
+- **In a card:** a `<Card>` sizes itself to its content, so it collapses around fractional skeletons. Pass `stretch` and place the card where its width is set, for example in a card grid.
+
+### In a table
+
+For a table, render skeleton rows inside the real `<Table>` instead of drawing a separate placeholder. The header stays real, the columns keep their widths, and nothing shifts when the data arrives. Render as many rows as a page holds, and give each column a width that suits its content.
+
+- **Set `loading`** on the table while the skeleton rows are shown. The table marks itself busy and announces the load to screen readers.
+- **Give the row header cells an empty `textValue`.** A row header needs a text value for type-to-select, and there is none yet.
+- **With selection,** keep `selectionMode` so the checkbox column stays in place, and pass the IDs of the skeleton rows in `disabledKeys`, so nobody can select a placeholder row. "Select all" still works on disabled rows, so control the selection and ignore changes while the skeleton rows are shown.
+- **Alignment follows the column.** A placeholder in a column with `alignX="right"` or `alignX="center"` lines up like the content it stands in for, so numbers and their placeholders share an edge.
+
+<ComponentDemo name="skeleton-table" />
+
+<GuidelineTiles>
+  <Do>
+    <DoDescription>
+      Keep the skeleton simple: lines and blocks for the main content, without
+      every icon, divider and decoration.
+    </DoDescription>
+  </Do>
+  <Dont>
+    <DontDescription>
+      Don't show a skeleton during a background refresh. Keep the data people
+      are already looking at on screen.
+    </DontDescription>
+  </Dont>
+</GuidelineTiles>
+
+## Accessibility
+
+A skeleton carries no information, so it is always hidden from assistive technology. A screen reader skips the placeholders, and a card or form full of them is not read out as a series of empty shapes.
+
+Instead, announce the load once for the whole region that is loading:
+
+- **In a table:** set `loading` on the `<Table>`, as described under [In a table](#in-a-table).
+- **Anywhere else:** keep one status message for the region, for example a visually hidden `role="status"` element. Render it from the start and change only its text, from "Loading events…" to "24 events", as shown in [Show it while loading](#show-it-while-loading). Screen readers often miss a message that appears together with its container.
+
+Don't give each skeleton its own announcement. Thirty placeholders would mean thirty announcements for one load.
+
+Skeleton rows in a table are an exception to "skipped". The placeholders inside them are hidden, but the rows are real table rows. Keyboard focus skips them, because they are disabled, but the reading cursor of a screen reader can still reach them and finds empty cells, including an empty row header. Automated checkers such as axe report that empty row header as a minor issue. It is expected while the table loads: the busy state and the loading announcement tell people that the content is on its way.
+
+The pulse animation stops when people have asked their system to reduce motion. The skeleton then stays still.
+
+## Props
+
+<StorybookHintMessage component={'Skeleton'} />
+
+### Skeleton
+
+<AutoTypeTable path="Skeleton" name="SkeletonProps" />
+
+## Alternative components
+
+A skeleton fits the first load of content with a known shape. For other waits, these components fit better:
+
+<ul>
+  <li>
+    [Loader](/components/content/loader): When the shape of the result is
+    unknown, or people must not interact with a section or the whole page until
+    a task has finished.
+  </li>
+  <li>
+    [Button](/components/actions/button#loading-state): When an action such as
+    submitting a form is running. The button shows its own pending state with
+    `loading`.
+  </li>
+</ul>
+
+## Related
+
+<TeaserList
+  items={[
+    {
+      title: 'Loading States',
+      href: '/patterns/feedback/loading-states',
+      caption: 'Learn when to use which loading state.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth="1.5"
+          stroke="currentColor"
+          className="size-6"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99"
+          />
+        </svg>
+      ),
+    },
+    {
+      title: 'Fetching and Mutations',
+      href: '/patterns/data/fetching-and-mutations',
+      caption: 'When to show a skeleton and when to keep the old data.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <ellipse cx="12" cy="5" rx="9" ry="3" />
+          <path d="M3 5v14a9 3 0 0 0 18 0V5" />
+          <path d="M3 12a9 3 0 0 0 18 0" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Loader',
+      href: '/components/content/loader',
+      caption: 'For waits where the shape of the result is unknown.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Table',
+      href: '/components/collection/table',
+      caption: 'The most common home for skeleton rows.',
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          className="size-5"
+        >
+          <rect width="18" height="18" x="3" y="3" rx="2" />
+          <path d="M3 9h18" />
+          <path d="M3 15h18" />
+          <path d="M12 3v18" />
+        </svg>
+      ),
+    },
+  ]}
+/>
