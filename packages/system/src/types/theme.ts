@@ -121,6 +121,7 @@ export type Theme = {
       | 'overlay'
       | 'closeButton'
       | 'container'
+      | 'dragHandle'
       | 'header'
       | 'title'
       | 'description'

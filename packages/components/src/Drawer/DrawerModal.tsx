@@ -1,21 +1,10 @@
-import type RAC from 'react-aria-components';
-import { Modal, ModalOverlay } from 'react-aria-components/Modal';
-import { cn, useSmallScreen } from '@marigold/system';
+import { use } from 'react';
+import { OverlayTriggerStateContext } from 'react-aria-components/Dialog';
+import { cn } from '@marigold/system';
 import { NonModal } from '../Overlay/NonModal';
 import type { NonModalProps } from '../Overlay/NonModal';
-
-// Mobile Modal
-// ---------------
-const MobileModal = ({ children, ...props }: RAC.ModalOverlayProps) => (
-  <ModalOverlay
-    {...props}
-    className="fixed inset-0 z-50 h-(--visual-viewport-height)"
-  >
-    <Modal className="flex h-(--visual-viewport-height) *:flex-1">
-      {children}
-    </Modal>
-  </ModalOverlay>
-);
+import { Sheet } from '../Overlay/Sheet';
+import type { SheetProps } from '../Overlay/Sheet';
 
 // Props
 // ---------------
@@ -28,27 +17,35 @@ type DrawerModalProps = Omit<
   'open' | 'defaultOpen' | 'onOpenChange'
 >;
 
-// Component
+// Desktop
 // ---------------
 export const DrawerModal = ({
   children,
   className,
-  keyboardDismissable = true,
   ...props
-}: DrawerModalProps) => {
-  const isSmallScreen = useSmallScreen();
+}: DrawerModalProps) => (
+  <NonModal {...props} className={cn('fixed z-50', className)}>
+    {children}
+  </NonModal>
+);
 
-  return isSmallScreen ? (
-    <MobileModal isKeyboardDismissDisabled={!keyboardDismissable}>
-      {children}
-    </MobileModal>
-  ) : (
-    <NonModal
+// Small screens
+// ---------------
+type DrawerSheetProps = Omit<SheetProps, 'open' | 'onOpenChange' | 'position'>;
+
+/**
+ * A bottom sheet (ADR-0007). It is the dialog itself, so dialog props (the
+ * accessible name) go here and the Drawer renders no `<Dialog>` inside it.
+ */
+export const DrawerSheet = (props: DrawerSheetProps) => {
+  const state = use(OverlayTriggerStateContext);
+
+  return (
+    <Sheet
       {...props}
-      keyboardDismissable={keyboardDismissable}
-      className={cn('fixed z-50', className)}
-    >
-      {children}
-    </NonModal>
+      position="bottom"
+      open={state?.isOpen}
+      onOpenChange={state?.setOpen}
+    />
   );
 };

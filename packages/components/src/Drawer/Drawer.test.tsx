@@ -161,6 +161,85 @@ test('uses modal on small screens', async () => {
   expect(screen.queryByRole('complementary')).not.toBeInTheDocument();
 });
 
+describe('on small screens', () => {
+  beforeEach(() => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+  });
+
+  test('opens as a bottom sheet', async () => {
+    renderWithOverlay(<Basic.Component />);
+
+    await user.click(screen.getByRole('button', { name: 'Open Drawer' }));
+
+    const dialog = await screen.findByRole('dialog');
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(dialog.closest('[data-position]')).toHaveAttribute(
+      'data-position',
+      'bottom'
+    );
+  });
+
+  test('is a single dialog named by its title, not a landmark', async () => {
+    renderWithOverlay(<Basic.Component />);
+
+    await user.click(screen.getByRole('button', { name: 'Open Drawer' }));
+
+    expect(
+      await screen.findByRole('dialog', { name: 'Drawer Title' })
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole('dialog')).toHaveLength(1);
+    expect(screen.queryByRole('complementary')).not.toBeInTheDocument();
+  });
+
+  test('always shows the close button', async () => {
+    renderWithOverlay(<Basic.Component closeButton={false} />);
+
+    await user.click(screen.getByRole('button', { name: 'Open Drawer' }));
+    const drawer = await screen.findByText('Drawer Title');
+
+    await user.click(screen.getByRole('button', { name: 'Dismiss drawer' }));
+
+    await waitFor(() => expect(drawer).not.toBeInTheDocument());
+  });
+
+  test('closes on a press outside', async () => {
+    renderWithOverlay(<Basic.Component />);
+
+    await user.click(screen.getByRole('button', { name: 'Open Drawer' }));
+    const dialog = await screen.findByRole('dialog');
+    await waitFor(() => expect(dialog).toHaveFocus());
+
+    await user.click(document.body);
+
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+  });
+
+  test('keyboardDismissable={false} also ignores a press outside', async () => {
+    renderWithOverlay(<Basic.Component keyboardDismissable={false} />);
+
+    await user.click(screen.getByRole('button', { name: 'Open Drawer' }));
+    const dialog = await screen.findByRole('dialog');
+    await waitFor(() => expect(dialog).toHaveFocus());
+
+    await user.click(document.body);
+
+    expect(screen.getByRole('dialog')).toBeInTheDocument();
+  });
+});
+
+test('hides the close button on desktop unless closeButton is set', async () => {
+  renderWithOverlay(<Basic.Component />);
+
+  await user.click(screen.getByRole('button', { name: 'Open Drawer' }));
+  await screen.findByText('Drawer Title');
+
+  expect(
+    screen.queryByRole('button', { name: 'Dismiss drawer' })
+  ).not.toBeInTheDocument();
+});
+
 test('controlled drawers receive onOpenChange(false) when preempted', async () => {
   const onOpenChangeA = vi.fn();
   const onOpenChangeB = vi.fn();

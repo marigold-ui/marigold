@@ -22,7 +22,7 @@ import { DrawerActions } from './DrawerActions';
 import { DrawerContent } from './DrawerContent';
 import { DrawerDescription } from './DrawerDescription';
 import { DrawerHeader } from './DrawerHeader';
-import { DrawerModal } from './DrawerModal';
+import { DrawerModal, DrawerSheet } from './DrawerModal';
 import { DrawerTitle } from './DrawerTitle';
 import { DrawerTrigger } from './DrawerTrigger';
 import { useDrawerCoordination } from './useDrawerCoordination';
@@ -66,14 +66,16 @@ export interface DrawerProps extends Omit<
   onOpenChange?: (isOpen: boolean) => void;
 
   /**
-   * Whether pressing the escape key closes the modal.
+   * Whether pressing the escape key closes the drawer. On small screens it
+   * also controls swiping the drawer away and pressing outside it, and the
+   * close button always shows there.
    * @default true
    */
 
   keyboardDismissable?: boolean;
 
   /**
-   * Show the close button.
+   * Show the close button. On small screens it always shows.
    */
   closeButton?: boolean;
 
@@ -136,8 +138,8 @@ export const Drawer = ({
   useDrawerCoordination(state);
 
   /**
-   * On smaller screens the we render a modal dialog instead of a non-modal drawer
-   * and need to adjust the role and props accordingly.
+   * On small screens the Drawer is a bottom sheet (ADR-0007): a modal dialog,
+   * so the landmark role does not apply there.
    */
   const isSmallScreen = useSmallScreen();
   const landmarkAria = useLandmark({ ...props, role }, ref);
@@ -152,53 +154,87 @@ export const Drawer = ({
     [variant, size, classNames, titleId, hasTitle, titleSlotRef]
   );
 
+  const name = {
+    'aria-label': ariaLabel,
+    'aria-labelledby':
+      !ariaLabel && hasTitle ? titleId : props['aria-labelledby'],
+  };
+  const body = (
+    <>
+      {/* On small screens a swipe, Escape and a press outside can all be
+          turned off, so the close button is the one exit that always stays. */}
+      {(closeButton || isSmallScreen) && (
+        <CloseButton
+          aria-label={stringFormatter.format('dismissDrawer')}
+          data-slot="close"
+          style={{ '--i': 0 } as CSSProperties}
+          className={cn('z-80', classNames.closeButton)}
+          onPress={state.close}
+        />
+      )}
+      <Provider
+        values={[
+          [HeadingContext, rootHeadingProps],
+          [TextContext, textProps],
+          [ActionMenuContext, {}],
+        ]}
+      >
+        {resolvedChildren}
+      </Provider>
+    </>
+  );
+
   return (
     <ResetButtonContext>
       <OverlayTriggerStateContext value={state}>
-        <DrawerModal
-          className={classNames.overlay}
-          keyboardDismissable={keyboardDismissable}
-          data-testid="drawer-modal"
-        >
-          <DrawerNestingContext value={true}>
-            <DrawerContext value={drawerContextValue}>
-              <Dialog
+        <DrawerNestingContext value={true}>
+          <DrawerContext value={drawerContextValue}>
+            {isSmallScreen ? (
+              <DrawerSheet
                 {...props}
-                // Override RAC here so we can set an appropriate role
-                {...(landmarkProps as any)}
-                aria-label={ariaLabel}
-                aria-labelledby={
-                  !ariaLabel && hasTitle ? titleId : props['aria-labelledby']
-                }
-                className={cn(
-                  'h-(--visual-viewport-height) outline-none',
-                  // Use single quotes, in some enviroments the class is not correctly applied otherwise
-                  "grid [grid-template-areas:'title'_'content'_'actions']",
-                  classNames.container
-                )}
+                {...name}
+                dismissable={keyboardDismissable}
+                data-testid="drawer-modal"
               >
-                {closeButton && (
-                  <CloseButton
-                    aria-label={stringFormatter.format('dismissDrawer')}
-                    data-slot="close"
-                    style={{ '--i': 0 } as CSSProperties}
-                    className={cn('z-80', classNames.closeButton)}
-                    onPress={state.close}
-                  />
-                )}
-                <Provider
-                  values={[
-                    [HeadingContext, rootHeadingProps],
-                    [TextContext, textProps],
-                    [ActionMenuContext, {}],
-                  ]}
+                <div
+                  data-drawer
+                  className={cn(
+                    'h-(--sheet-available) outline-none',
+                    "grid [grid-template-areas:'drag'_'title'_'content'_'actions']",
+                    classNames.container
+                  )}
                 >
-                  {resolvedChildren}
-                </Provider>
-              </Dialog>
-            </DrawerContext>
-          </DrawerNestingContext>
-        </DrawerModal>
+                  {/* Visual cue only, the whole sheet is swipeable. */}
+                  <div
+                    className={cn('[grid-area:drag]', classNames.dragHandle)}
+                  />
+                  {body}
+                </div>
+              </DrawerSheet>
+            ) : (
+              <DrawerModal
+                className={classNames.overlay}
+                keyboardDismissable={keyboardDismissable}
+                data-testid="drawer-modal"
+              >
+                <Dialog
+                  {...props}
+                  // Override RAC here so we can set an appropriate role
+                  {...(landmarkProps as any)}
+                  {...name}
+                  className={cn(
+                    'h-(--visual-viewport-height) outline-none',
+                    // Use single quotes, in some enviroments the class is not correctly applied otherwise
+                    "grid [grid-template-areas:'title'_'content'_'actions']",
+                    classNames.container
+                  )}
+                >
+                  {body}
+                </Dialog>
+              </DrawerModal>
+            )}
+          </DrawerContext>
+        </DrawerNestingContext>
       </OverlayTriggerStateContext>
     </ResetButtonContext>
   );

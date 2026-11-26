@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { expect, fn, waitFor } from 'storybook/test';
+import { expect, fn, waitFor, within } from 'storybook/test';
 import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview from '.storybook/preview';
 import { Copy, Download, Pencil, Trash2 } from '@marigold/icons';
@@ -8,6 +8,10 @@ import { Button } from '../Button/Button';
 import { ButtonGroup } from '../ButtonGroup/ButtonGroup';
 import { Checkbox } from '../Checkbox/Checkbox';
 import { Description } from '../Description/Description';
+import {
+  ConfirmationProvider,
+  useConfirmation,
+} from '../Dialog/useConfirmation';
 import { Form } from '../Form/Form';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Select } from '../Select/Select';
@@ -17,6 +21,7 @@ import { Table } from '../Table/Table';
 import { TextField } from '../TextField/TextField';
 import { Title } from '../Title/Title';
 import { Drawer } from './Drawer';
+import type { DrawerProps } from './Drawer';
 
 const meta = preview.meta({
   title: 'Components/Drawer',
@@ -218,6 +223,7 @@ export const WithForms = meta.story({
 });
 
 export const LongContent = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   globals: {
@@ -811,6 +817,7 @@ BleedTable.test(
 );
 
 export const FlushSmallScreen = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   globals: {
     viewport: { value: 'extraSmallScreen' },
@@ -819,11 +826,12 @@ export const FlushSmallScreen = meta.story({
   render: args => (
     <Drawer.Trigger>
       <Button>Open Drawer</Button>
-      <Drawer {...args} closeButton>
+      <Drawer {...args}>
         <Drawer.Title>Filter</Drawer.Title>
         <Drawer.Content>
           <p>
-            At 320px the Drawer fills the screen and sits flush to its edges.
+            At 320px the Drawer rises from the bottom, flush to the sides, and
+            leaves a strip of the page showing above it.
           </p>
         </Drawer.Content>
         <Drawer.Actions>
@@ -838,43 +846,229 @@ export const FlushSmallScreen = meta.story({
 });
 
 FlushSmallScreen.test(
-  'fills the viewport without rounded corners or horizontal overflow',
+  'Rises from the bottom, flush to the sides, with a strip of page above',
   {
     parameters: { chromatic: { disableSnapshot: false } },
   },
   async ({ canvas, userEvent, step }) => {
-    let trigger: HTMLElement;
-
-    await step('Arrange', async () => {
-      expect(window.innerWidth).toBeLessThan(640);
-      trigger = canvas.getByRole('button', { name: 'Open Drawer' });
-    });
-
     await step('Act', async () => {
-      await userEvent.click(trigger!);
+      expect(window.innerWidth).toBeLessThan(640);
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Open Drawer' })
+      );
     });
 
     await step('Assert', async () => {
-      const dialog = await waitFor(() => canvas.getByRole('dialog'));
+      const dialog = await waitFor(() =>
+        canvas.getByRole('dialog', { name: 'Filter' })
+      );
+      // RAC marks the sheet expanded once it has fully slid in.
+      await waitFor(() =>
+        expect(dialog.parentElement).toHaveAttribute('data-expanded')
+      );
       const surface = dialog.getBoundingClientRect();
+      const viewport = window.visualViewport?.height ?? window.innerHeight;
 
-      expect(surface.left).toBeCloseTo(0, 1);
-      expect(surface.width).toBeCloseTo(window.innerWidth, 1);
-      expect(surface.top).toBeCloseTo(0, 1);
-      expect(surface.height).toBeCloseTo(window.innerHeight, 1);
+      expect(surface.left).toBeCloseTo(0, 0);
+      expect(surface.width).toBeCloseTo(window.innerWidth, 0);
+      expect(surface.bottom).toBeCloseTo(window.innerHeight, 0);
+      // Capped at 95% of the visible viewport, like Tray.
+      expect(surface.height).toBeCloseTo(viewport * 0.95, 0);
 
-      const radii = getComputedStyle(dialog);
-      expect(radii.borderTopLeftRadius).toBe('0px');
-      expect(radii.borderBottomRightRadius).toBe('0px');
+      // The close button shows without `closeButton`.
+      expect(
+        canvas.getByRole('button', { name: 'Dismiss drawer' })
+      ).toBeVisible();
 
       // A reserved gutter shrinks the containing block, so the width assertion above only holds with classic scrollbars.
       expect(getComputedStyle(document.documentElement).scrollbarGutter).toBe(
         'auto'
       );
-
       expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(
         window.innerWidth
       );
+    });
+  }
+);
+
+export const SwipeOnSmallScreen = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  render: args => (
+    <Drawer.Trigger>
+      <Button>Open Drawer</Button>
+      <Drawer {...args}>
+        <Drawer.Title>Filter</Drawer.Title>
+        <Drawer.Content>
+          <p>Swipe down to close.</p>
+        </Drawer.Content>
+      </Drawer>
+    </Drawer.Trigger>
+  ),
+});
+
+interface SwipeContext {
+  canvas: {
+    getByRole: (role: string, options?: { name: string }) => HTMLElement;
+  };
+  userEvent: { click: (element: Element) => Promise<void> };
+}
+
+const openSheetDrawer = async ({ canvas, userEvent }: SwipeContext) => {
+  await userEvent.click(canvas.getByRole('button', { name: 'Open Drawer' }));
+  const dialog = await waitFor(() => canvas.getByRole('dialog'));
+  // A swipe only closes the sheet once RAC has seen it fully on screen.
+  await waitFor(() =>
+    expect(dialog.parentElement).toHaveAttribute('data-expanded')
+  );
+
+  return dialog;
+};
+
+/** A swipe down is a native scroll of RAC's scroller back to its start. */
+const swipeDown = (dialog: HTMLElement) =>
+  dialog.closest<HTMLElement>('[data-sheet-scroll]')!.scrollTo({ top: 0 });
+
+SwipeOnSmallScreen.test(
+  'A swipe down closes it',
+  async ({ canvas, userEvent }) => {
+    const dialog = await openSheetDrawer({ canvas, userEvent });
+
+    swipeDown(dialog);
+
+    await waitFor(() => expect(dialog).not.toBeInTheDocument());
+  }
+);
+
+SwipeOnSmallScreen.test(
+  'A swipe down does not close it with keyboardDismissable={false}',
+  { args: { keyboardDismissable: false } },
+  async ({ canvas, userEvent }) => {
+    const dialog = await openSheetDrawer({ canvas, userEvent });
+
+    swipeDown(dialog);
+    // Give a swipe that would close the sheet time to finish.
+    await new Promise(resolve => setTimeout(resolve, 600));
+
+    expect(dialog).toBeInTheDocument();
+    expect(dialog.getBoundingClientRect().bottom).toBeCloseTo(
+      window.innerHeight,
+      0
+    );
+  }
+);
+
+const SAVED_NAME = 'Summer concert';
+
+const UnsavedChangesDemo = (args: DrawerProps) => {
+  const [open, setOpen] = useState(false);
+  const [name, setName] = useState(SAVED_NAME);
+  const dirty = name !== SAVED_NAME;
+  const confirm = useConfirmation();
+
+  // The explicit close path: the close button and "Cancel".
+  const close = async () => {
+    if (dirty) {
+      const result = await confirm({
+        variant: 'destructive',
+        title: 'Discard changes?',
+        content: 'Your changes to this event will be lost.',
+        confirmationLabel: 'Discard',
+      });
+      if (result !== 'confirmed') return;
+    }
+    setName(SAVED_NAME);
+    setOpen(false);
+  };
+
+  return (
+    <Stack space={8} alignX="left">
+      <Button onPress={() => setOpen(true)}>Edit event</Button>
+      <Drawer
+        {...args}
+        open={open}
+        onOpenChange={next => (next ? setOpen(true) : close())}
+        // While the form is dirty, Escape, swipe and a press outside
+        // would lose the changes without asking, so they are off.
+        keyboardDismissable={!dirty}
+      >
+        <Drawer.Title>Edit event</Drawer.Title>
+        <Drawer.Content>
+          <TextField label="Name" value={name} onChange={setName} />
+        </Drawer.Content>
+        <Drawer.Actions>
+          <Button onPress={close}>Cancel</Button>
+          <Button variant="primary" onPress={() => setOpen(false)}>
+            Save
+          </Button>
+        </Drawer.Actions>
+      </Drawer>
+    </Stack>
+  );
+};
+
+export const UnsavedChanges = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  globals: {
+    viewport: { value: 'smallScreen' },
+  },
+  // A local provider, so the confirmation portals into the story canvas
+  // instead of next to the global one from the decorator.
+  render: args => (
+    <ConfirmationProvider>
+      <UnsavedChangesDemo {...args} />
+    </ConfirmationProvider>
+  ),
+});
+
+UnsavedChanges.test(
+  'Asks before discarding changes, and blocks Escape while dirty',
+  async ({ canvas, userEvent, step }) => {
+    let dialog: HTMLElement;
+
+    await step('edit the form', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: 'Edit event' }));
+      dialog = await waitFor(() =>
+        canvas.getByRole('dialog', { name: 'Edit event' })
+      );
+      await waitFor(() =>
+        expect(dialog.parentElement).toHaveAttribute('data-expanded')
+      );
+      await userEvent.type(canvas.getByLabelText('Name'), '!');
+    });
+
+    await step('Escape does not close it', async () => {
+      await userEvent.keyboard('{Escape}');
+      expect(dialog).toBeInTheDocument();
+    });
+
+    await step('closing asks, and "Cancel" keeps editing', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Dismiss drawer' })
+      );
+      const alert = await waitFor(() => canvas.getByRole('alertdialog'));
+      await userEvent.click(
+        within(alert).getByRole('button', { name: 'Cancel' })
+      );
+      await waitFor(() =>
+        expect(canvas.queryByRole('alertdialog')).not.toBeInTheDocument()
+      );
+      expect(canvas.getByLabelText('Name')).toHaveValue(`${SAVED_NAME}!`);
+    });
+
+    await step('"Discard" closes it', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: 'Cancel' }));
+      const alert = await waitFor(() => canvas.getByRole('alertdialog'));
+      await userEvent.click(
+        within(alert).getByRole('button', { name: 'Discard' })
+      );
+      await waitFor(() => expect(dialog).not.toBeInTheDocument());
     });
   }
 );

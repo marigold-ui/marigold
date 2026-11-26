@@ -112,6 +112,8 @@ Below 640px, components that open a floating list or panel open it as a tray ins
 - **Focus moves into the tray** when it opens and returns to the trigger when it closes.
 - **The tray stays above the on-screen keyboard.** When a text field in it opens the keyboard, the tray moves up and shrinks to the space left, so the results and actions stay in view.
 
+A [drawer](/components/overlay/drawer) rises from the bottom too, at almost full height with a strip of the page left showing above it. It closes the same way as a tray: a swipe down, Escape or a press on the dimmed page. Its close button always shows, and a drawer holding unsaved changes can turn the swipe, Escape and the press outside off together with `keyboardDismissable={false}`.
+
 Navigation comes from the side instead. On small screens the [sidebar](/components/navigation/sidebar) is a full-width sheet that slides in from the start edge: the left, or the right in right-to-left languages. Swipe it back toward that edge to close it. Swiping up and down scrolls the navigation, and drilling into a section slides inside the sheet without moving it. Escape, the close button and tapping a link close it too, and focus returns to the toggle.
 
 ## Minimum supported width
