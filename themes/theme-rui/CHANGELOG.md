@@ -1,5 +1,35 @@
 # @marigold/theme-rui
 
+## 6.4.1
+
+### Patch Changes
+
+- f46e8fa: style(DSTSUP-337): more space between rail entries, and sidebar group headings in full ink
+
+  Users reported that the sidebar's entries run together and that the group headings in the panel read weaker than the links below them.
+
+  - **Rail:** the entries, including the pinned footer entries, are now 6px apart instead of 2px, using the `tight` spacing token. The tiles and their hover and current fills keep their size, on the collapsed rail too. A rail with many sections is a few pixels taller per entry and starts to scroll sooner.
+  - **Group headings:** `Sidebar.GroupLabel` captions now use `foreground` instead of `secondary`, the same ink as the links. Size, weight and the space above them still mark them as headings.
+
+  Rail labels keep their size and colour.
+
+- 1904db5: fix(DSTSUP-339): keep button outlines sharp while pressed, and ease the press
+
+  A pressed primary, secondary or destructive button, or a menu trigger, shrank as a whole. That blurred its 1px outline whenever an edge landed between device pixels and left a light seam between outline and fill, so the button looked cut off. The label still shrinks, but the frame now stays in place and its outline moves inside, so the button reads 1px smaller on every side without blurring. The corners of these buttons and of the action bar also no longer show a faint light seam at rest.
+
+  These surfaces now paint their fill and outline on a `::before` and form their own stacking context.
+
+  The press also no longer jumps. Every button variant now eases into the pressed state in 90ms and back out in 180ms. Nothing to change on your side.
+
+- 1904db5: fix(DSTSUP-339): keep the focus ring of a control in a truncated table cell visible
+
+  In a `Table` with `overflow="truncate"`, or a cell with that override, the cell clipped the top and bottom of the focus ring of a button or link inside it. The ring now shows in full. Cell size and where text truncates are unchanged, and the expand chevron of an expandable row keeps its full click target. Nothing to change on your side.
+
+- Updated dependencies [3244580]
+- Updated dependencies [1904db5]
+  - @marigold/components@18.6.0
+  - @marigold/system@18.6.0
+
 ## 6.4.0
 
 ### Minor Changes
