@@ -9,10 +9,10 @@ import { ReportVenues } from './ReportVenues';
 const PickPage = () => (
   <Page>
     <Page.Header>
-      <Title>Venue report</Title>
+      <Title>Summer comedy series</Title>
       <Description>
-        A report owns the venues you pick for it. Build the set in the pick
-        dialog. It stays on the report and can be edited anytime.
+        Venue shortlist for June to August of the coming season. Availability is
+        for these dates.
       </Description>
     </Page.Header>
     <ReportVenues />

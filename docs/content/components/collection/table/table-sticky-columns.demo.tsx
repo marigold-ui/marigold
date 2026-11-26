@@ -31,7 +31,7 @@ export default () => (
         </Table.Column>
       </Table.Header>
       <Table.Body>
-        {venues.map(venue => (
+        {venues.slice(0, 10).map(venue => (
           <Table.Row key={venue.id}>
             <Table.Cell>{venue.name}</Table.Cell>
             <Table.Cell>{venueTypes[venue.type]}</Table.Cell>

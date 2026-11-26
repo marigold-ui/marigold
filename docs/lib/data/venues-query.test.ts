@@ -17,7 +17,7 @@ describe('queryVenues', () => {
   it('returns the requested page', () => {
     const page2 = queryVenues({ page: 2, pageSize: 5 });
     expect(page2.safePage).toBe(2);
-    expect(page2.items).toHaveLength(Math.max(0, TOTAL - 5));
+    expect(page2.items).toHaveLength(Math.min(5, Math.max(0, TOTAL - 5)));
     // No overlap with page 1.
     const page1Ids = queryVenues({ page: 1, pageSize: 5 }).items.map(v => v.id);
     expect(page2.items.every(v => !page1Ids.includes(v.id))).toBe(true);

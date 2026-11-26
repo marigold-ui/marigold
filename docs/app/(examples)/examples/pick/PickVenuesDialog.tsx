@@ -9,6 +9,7 @@ import {
   Dialog,
   EmptyState,
   Inline,
+  NumericFormat,
   Scrollable,
   SearchField,
   SectionMessage,
@@ -18,26 +19,32 @@ import {
   Tag,
   Text,
 } from '@marigold/components';
-import { type Venue, statusVariant, venueColumnWidths, venues } from './venues';
+import {
+  type Venue,
+  statusVariant,
+  venueColumnWidths,
+  venueStatuses,
+  venues,
+} from './venues';
 
-// Type and region options are derived from the data so they never drift from
+// Type and city options are derived from the data so they never drift from
 // it: every option maps to real venues, and every venue value is selectable.
 // Sorted so the option order is stable and predictable.
-const unique = (key: 'type' | 'region') =>
+const unique = (key: 'type' | 'city') =>
   [...new Set(venues.map(venue => venue[key]))].sort((a, b) =>
     a.localeCompare(b)
   );
 const types = unique('type');
-const regions = unique('region');
-// Status stays explicit to keep its lifecycle order (Available, Held, Booked).
-const statuses = ['Available', 'Held', 'Booked'];
+const cities = unique('city');
+// Availability keeps its lifecycle order (Available, Held, Booked).
+const statuses = [...venueStatuses];
 
-type FacetKey = 'type' | 'region' | 'status';
+type FacetKey = 'type' | 'city' | 'status';
 
 interface VenueFilters {
   query: string;
   type: Key | null;
-  region: Key | null;
+  city: Key | null;
   status: Key | null;
 }
 
@@ -48,17 +55,17 @@ const matchesVenue = (
   filters: VenueFilters,
   exclude?: FacetKey
 ) => {
-  const { query, type, region, status } = filters;
+  const { query, type, city, status } = filters;
   return (
     (!query || `${venue.name} ${venue.city}`.toLowerCase().includes(query)) &&
     (exclude === 'type' ||
       type == null ||
       type === 'all' ||
       venue.type === type) &&
-    (exclude === 'region' ||
-      region == null ||
-      region === 'all' ||
-      venue.region === region) &&
+    (exclude === 'city' ||
+      city == null ||
+      city === 'all' ||
+      venue.city === city) &&
     (exclude === 'status' ||
       status == null ||
       status === 'all' ||
@@ -128,7 +135,7 @@ const PickBody = ({
 }: PickBodyProps) => {
   const [search, setSearch] = useState('');
   const [type, setType] = useState<Key | null>('all');
-  const [region, setRegion] = useState<Key | null>('all');
+  const [city, setCity] = useState<Key | null>('all');
   const [status, setStatus] = useState<Key | null>('all');
   const [selected, setSelected] = useState<Set<Key>>(() => new Set(initial));
   // Keep the commit active. Counts refused empty presses, which keys the error
@@ -139,11 +146,11 @@ const PickBody = ({
     const filters: VenueFilters = {
       query: search.trim().toLowerCase(),
       type,
-      region,
+      city,
       status,
     };
     return venues.filter(venue => matchesVenue(venue, filters));
-  }, [search, type, region, status]);
+  }, [search, type, city, status]);
 
   // Faceted counts: how many venues each option yields under the other active
   // filters, so options can show a count and disable at zero. Each facet is
@@ -152,22 +159,22 @@ const PickBody = ({
     const filters: VenueFilters = {
       query: search.trim().toLowerCase(),
       type,
-      region,
+      city,
       status,
     };
     const byType: Record<string, number> = {};
-    const byRegion: Record<string, number> = {};
+    const byCity: Record<string, number> = {};
     const byStatus: Record<string, number> = {};
     for (const venue of venues) {
       if (matchesVenue(venue, filters, 'type'))
         byType[venue.type] = (byType[venue.type] ?? 0) + 1;
-      if (matchesVenue(venue, filters, 'region'))
-        byRegion[venue.region] = (byRegion[venue.region] ?? 0) + 1;
+      if (matchesVenue(venue, filters, 'city'))
+        byCity[venue.city] = (byCity[venue.city] ?? 0) + 1;
       if (matchesVenue(venue, filters, 'status'))
         byStatus[venue.status] = (byStatus[venue.status] ?? 0) + 1;
     }
-    return { type: byType, region: byRegion, status: byStatus };
-  }, [search, type, region, status]);
+    return { type: byType, city: byCity, status: byStatus };
+  }, [search, type, city, status]);
 
   // React-aria only reports the currently visible (filtered) rows, and "select
   // all" means that visible set. Merge every change with the venues staged
@@ -239,20 +246,20 @@ const PickBody = ({
               onChange={setType}
               options={types}
               counts={counts.type}
-              width={40}
-            />
-            <FilterSelect
-              label="Filter by region"
-              allLabel="All regions"
-              value={region}
-              onChange={setRegion}
-              options={regions}
-              counts={counts.region}
               width={56}
             />
             <FilterSelect
-              label="Filter by status"
-              allLabel="Any status"
+              label="Filter by city"
+              allLabel="All cities"
+              value={city}
+              onChange={setCity}
+              options={cities}
+              counts={counts.city}
+              width={48}
+            />
+            <FilterSelect
+              label="Filter by availability"
+              allLabel="Any availability"
               value={status}
               onChange={setStatus}
               options={statuses}
@@ -301,16 +308,10 @@ const PickBody = ({
                   Venue
                 </Table.Column>
                 <Table.Column {...venueColumnWidths.city}>City</Table.Column>
-                <Table.Column {...venueColumnWidths.region}>
-                  Region
-                </Table.Column>
                 <Table.Column {...venueColumnWidths.country}>
                   Country
                 </Table.Column>
                 <Table.Column {...venueColumnWidths.type}>Type</Table.Column>
-                <Table.Column {...venueColumnWidths.setting}>
-                  Setting
-                </Table.Column>
                 <Table.Column alignX="right" {...venueColumnWidths.capacity}>
                   Capacity
                 </Table.Column>
@@ -321,7 +322,7 @@ const PickBody = ({
                   Upcoming
                 </Table.Column>
                 <Table.Column {...venueColumnWidths.status}>
-                  Status
+                  Availability
                 </Table.Column>
                 <Table.Column alignX="right" {...venueColumnWidths.rate}>
                   Day rate
@@ -340,19 +341,31 @@ const PickBody = ({
                   <Table.Row id={venue.id}>
                     <Table.Cell>{venue.name}</Table.Cell>
                     <Table.Cell>{venue.city}</Table.Cell>
-                    <Table.Cell>{venue.region}</Table.Cell>
                     <Table.Cell>{venue.country}</Table.Cell>
                     <Table.Cell>{venue.type}</Table.Cell>
-                    <Table.Cell>{venue.setting}</Table.Cell>
-                    <Table.Cell alignX="right">{venue.capacity}</Table.Cell>
-                    <Table.Cell alignX="right">{venue.rating}</Table.Cell>
+                    <Table.Cell alignX="right">
+                      <NumericFormat value={venue.capacity} />
+                    </Table.Cell>
+                    <Table.Cell alignX="right">
+                      <NumericFormat
+                        value={venue.rating}
+                        minimumFractionDigits={1}
+                      />
+                    </Table.Cell>
                     <Table.Cell alignX="right">{venue.events}</Table.Cell>
                     <Table.Cell>
                       <Badge variant={statusVariant[venue.status]}>
                         {venue.status}
                       </Badge>
                     </Table.Cell>
-                    <Table.Cell alignX="right">{venue.rate}</Table.Cell>
+                    <Table.Cell alignX="right">
+                      <NumericFormat
+                        style="currency"
+                        currency="EUR"
+                        value={venue.rate}
+                        maximumFractionDigits={0}
+                      />
+                    </Table.Cell>
                   </Table.Row>
                 )}
               </Table.Body>

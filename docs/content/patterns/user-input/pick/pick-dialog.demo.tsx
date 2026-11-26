@@ -1,3 +1,4 @@
+import { venues as sharedVenues, venueTypes } from '@/lib/data/venues';
 import { useMemo, useState } from 'react';
 import type { Key } from '@react-types/shared';
 import type { Selection } from '@marigold/components';
@@ -6,6 +7,7 @@ import {
   Dialog,
   EmptyState,
   Inline,
+  NumericFormat,
   Panel,
   SearchField,
   SectionMessage,
@@ -16,80 +18,13 @@ import {
   Text,
 } from '@marigold/components';
 
-const venues = [
-  {
-    id: 'astra',
-    name: 'Astra Kulturhaus',
-    city: 'Berlin',
-    capacity: '1,500',
-    type: 'Club',
-  },
-  {
-    id: 'gruenspan',
-    name: 'Grünspan',
-    city: 'Hamburg',
-    capacity: '1,200',
-    type: 'Club',
-  },
-  {
-    id: 'backstage',
-    name: 'Backstage',
-    city: 'Munich',
-    capacity: '900',
-    type: 'Club',
-  },
-  {
-    id: 'palladium',
-    name: 'Palladium',
-    city: 'Cologne',
-    capacity: '4,000',
-    type: 'Concert Hall',
-  },
-  {
-    id: 'capitol',
-    name: 'Capitol',
-    city: 'Hanover',
-    capacity: '1,350',
-    type: 'Concert Hall',
-  },
-  {
-    id: 'zakk',
-    name: 'zakk',
-    city: 'Dusseldorf',
-    capacity: '1,000',
-    type: 'Club',
-  },
-  {
-    id: 'batschkapp',
-    name: 'Batschkapp',
-    city: 'Frankfurt',
-    capacity: '1,500',
-    type: 'Club',
-  },
-  {
-    id: 'longhorn',
-    name: 'LKA Longhorn',
-    city: 'Stuttgart',
-    capacity: '1,100',
-    type: 'Concert Hall',
-  },
-  {
-    id: 'waldbuehne',
-    name: 'Waldbühne',
-    city: 'Berlin',
-    capacity: '22,000',
-    type: 'Open Air',
-  },
-  {
-    id: 'loreley',
-    name: 'Loreley',
-    city: 'St. Goarshausen',
-    capacity: '15,000',
-    type: 'Open Air',
-  },
-];
+// The first ten shared demo venues, with their type index resolved to a label.
+const venues = sharedVenues.slice(0, 10).map(venue => ({
+  ...venue,
+  type: venueTypes[venue.type],
+}));
 
-const types = ['Club', 'Concert Hall', 'Open Air'];
+const types = [...venueTypes];
 
 interface PickBodyProps {
   initial: Set<Key>;
@@ -181,7 +116,7 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
               aria-label="Filter by type"
               value={type}
               onChange={setType}
-              width={40}
+              width={56}
             >
               <Select.Option id="all">All types</Select.Option>
               {types.map(t => (
@@ -225,7 +160,7 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
               <Table.Column rowHeader>Venue</Table.Column>
               <Table.Column>City</Table.Column>
               <Table.Column>Type</Table.Column>
-              <Table.Column>Capacity</Table.Column>
+              <Table.Column alignX="right">Capacity</Table.Column>
             </Table.Header>
             <Table.Body
               items={results}
@@ -241,7 +176,9 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
                   <Table.Cell>{venue.name}</Table.Cell>
                   <Table.Cell>{venue.city}</Table.Cell>
                   <Table.Cell>{venue.type}</Table.Cell>
-                  <Table.Cell>{venue.capacity}</Table.Cell>
+                  <Table.Cell alignX="right">
+                    <NumericFormat value={venue.capacity} />
+                  </Table.Cell>
                 </Table.Row>
               )}
             </Table.Body>

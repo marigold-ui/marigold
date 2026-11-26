@@ -1,10 +1,12 @@
 title: Pick records from a collection into a report
 brief: >-
   A report that owns the venues picked for it. A trigger opens a Dialog with a
-  search field, three filter facets (type, region, status), a running result
-  count, and a wide eleven-column multi-select Table (region, country,
-  setting, capacity, rating, upcoming events, status badge, day rate) over about
-  fifty venues in a bounded, sticky Scrollable region. Staged venues stay
+  search field, three filter facets (type, city, availability) whose options
+  show how many venues each leaves, and a wide nine-column multi-select Table (city, country, type,
+  capacity, rating, upcoming events, availability badge, day rate) over
+  about fifty venues in a bounded, sticky Scrollable region. Venue figures are
+  raw numbers formatted with NumericFormat at render, and availability refers to
+  the date window the report states in its header. Staged venues stay
   visible as a removable Tag.Group rail through every search and filter, so
   narrowing the list never drops a pick. The commit footer carries the staged
   count, and confirming persists the set on the report, which can be re-opened
@@ -12,6 +14,23 @@ brief: >-
   density needs.
 patterns:
   - user-input/pick
+mock_data:
+  - alias: '@/lib/data/venues'
+    shape: |
+      // Replace with the consumer's own data source. `type` indexes into
+      // `venueTypes`; `price.from` is the lowest day rate in EUR.
+      export const venueTypes: readonly string[];
+      export const venues: Array<{
+        id: string;
+        name: string;
+        type: number;
+        city: string;
+        country: string;
+        capacity: number;
+        price: { from: number; to: number };
+        /** Average guest rating, 1 to 5. */
+        rating: number;
+      }>;
 key_files:
   - PickVenuesDialog.tsx
   - ReportVenues.tsx
