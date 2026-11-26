@@ -47,6 +47,11 @@ export interface ShellConfig {
   base: string;
   tiles: RailTile[];
   /**
+   * Link tiles pinned to the bottom of the rail, next to Docs and Help: pages
+   * that belong to the demo but are not a product area.
+   */
+  footerTiles?: Extract<RailTile, { kind: 'link' }>[];
+  /**
    * Resolves a dynamic path segment (e.g. a member id in `users/[id]`) to a
    * human label for the breadcrumb. Lets a drill-in route show a readable
    * trailing crumb without the page having to register it.
