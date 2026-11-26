@@ -14,6 +14,8 @@ import { v18 } from './v18.js';
 // - `Tray` renders inside a new `Sheet` (DST-1865), which is scaffolded, and
 //   its `overlay` slot is gone. Its `group/tray` moved off the dialog, so
 //   `tray-group-selector` rewrites the old theme selector.
+// - The mobile `Sidebar` renders through the same `Sheet` from the start edge
+//   (DST-1867), so its `overlay` and `modal` slots are gone.
 // - `Stepper` gained the slots of its small-screen layout (DST-1839). The
 //   component hides the new parts by default, so only `summary` needs a
 //   `slotDefaults` entry: it keeps the `hideLabels` counter visible.
@@ -23,7 +25,7 @@ import { v18 } from './v18.js';
 //   into a native `<svg>` that renders the same.
 //
 // `slots` mirrors the v19 `Theme` type: the v18 sets plus the new Popover,
-// Stepper, Tray, Sheet and CommandPalette shapes. `theme-drift.test.ts` pins
+// Stepper, Tray, Sheet, Sidebar and CommandPalette shapes. `theme-drift.test.ts` pins
 // this file against the live type. `stylesReferenceUrl` is left out until the
 // v19 release tag exists, rather than pointing reports at a moving branch.
 export const v19: MigrationManifest = {
@@ -57,6 +59,9 @@ export const v19: MigrationManifest = {
       'actions',
     ],
     Sheet: ['backdrop', 'container', 'content'],
+    Sidebar: (v18.slots.Sidebar ?? []).filter(
+      slot => slot !== 'overlay' && slot !== 'modal'
+    ),
     // New in v19, so no consumer theme has it yet: only stubs, no move.
     CommandPalette: [
       'button',
@@ -82,9 +87,9 @@ export const v19: MigrationManifest = {
   scaffolds: [
     {
       name: 'Sheet',
-      requiredBy: ['Tray'],
+      requiredBy: ['Tray', 'Sidebar'],
       reason:
-        'new in v19: `Tray` renders inside a `Sheet` (DST-1865), which owns the backdrop and the surface, and a theme without its styles throws at runtime',
+        'new in v19: `Tray` (DST-1865) and the mobile `Sidebar` (DST-1867) render inside a `Sheet`, which owns the backdrop and the surface, and a theme without its styles throws at runtime',
       // Without these the tray renders see-through over an undimmed page.
       loadBearing: {
         backdrop: `{
@@ -92,8 +97,10 @@ export const v19: MigrationManifest = {
 }`,
         container: `{
   base: [
-    'w-full border-0 inset-shadow-black inset-shadow-sm/20',
-    'rounded-b-none ui-surface shadow-elevation-overlay outline-hidden',
+    'w-full border-0 ui-surface shadow-elevation-overlay outline-hidden',
+    'data-[position=bottom]:rounded-b-none',
+    'data-[position=bottom]:inset-shadow-black data-[position=bottom]:inset-shadow-sm/20',
+    'data-[position=left]:rounded-none data-[position=right]:rounded-none',
   ],
 }`,
         content: `{ base: 'outline-hidden' }`,
@@ -106,6 +113,10 @@ export const v19: MigrationManifest = {
     {
       component: 'Tray',
       text: "v19 builds Tray on a `Sheet` (DST-1865). `Tray.overlay` is gone: the backdrop moved to `Sheet.backdrop` and the surface (background, shadow, rounding) to `Sheet.container`. `Tray.container` is layout only now. Move customized overlay or surface styles to `Sheet` and remove them from `Tray`. The backdrop fades through the theme's `@keyframes fade-in`, kept in the CSS by `--animate-fade-in`.",
+    },
+    {
+      component: 'Sidebar',
+      text: "v19 renders the mobile Sidebar drawer through `Sheet` from the start edge (DST-1867). `Sidebar.overlay` and `Sidebar.modal` are gone: the backdrop, surface, shadow and slide-in come from `Sheet`, and the slide follows the swipe and mirrors in right-to-left layouts. Remove both slots, along with any `animate-slide-in-left`/`animate-slide-out-left` classes, which theme-rui no longer defines. Style the drawer's contents through `Sidebar.root` as before, and its surface through `Sheet.container` with `data-[position=left]:`/`data-[position=right]:`.",
     },
     {
       component: 'Stepper',

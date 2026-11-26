@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
 import { expect, waitFor, within } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview from '.storybook/preview';
 import {
   BarChart3,
@@ -746,6 +747,7 @@ export const RailControlled = meta.story({
 // drill-in branches, direct links plain rows.
 export const RailMobile = meta.story({
   tags: ['component-test'],
+  beforeEach: keepSheetsOpenInChromatic,
   parameters: { chromatic: { disableSnapshot: true } },
   globals: {
     viewport: { value: 'extraSmallScreen' },
@@ -770,7 +772,7 @@ RailMobile.test(
         expect(toggle).toHaveAttribute('aria-expanded', 'false');
         await userEvent.click(toggle);
 
-        const drawer = await canvas.findByRole('complementary', {
+        const drawer = await canvas.findByRole('dialog', {
           name: 'Seitenleiste',
         });
         expect(
@@ -789,7 +791,7 @@ RailMobile.test(
     );
 
     await step('back returns to the rail-level list', async () => {
-      const drawer = canvas.getByRole('complementary', {
+      const drawer = canvas.getByRole('dialog', {
         name: 'Seitenleiste',
       });
       await userEvent.click(
@@ -807,7 +809,7 @@ RailMobile.test(
     await step(
       'a section row drills in and keeps the drawer open',
       async () => {
-        const drawer = canvas.getByRole('complementary', {
+        const drawer = canvas.getByRole('dialog', {
           name: 'Seitenleiste',
         });
         await userEvent.click(
@@ -826,7 +828,7 @@ RailMobile.test(
     );
 
     await step('leaf tap navigates and closes the drawer', async () => {
-      const drawer = canvas.getByRole('complementary', {
+      const drawer = canvas.getByRole('dialog', {
         name: 'Seitenleiste',
       });
       await userEvent.click(
@@ -839,7 +841,7 @@ RailMobile.test(
 
     await step('a direct-link row closes the drawer too', async () => {
       await userEvent.click(toggle);
-      const drawer = await canvas.findByRole('complementary', {
+      const drawer = await canvas.findByRole('dialog', {
         name: 'Seitenleiste',
       });
       // Now on /kontakte/personen, so the drawer re-opens inside Kontakte.
@@ -864,7 +866,7 @@ RailMobile.test(
     await userEvent.click(
       canvas.getByRole('button', { name: 'Navigation umschalten' })
     );
-    const drawer = await canvas.findByRole('complementary', {
+    const drawer = await canvas.findByRole('dialog', {
       name: 'Seitenleiste',
     });
 

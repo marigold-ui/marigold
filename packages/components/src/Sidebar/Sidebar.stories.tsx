@@ -1,8 +1,10 @@
+import type { Decorator } from '@storybook/react-vite';
 import { ArrowLeft } from 'lucide-react';
 import type { ReactNode } from 'react';
 import { Fragment, useState } from 'react';
 import { I18nProvider } from 'react-aria-components/I18nProvider';
-import { expect, waitFor } from 'storybook/test';
+import { expect, waitFor, within } from 'storybook/test';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
@@ -54,8 +56,10 @@ const Layout = ({
   onOpenChange,
   initialPath = '/overview',
   defaultOpen,
+  locale = 'en-US',
 }: {
   children?: ReactNode;
+  locale?: string;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
   initialPath?: string;
@@ -65,7 +69,7 @@ const Layout = ({
 
   return (
     <RouterProvider navigate={setCurrentPath}>
-      <I18nProvider locale="en-US">
+      <I18nProvider locale={locale}>
         <Sidebar.Provider
           open={open}
           onOpenChange={onOpenChange}
@@ -169,6 +173,164 @@ export const Controlled = meta.story({
   parameters: { chromatic: { disableSnapshot: true } },
   render: () => <ControlledExample />,
 });
+
+// Portals the drawer into the canvas, so the tests can query it.
+const portalIntoCanvas: Decorator = Story => (
+  <div id="storybook-root">
+    <Story />
+  </div>
+);
+
+// Shared by `Mobile` and `MobileRightToLeft`. The `component-test` tag stays
+// on each story, the test runner only finds it there.
+const mobileStory = {
+  decorators: [portalIntoCanvas],
+  beforeEach: keepSheetsOpenInChromatic,
+  parameters: { chromatic: { disableSnapshot: true } },
+  globals: {
+    viewport: { value: 'extraSmallScreen' },
+  },
+};
+
+// Mobile: a full-width sheet from the start edge (ADR-0007). RAC slides it in
+// by scrolling, so the swipe, Escape and the close button share one exit.
+export const Mobile = meta.story({
+  tags: ['component-test'],
+  ...mobileStory,
+  render: () => <Layout />,
+});
+
+interface DrawerTestContext {
+  canvas: {
+    getByRole: (role: string, options?: { name: string }) => HTMLElement;
+    findByRole: (
+      role: string,
+      options?: { name: string }
+    ) => Promise<HTMLElement>;
+  };
+  userEvent: { click: (element: Element) => Promise<void> };
+}
+
+/** Opens the drawer and waits until RAC has moved focus into it. */
+const openDrawer = async ({ canvas, userEvent }: DrawerTestContext) => {
+  const toggle = canvas.getByRole('button', { name: 'Toggle navigation' });
+  await userEvent.click(toggle);
+  const drawer = await canvas.findByRole('dialog', { name: 'Sidebar' });
+  await waitFor(() =>
+    expect(drawer.contains(document.activeElement)).toBe(true)
+  );
+  // Focus can land before the slide-in ends (see Sheet.stories).
+  await waitFor(() => expect(sheetOf(drawer)).toHaveAttribute('data-expanded'));
+
+  return { toggle, drawer };
+};
+
+// RAC's private attributes, also read by `keepSheetsOpenInChromatic`.
+const sheetOf = (drawer: HTMLElement) =>
+  drawer.closest<HTMLElement>('[data-swipe-direction]')!;
+const scrollerOf = (drawer: HTMLElement) =>
+  drawer.closest<HTMLElement>('[data-sheet-scroll]')!;
+
+Mobile.test(
+  'Slides in from the start edge',
+  // Ends with the drawer open, so the snapshot guards the drawer's look.
+  { parameters: { chromatic: { disableSnapshot: false } } },
+  async ({ canvas, userEvent }) => {
+    const { drawer } = await openDrawer({ canvas, userEvent });
+    const sheet = sheetOf(drawer);
+
+    // Sheet's own tests cover the start sheet's geometry.
+    expect(sheet).toHaveAttribute('data-position', 'left');
+    expect(sheet).toHaveAttribute('data-swipe-direction', 'left');
+    expect(
+      within(drawer)
+        .getByRole('navigation', { name: 'App navigation' })
+        .getBoundingClientRect().height
+    ).toBeGreaterThan(0);
+    expect(drawer).toHaveTextContent('Footer content');
+  }
+);
+
+Mobile.test(
+  'Closes on Escape and returns focus to the toggle',
+  async ({ canvas, userEvent }) => {
+    const { toggle } = await openDrawer({ canvas, userEvent });
+
+    await userEvent.keyboard('{Escape}');
+
+    await waitFor(() =>
+      expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    );
+    await waitFor(() =>
+      expect(document.querySelector('[data-sheet-scroll]')).toBeNull()
+    );
+    await waitFor(() => expect(toggle).toHaveFocus());
+  }
+);
+
+Mobile.test(
+  'Drilling into a section keeps the drawer in place',
+  async ({ canvas, userEvent }) => {
+    const { toggle, drawer } = await openDrawer({ canvas, userEvent });
+
+    await userEvent.click(
+      within(drawer).getByRole('link', { name: /Management/ })
+    );
+    await waitFor(() =>
+      expect(within(drawer).getByRole('link', { name: 'Users' })).toBeVisible()
+    );
+
+    // The panel slide stays clipped inside the drawer: no horizontal travel
+    // reaches the sheet's scroller.
+    expect(scrollerOf(drawer).scrollLeft).toBeCloseTo(0, 0);
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+  }
+);
+
+export const MobileRightToLeft = meta.story({
+  tags: ['component-test'],
+  ...mobileStory,
+  render: () => <Layout locale="he-IL" />,
+});
+
+MobileRightToLeft.test(
+  'Mirrors to the right edge in a right-to-left locale',
+  async ({ canvas, userEvent }) => {
+    const { drawer } = await openDrawer({ canvas, userEvent });
+    const sheet = sheetOf(drawer);
+
+    expect(sheet).toHaveAttribute('data-position', 'right');
+    expect(sheet).toHaveAttribute('data-swipe-direction', 'right');
+    await waitFor(() => {
+      const { right, width } = drawer.getBoundingClientRect();
+      expect(right).toBeCloseTo(document.documentElement.clientWidth, 0);
+      expect(width).toBeCloseTo(document.documentElement.clientWidth - 1, 0);
+    });
+  }
+);
+
+MobileRightToLeft.test(
+  'A swipe toward the right edge closes it',
+  async ({ canvas, userEvent }) => {
+    const { toggle, drawer } = await openDrawer({ canvas, userEvent });
+    const scroller = scrollerOf(drawer);
+
+    // A swipe is a native scroll. A right-edge sheet rests at the far end of
+    // its scroller and has left the screen at scroll 0.
+    expect(Math.abs(scroller.scrollLeft)).toBeCloseTo(
+      scroller.scrollWidth - scroller.clientWidth,
+      0
+    );
+    scroller.scrollTo({ left: 0 });
+
+    await waitFor(() =>
+      expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    );
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+  }
+);
 
 const complexPages: Record<string, { label: string }> = {
   '/dashboard': { label: 'Dashboard' },

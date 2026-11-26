@@ -8,21 +8,9 @@ import { type ThemeComponent, cva } from '@marigold/system';
  * `secondary` stays on the rail's idle tiles, where the ink lift on hover and
  * for the current section needs a quieter resting state.
  */
+// The mobile drawer is a start-edge `Sheet` (ADR-0007), which owns its
+// backdrop, surface, elevation and slide. Only the `aside` inside is styled here.
 export const Sidebar: ThemeComponent<'Sidebar'> = {
-  // The full-width sheet covers the page, so there is nothing to dim.
-  overlay: cva({}),
-  modal: cva({
-    base: [
-      'flex h-full *:flex-1',
-      'justify-start',
-      // Mobile drawer floats over the page, so it takes overlay elevation; on
-      // desktop the sidebar is structure and stays flat.
-      'shadow-elevation-overlay',
-      'entering:animate-slide-in-left',
-      'exiting:animate-slide-out-left exiting:[--slide-out-duration:0.1s]',
-      'motion-reduce:entering:animate-none motion-reduce:exiting:animate-none',
-    ],
-  }),
   root: cva({
     base: [
       'overflow-hidden',

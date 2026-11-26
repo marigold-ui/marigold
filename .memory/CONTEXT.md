@@ -68,7 +68,7 @@ A standalone component that carries a _role_ rather than a position — `<Title>
 
 ### Sheet
 
-The internal overlay primitive in `packages/components/src/Overlay/` that small-screen edge overlays render through. It wraps react-aria's `SheetOverlay`, `SheetBackdrop`, `Sheet` and `SheetContent`, and owns the backdrop, swipe-to-dismiss, the single `dismissable` flag and the `z-50` layer. `Tray` composes it today, the mobile `Drawer` and mobile `Sidebar` are meant to follow ([ADR-0007](adr/0007-mobile-overlays-on-sheet.md)).
+The internal overlay primitive in `packages/components/src/Overlay/` that small-screen edge overlays render through. It wraps react-aria's `SheetOverlay`, `SheetBackdrop`, `Sheet` and `SheetContent`, and owns the backdrop, swipe-to-dismiss, the single `dismissable` flag and the `z-50` layer. Its `position` is the edge it comes from: `bottom` for `Tray`, `start` for the mobile `Sidebar`. The mobile `Drawer` is meant to follow ([ADR-0007](adr/0007-mobile-overlays-on-sheet.md)).
 
 Not to be confused with `Tray`, which renders its own parts inside a Sheet, or with react-aria's `Sheet`, the single upstream part the primitive is named after. There is no public `Sheet` component.
 

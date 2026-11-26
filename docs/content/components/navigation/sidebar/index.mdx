@@ -49,7 +49,7 @@ With [two-level navigation](#two-level-navigation), the sidebar splits into a na
 
 ## Usage
 
-The sidebar is the central navigation of every application. It is part of the default app layout and how users move between sections. It sits on the left side of the screen and is organized into a header for branding, a scrollable navigation area, and a footer for secondary actions. On mobile, it adapts to a sheet overlay.
+The sidebar is the central navigation of every application. It is part of the default app layout and how users move between sections. It sits on the left side of the screen and is organized into a header for branding, a scrollable navigation area, and a footer for secondary actions. On small screens it becomes a full-width sheet that slides in from the start edge, and a swipe back toward that edge closes it.
 
 In most applications, the sidebar is paired with a [top navigation](/components/navigation/topnavigation) to form an L-shaped app shell. The top navigation handles global actions like search, breadcrumbs, and user menus, while the sidebar handles section-level navigation.
 
@@ -197,7 +197,7 @@ With [two-level navigation](#two-level-navigation), the same toggle and shortcut
 
 ### Accessibility
 
-The sidebar renders as a `<nav>` element so screen readers can identify it as a [navigation landmark](/foundations/accessibility#landmarks). The keyboard shortcut <kbd>Cmd+B</kbd> / <kbd>Ctrl+B</kbd> toggles it globally. When drilling into a sub-panel, focus moves to the back button, and returns to the branch trigger when navigating back. The active item is announced as the current page. On mobile, the overlay traps focus and can be dismissed with <kbd>Escape</kbd>. Built-in strings support German and English localization.
+The sidebar renders as a `<nav>` element so screen readers can identify it as a [navigation landmark](/foundations/accessibility#landmarks). The keyboard shortcut <kbd>Cmd+B</kbd> / <kbd>Ctrl+B</kbd> toggles it globally. When drilling into a sub-panel, focus moves to the back button, and returns to the branch trigger when navigating back. The active item is announced as the current page. On small screens the sheet is a dialog named after the sidebar. It traps focus, closes with <kbd>Escape</kbd>, the close button or a swipe toward the edge it came from, and returns focus to the toggle. Built-in strings support German and English localization.
 
 [Two-level navigation](#two-level-navigation) exposes two navigation landmarks: the rail itself ("Primary navigation") and the active section's panel, named after its section. In the drawer on small screens, the pinned footer items get a landmark of their own ("More navigation"). The current page announces `aria-current="page"` (on the panel leaf, or on a direct-link rail item), while its section ancestor on the rail announces `aria-current="true"`. In the drawer the row of that section announces `aria-current="true"` too, and so does a branch row in the single-column drawer when the current page is inside it. Rail tiles are plain, always-tabbable links. Arrow keys (and <kbd>Home</kbd> / <kbd>End</kbd>) also move between them as a shortcut. Switching sections moves focus to the panel heading so the swapped content is announced. Within the section panel the tab stop follows the current page: when the route changes, <kbd>Tab</kbd> re-enters the panel at the active item rather than wherever focus last rested. Collapsed, icon-only tiles reveal their label as a tooltip on hover or focus.
 

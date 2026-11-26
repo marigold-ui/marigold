@@ -351,3 +351,98 @@ Basic.test(
     });
   }
 );
+
+Basic.test(
+  'From the start edge it fills the screen and shrinks above the keyboard',
+  { args: { position: 'start' } },
+  async ({ canvas, userEvent, step }) => {
+    const dialog = await openSheet({ canvas, userEvent });
+    // RAC's `Sheet`, the surface. Its overscroll padding reaches a viewport
+    // past the edge, so the dialog is what is on screen.
+    const surface = dialog.parentElement as HTMLElement;
+    const layoutBottom = document.documentElement.clientHeight;
+
+    await step('slides in from the left and fills the screen', async () => {
+      expect(surface).toHaveAttribute('data-position', 'left');
+      expect(getComputedStyle(dialog).maxHeight).toBe('none');
+      await waitFor(() => {
+        const { left, top, width, bottom } = dialog.getBoundingClientRect();
+        expect(left).toBeCloseTo(0, 0);
+        expect(top).toBeCloseTo(0, 0);
+        // One pixel short of the far edge, so RAC sees it leave (see Sheet).
+        expect(width).toBeCloseTo(document.documentElement.clientWidth - 1, 0);
+        expect(bottom).toBeCloseTo(layoutBottom, 0);
+      });
+    });
+
+    const closeKeyboard = openKeyboard(300);
+    try {
+      await step('keyboard open: top stays, bottom clears it', async () => {
+        await waitFor(() =>
+          expect(dialog.getBoundingClientRect().bottom).toBeCloseTo(
+            layoutBottom - 300,
+            0
+          )
+        );
+        expect(dialog.getBoundingClientRect().top).toBeCloseTo(0, 0);
+        expect(surface.getBoundingClientRect().bottom).toBeCloseTo(
+          layoutBottom - 300,
+          0
+        );
+      });
+    } finally {
+      closeKeyboard();
+    }
+  }
+);
+
+Basic.test(
+  'From the start edge it unmounts after Escape and the close button',
+  { args: { position: 'start' } },
+  async ({ canvas, userEvent, step }) => {
+    // A full-width start sheet used to stop on the viewport edge, where RAC's
+    // observer never reports it gone, and its overlay stayed over the page.
+    const gone = () =>
+      waitFor(() =>
+        expect(document.querySelector('[data-sheet-scroll]')).toBeNull()
+      );
+
+    await step('Escape', async () => {
+      await openSheet({ canvas, userEvent });
+      await userEvent.keyboard('{Escape}');
+      await gone();
+    });
+
+    await step('close button', async () => {
+      await openSheet({ canvas, userEvent });
+      await userEvent.click(canvas.getByRole('button', { name: 'Close' }));
+      await gone();
+    });
+
+    expect(canvas.getByRole('button', { name: 'Open sheet' })).toHaveFocus();
+  }
+);
+
+Basic.test(
+  'From the start edge a swipe back to it closes the sheet',
+  { args: { position: 'start' } },
+  async ({ canvas, userEvent }) => {
+    const dialog = await openSheet({ canvas, userEvent });
+    const scroller = dialog.closest<HTMLElement>('[data-sheet-scroll]')!;
+
+    // Focus can land before the slide-in ends. RAC marks the sheet expanded
+    // once its own observer has seen it fully on screen, which is also when
+    // a swipe can close it.
+    await waitFor(() =>
+      expect(dialog.parentElement).toHaveAttribute('data-expanded')
+    );
+    // A swipe is a native scroll: at rest at 0, gone at the far end.
+    expect(scroller.scrollLeft).toBeCloseTo(0, 0);
+    scroller.scrollTo({ left: scroller.scrollWidth });
+
+    await waitFor(() =>
+      expect(canvas.queryByRole('dialog')).not.toBeInTheDocument()
+    );
+    expect(canvas.getByText('Sheet is closed')).toBeInTheDocument();
+  }
+);

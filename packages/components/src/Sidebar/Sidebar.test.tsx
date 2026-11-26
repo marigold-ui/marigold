@@ -1,4 +1,10 @@
-import { render, renderHook, screen, waitFor } from '@testing-library/react';
+import {
+  render,
+  renderHook,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { useState } from 'react';
 import { vi } from 'vitest';
@@ -1334,6 +1340,47 @@ describe('roving tab stop follows the route', () => {
     expect(screen.getByRole('link', { name: 'C' })).toHaveAttribute(
       'tabindex',
       '-1'
+    );
+  });
+});
+
+describe('mobile drawer', () => {
+  beforeEach(() => {
+    window.matchMedia = mockMatchMedia([smallScreenQuery]);
+    ensureOverlayContainer();
+  });
+
+  test('is a dialog named by the sidebar label', async () => {
+    render(<Basic.Component />);
+
+    await user.click(screen.getByRole('button', { name: 'Toggle navigation' }));
+
+    const drawer = await screen.findByRole('dialog', { name: 'Sidebar' });
+    // The dialog carries the name now, the `aside` inside no longer does.
+    expect(
+      screen.queryByRole('complementary', { name: 'Sidebar' })
+    ).not.toBeInTheDocument();
+    expect(
+      within(drawer).getByRole('navigation', { name: 'App navigation' })
+    ).toBeInTheDocument();
+    expect(drawer).toContainElement(
+      screen.getByRole('button', { name: 'Close navigation' })
+    );
+  });
+
+  test('⌘B / Ctrl+B closes the open drawer', async () => {
+    render(<Basic.Component />);
+    const toggle = screen.getByRole('button', { name: 'Toggle navigation' });
+
+    await user.click(toggle);
+    await screen.findByRole('dialog', { name: 'Sidebar' });
+    await user.keyboard(shortcutKeys('b'));
+
+    await waitFor(() =>
+      expect(toggle).toHaveAttribute('aria-expanded', 'false')
+    );
+    await waitFor(() =>
+      expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
     );
   });
 });
