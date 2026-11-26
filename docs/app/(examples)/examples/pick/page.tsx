@@ -6,18 +6,13 @@
 import { Description, Page, Title } from '@marigold/components';
 import { ReportVenues } from './ReportVenues';
 
-// The report covers next summer's run, so the availability column always
-// refers to dates ahead. Derived from today so the example never goes stale.
-const now = new Date();
-const season = now.getMonth() < 5 ? now.getFullYear() : now.getFullYear() + 1;
-
 const PickPage = () => (
   <Page>
     <Page.Header>
       <Title>Summer comedy series</Title>
       <Description>
-        Venue shortlist for June to August {season}. Availability is for these
-        dates.
+        Venue shortlist for June to August of the coming season. Availability is
+        for these dates.
       </Description>
     </Page.Header>
     <ReportVenues />

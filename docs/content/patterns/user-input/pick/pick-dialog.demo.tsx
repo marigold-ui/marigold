@@ -116,7 +116,7 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
               aria-label="Filter by type"
               value={type}
               onChange={setType}
-              width={40}
+              width={56}
             >
               <Select.Option id="all">All types</Select.Option>
               {types.map(t => (
