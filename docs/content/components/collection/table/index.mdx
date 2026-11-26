@@ -436,7 +436,7 @@ Keep it tied to the fetch that feeds this table. A save or an export that leaves
 </Table>
 ```
 
-For the first fetch, when there are no rows to show yet, fill the body with [skeleton rows](/components/content/skeleton#in-a-table) so the header and the column widths stay in place.
+For the first fetch, when there are no rows to show yet, set `skeletonRows` on `<Table.Body>`. The body then shows that many [skeleton rows](/components/content/skeleton#in-a-table), so the header and the column widths stay in place.
 
 Use `loading` instead of passing `aria-busy` to the table. React Aria drops that attribute, so it never reaches the page.
 

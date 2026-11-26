@@ -1,6 +1,7 @@
 import { createContext, use } from 'react';
 import type RAC from 'react-aria-components';
 import type { ComponentClassNames } from '@marigold/system';
+import type { textAlign } from '../utils/styleProps';
 
 export interface TableContextProps {
   classNames: ComponentClassNames<'Table'>;
@@ -25,7 +26,38 @@ export interface TableContextProps {
   warnedMissingTextValue: Set<string>;
 }
 
+/**
+ * Kept apart from `TableContext`, so a `loading` toggle re-renders only the
+ * header and body that read it, not every row and cell.
+ */
+export interface TableSkeletonContextProps {
+  /** Whether the table's data is loading. */
+  loading: boolean;
+  /** The consumer's columns, for skeleton rows. */
+  skeletonColumns: readonly SkeletonColumn[];
+  /** Whether the body shows skeleton rows and nothing else. */
+  showsSkeletons: boolean;
+}
+
+export interface SkeletonColumn {
+  key: RAC.Key;
+  alignX?: keyof typeof textAlign;
+}
+
+/** Lines of text per consumer column, measured from the last real rows. */
+export const TableSkeletonLinesContext = createContext<
+  ReadonlyMap<RAC.Key, number>
+>(new Map());
+
+const skeletonPrefix = 'marigold-skeleton-row-';
+export const skeletonRowKey = (index: number) => `${skeletonPrefix}${index}`;
+export const isSkeletonRowKey = (key: RAC.Key) =>
+  typeof key === 'string' && key.startsWith(skeletonPrefix);
+
 export const TableContext = createContext<TableContextProps | null>(null);
+
+export const TableSkeletonContext =
+  createContext<TableSkeletonContextProps | null>(null);
 
 /**
  * The level of the rows rendered below this point, starting at 1 like React
@@ -51,6 +83,16 @@ export const useTableContext = () => {
   const context = use(TableContext);
   if (context === null) {
     throw new Error('useTableContext must be used within a <Table> component');
+  }
+  return context;
+};
+
+export const useTableSkeletonContext = () => {
+  const context = use(TableSkeletonContext);
+  if (context === null) {
+    throw new Error(
+      'useTableSkeletonContext must be used within a <Table> component'
+    );
   }
   return context;
 };

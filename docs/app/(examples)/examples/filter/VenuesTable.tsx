@@ -6,16 +6,12 @@ import {
   venueTypes,
 } from '@/lib/data/venues';
 import type { Venue } from '@/lib/data/venues';
-import { useState } from 'react';
 import {
   ActionBar,
   Badge,
   Button,
   Center,
   Inline,
-  type Selection,
-  Skeleton,
-  type SkeletonProps,
   Stack,
   Table,
   Text,
@@ -68,49 +64,6 @@ const NoDataEmptyState = () => (
       <Text variant="muted">Add a venue to get started.</Text>
     </Center>
   </div>
-);
-
-// Placeholder rows for the initial fetch (`isLoading`), rendered inside the
-// real table so the header and column widths stay put. Background refetches
-// keep the previous rows on screen and show FetchingIndicator instead.
-type Placeholder = Pick<SkeletonProps, 'width' | 'height' | 'variant'>;
-
-// `secondLine` mirrors a cell that always holds two lines of text.
-const skeletonCells: ReadonlyArray<
-  { column: string; secondLine?: Placeholder } & Placeholder
-> = [
-  { column: 'name', width: '3/4' },
-  { column: 'type', width: '2/3' },
-  { column: 'address', width: '3/4', secondLine: { width: '1/2' } },
-  { column: 'capacity', width: '1/2' },
-  { column: 'price', width: '1/2' },
-  { column: 'traits', width: 16, height: 5, variant: 'rounded' },
-  { column: 'amenities', width: 16, height: 5, variant: 'rounded' },
-  { column: 'parking', width: 16, height: 5, variant: 'rounded' },
-  { column: 'rating', width: '1/2' },
-  { column: 'available', width: '3/4' },
-  { column: 'actions', width: 8, height: 8 }, // Small button
-];
-
-const skeletonRowIds = (count: number) =>
-  Array.from({ length: count }, (_, i) => `skeleton-${i}`);
-
-const VenueSkeletonRow = ({ id }: { id: string }) => (
-  <Table.Row id={id}>
-    {skeletonCells.map(({ column, secondLine, ...cell }, i) => (
-      // The row header needs a text value for type-to-select, and there is none yet.
-      <Table.Cell key={column} textValue={i === 0 ? '' : undefined}>
-        {secondLine ? (
-          <Stack space={2}>
-            <Skeleton {...cell} />
-            <Skeleton {...secondLine} />
-          </Stack>
-        ) : (
-          <Skeleton {...cell} />
-        )}
-      </Table.Cell>
-    ))}
-  </Table.Row>
 );
 
 // Renders up to `max` badges and collapses the rest into a single "+N" badge,
@@ -219,7 +172,6 @@ export const VenuesTable = () => {
     useVenues();
   const [sort, setSort] = useSort();
   const { deleteVenue, isDeleting } = useDeleteVenue();
-  const [selected, setSelected] = useState<Selection>(() => new Set());
 
   // The table announces the load itself (`loading`). This region announces the
   // result. A live region is announced when the text inside an already present
@@ -230,7 +182,6 @@ export const VenuesTable = () => {
   const status = isLoading
     ? ''
     : `${totalItems} venue${totalItems === 1 ? '' : 's'}`;
-  const skeletonIds = isLoading ? skeletonRowIds(pageSize) : [];
 
   return (
     <div id={VENUES_REGION_ID} className="scroll-mt-4">
@@ -239,13 +190,6 @@ export const VenuesTable = () => {
         aria-label="Venue list"
         loading={isLoading}
         selectionMode="multiple"
-        // Placeholder rows can't be selected, but the checkbox column stays.
-        disabledKeys={skeletonIds}
-        selectedKeys={selected}
-        // "Select all" ignores disabled rows, so drop it while the placeholders show.
-        onSelectionChange={keys => {
-          if (!isLoading) setSelected(keys);
-        }}
         sortDescriptor={sort}
         onSortChange={d =>
           setSort({
@@ -309,20 +253,19 @@ export const VenuesTable = () => {
           </Table.Column>
         </Table.Header>
         <Table.Body
+          skeletonRows={pageSize}
           emptyState={() =>
             isFiltered ? <FilterEmptyState /> : <NoDataEmptyState />
           }
         >
-          {isLoading
-            ? skeletonIds.map(id => <VenueSkeletonRow key={id} id={id} />)
-            : items.map(venue => (
-                <VenueRow
-                  key={venue.id}
-                  venue={venue}
-                  onDelete={deleteVenue}
-                  deleteDisabled={isDeleting}
-                />
-              ))}
+          {items.map(venue => (
+            <VenueRow
+              key={venue.id}
+              venue={venue}
+              onDelete={deleteVenue}
+              deleteDisabled={isDeleting}
+            />
+          ))}
         </Table.Body>
       </Table>
     </div>

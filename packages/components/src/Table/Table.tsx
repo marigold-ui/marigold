@@ -1,5 +1,13 @@
-import type { ComponentProps, FocusEvent, ReactNode } from 'react';
+import type {
+  ComponentProps,
+  FocusEvent,
+  ReactElement,
+  ReactNode,
+} from 'react';
 import {
+  Children,
+  Fragment,
+  isValidElement,
   use,
   useCallback,
   useEffect,
@@ -17,23 +25,38 @@ import {
 } from 'react-aria-components/Table';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
 import { announce } from '@react-aria/live-announcer';
-import { getScrollParent, useResizeObserver } from '@react-aria/utils';
+import {
+  getScrollParent,
+  useObjectRef,
+  useResizeObserver,
+} from '@react-aria/utils';
 import { cn, useClassNames } from '@marigold/system';
 import { useActionBar } from '../ActionBar/useActionBar';
 import { intlMessages } from '../intl/messages';
 import type { Selection } from '../types';
 import { useDevWarning } from '../utils/useDevWarning';
-import type { StickyEdge } from './Context';
-import { TableContext, TableStickyContext, noStickyColumns } from './Context';
-import { TableBody } from './TableBody';
+import type { SkeletonColumn, StickyEdge } from './Context';
+import {
+  TableContext,
+  TableSkeletonContext,
+  TableSkeletonLinesContext,
+  TableStickyContext,
+  isSkeletonRowKey,
+  noStickyColumns,
+} from './Context';
+import { TableBody, type TableBodyProps, isEmptyBody } from './TableBody';
 import { TableCell } from './TableCell';
-import { TableColumn } from './TableColumn';
+import { TableColumn, type TableColumnProps } from './TableColumn';
 import { renderDragPreview } from './TableDragPreview';
 import { renderDropIndicator } from './TableDropIndicator';
 import { TableEditableCell } from './TableEditableCell';
 import { TableExpandableRows } from './TableExpandableRows';
 import { TableFooter } from './TableFooter';
-import { TableHeader, injectedColumnKeys } from './TableHeader';
+import {
+  TableHeader,
+  type TableHeaderProps,
+  injectedColumnKeys,
+} from './TableHeader';
 import { TableRow } from './TableRow';
 
 type RemovedProps = 'className' | 'style' | 'selectionBehavior' | 'render';
@@ -116,6 +139,56 @@ export interface TableProps extends Omit<RAC.TableProps, RemovedProps> {
 
 // Helper
 // ---------------
+/**
+ * The header's static columns, for the first render. The collection that
+ * `TableElement` reads them from doesn't exist yet, and on the server it never
+ * reaches a layout effect, so skeleton rows would be missing from the HTML.
+ */
+// Fragments are transparent to React Aria's collection, so flatten them too.
+const flattenChildren = (children: ReactNode): ReactNode[] =>
+  Children.toArray(children).flatMap(child =>
+    isValidElement<{ children?: ReactNode }>(child) && child.type === Fragment
+      ? flattenChildren(child.props.children)
+      : [child]
+  );
+
+const findChild = <P,>(children: ReactNode, type: unknown) =>
+  flattenChildren(children).find(
+    (child): child is ReactElement<P> =>
+      isValidElement(child) && child.type === type
+  );
+
+const skeletonColumnsFromChildren = (children: ReactNode): SkeletonColumn[] => {
+  const header = findChild<TableHeaderProps>(children, TableHeader);
+  // Columns from a `columns` render function are only known to the collection.
+  if (!header || typeof header.props.children === 'function') return [];
+
+  const columns = flattenChildren(header.props.children);
+  // A wrapper component hides its columns, so a count would come up short.
+  // Wait for the collection instead of rendering rows with missing cells.
+  if (
+    !columns.every(child => isValidElement(child) && child.type === TableColumn)
+  )
+    return [];
+
+  return columns.flatMap((child, index) =>
+    isValidElement<TableColumnProps>(child)
+      ? [
+          {
+            key: child.props.id ?? `marigold-skeleton-column-${index}`,
+            alignX: child.props.alignX,
+          },
+        ]
+      : []
+  );
+};
+
+/** Whether the body starts out with skeleton rows, for the first render. */
+const startsWithSkeletons = (children: ReactNode) => {
+  const body = findChild<TableBodyProps>(children, TableBody);
+  return !!body?.props.skeletonRows && isEmptyBody(body.props);
+};
+
 const isRelative = (size: unknown) =>
   typeof size === 'string' && size.endsWith('%');
 
@@ -152,9 +225,64 @@ const scrollFocusedRowClearOfActionBar = (e: FocusEvent<HTMLElement>) => {
   });
 };
 
+// The average keeps the table's total height, so nothing below it moves.
+const average = (values: number[]) =>
+  values.reduce((sum, value) => sum + value, 0) / values.length;
+
+const median = (values: number[]) =>
+  [...values].sort((a, b) => a - b)[Math.floor(values.length / 2)];
+
+/** Each column's median lines of text. A control, short of two lines, is one. */
+const measureLines = (
+  rows: HTMLTableRowElement[],
+  keys: RAC.Key[],
+  injected: number
+) =>
+  new Map(
+    keys.map((key, index) => {
+      const contents = rows.map(row =>
+        row.cells[injected + index]?.querySelector<HTMLElement>(
+          '[data-cell-content]'
+        )
+      );
+      const first = contents.find(Boolean);
+      if (!first) return [key, 1];
+      // A column's cells share their styles, so read them once.
+      const style = getComputedStyle(first);
+      const padding =
+        parseFloat(style.paddingTop) + parseFloat(style.paddingBottom);
+      const lineHeight = parseFloat(style.lineHeight);
+      const lines = median(
+        contents.map(content =>
+          content
+            ? Math.floor(
+                (content.getBoundingClientRect().height - padding) /
+                  lineHeight +
+                  0.25
+              )
+            : 1
+        )
+      );
+      // `line-height: normal` gives NaN.
+      return [key, Number.isFinite(lines) ? Math.max(1, lines) : 1];
+    })
+  );
+
+const sameLines = (
+  a: ReadonlyMap<RAC.Key, number>,
+  b: ReadonlyMap<RAC.Key, number>
+) => a.size === b.size && [...b].every(([key, lines]) => a.get(key) === lines);
+
+const noLines: ReadonlyMap<RAC.Key, number> = new Map();
+
 interface TableElementProps extends ComponentProps<'table'> {
   loading: boolean;
   onMinWidthChange: (width: number) => void;
+  /** Receives the columns as JSON, so an unchanged value skips the re-render. */
+  onSkeletonColumnsChange: (columnsKey: string) => void;
+  onShowsSkeletonsChange: (shows: boolean) => void;
+  /** The body's `skeletonRows`. Only then are real rows measured, and only that many. */
+  skeletonRows?: number;
 }
 
 /**
@@ -164,6 +292,9 @@ interface TableElementProps extends ComponentProps<'table'> {
 const TableElement = ({
   loading,
   onMinWidthChange,
+  onSkeletonColumnsChange,
+  onShowsSkeletonsChange,
+  skeletonRows,
   ...props
 }: TableElementProps) => {
   const state = use(TableStateContext);
@@ -199,6 +330,51 @@ const TableElement = ({
   const injected = columns.filter(column =>
     injectedColumnKeys.has(column.key)
   ).length;
+
+  // Skeleton rows need the consumer's columns, which the collection has. A
+  // string bails out of the state update when nothing changed, and only a
+  // loading table reports, so other tables never re-render for it.
+  // An empty collection reports nothing, so the header's columns stay in use.
+  const skeletonColumnsKey =
+    loading && columns.length > injected
+      ? JSON.stringify(
+          columns
+            .filter(column => !injectedColumnKeys.has(column.key))
+            .map(column => ({ key: column.key, alignX: column.props.alignX }))
+        )
+      : undefined;
+  useLayoutEffect(() => {
+    if (skeletonColumnsKey) onSkeletonColumnsChange(skeletonColumnsKey);
+  }, [skeletonColumnsKey, onSkeletonColumnsChange]);
+
+  const rows = state?.collection.rows ?? [];
+  const showsSkeletons =
+    rows.length > 0 && rows.every(row => isSkeletonRowKey(row.key));
+  useLayoutEffect(() => {
+    onShowsSkeletonsChange(showsSkeletons);
+  }, [showsSkeletons, onShowsSkeletonsChange]);
+
+  // The next skeleton rows match the real ones: their average height and each
+  // column's line count. Read after paint, since only the next load needs them.
+  const collection = state?.collection;
+  const tableRef = useObjectRef(props.ref);
+  const [skeletonLines, setSkeletonLines] = useState(noLines);
+  useEffect(() => {
+    const table = tableRef.current;
+    const body = table?.tBodies[0];
+    if (!skeletonRows || showsSkeletons || !collection?.rows.length) return;
+    if (!table || !body) return;
+    const domRows = Array.from(body.rows).slice(0, skeletonRows);
+    // No render reads it, so it goes straight onto the element.
+    table.style.setProperty(
+      '--skeleton-row-height',
+      `${average(domRows.map(row => row.getBoundingClientRect().height))}px`
+    );
+    const keys = collection.columns.slice(injected).map(column => column.key);
+    const lines = measureLines(domRows, keys, injected);
+    setSkeletonLines(prev => (sameLines(prev, lines) ? prev : lines));
+  }, [collection, showsSkeletons, injected, skeletonRows, tableRef]);
+
   const first = columns.at(injected);
   const last = columns.at(-1);
   const edges = columns.map((column, index): StickyEdge | undefined =>
@@ -250,18 +426,21 @@ const TableElement = ({
 
   return (
     <TableStickyContext value={stickyColumns}>
-      <table
-        {...props}
-        style={{
-          ...props.style,
-          // Read by the cells that scroll, to keep focus clear of the sticky ones.
-          ...((stickyStart > 0 || stickyEnd > 0) && {
-            '--table-sticky-start': `${stickyStart}px`,
-            '--table-sticky-end': `${stickyEnd}px`,
-          }),
-        }}
-        aria-busy={loading || undefined}
-      />
+      <TableSkeletonLinesContext value={skeletonLines}>
+        <table
+          {...props}
+          ref={tableRef}
+          style={{
+            ...props.style,
+            // Read by the cells that scroll, to keep focus clear of the sticky ones.
+            ...((stickyStart > 0 || stickyEnd > 0) && {
+              '--table-sticky-start': `${stickyStart}px`,
+              '--table-sticky-end': `${stickyEnd}px`,
+            }),
+          }}
+          aria-busy={loading || undefined}
+        />
+      </TableSkeletonLinesContext>
     </TableStickyContext>
   );
 };
@@ -280,6 +459,7 @@ const TableRoot = ({
   selectedKeys: selectedKeysProp,
   defaultSelectedKeys: defaultSelectedKeysProp,
   onSelectionChange: onSelectionChangeProp,
+  disabledBehavior,
   ...props
 }: TableProps) => {
   const classNames = useClassNames({
@@ -293,6 +473,23 @@ const TableRoot = ({
   const [minTableWidth, setMinTableWidth] = useState<number>();
   const containerRef = useRef<HTMLDivElement>(null);
   const [scrolls, setScrolls] = useState(false);
+  const [measuredColumnsKey, setMeasuredColumnsKey] = useState<string>();
+  // Read once: only the first render, on the server too, lacks the collection.
+  const [headerSkeletonColumns] = useState(() =>
+    loading ? skeletonColumnsFromChildren(props.children) : []
+  );
+  const skeletonColumns = useMemo(
+    (): readonly SkeletonColumn[] =>
+      measuredColumnsKey
+        ? JSON.parse(measuredColumnsKey)
+        : headerSkeletonColumns,
+    [measuredColumnsKey, headerSkeletonColumns]
+  );
+  // Measured once the collection exists. The first render, on the server too,
+  // reads it from the body, so "select all" starts out disabled.
+  const [showsSkeletons, setShowsSkeletons] = useState(
+    () => loading && startsWithSkeletons(props.children)
+  );
 
   const measure = useCallback(() => {
     const container = containerRef.current;
@@ -357,6 +554,11 @@ const TableRoot = ({
     ]
   );
 
+  const skeletonCtx = useMemo(
+    () => ({ loading, skeletonColumns, showsSkeletons }),
+    [loading, skeletonColumns, showsSkeletons]
+  );
+
   const { selectedKeys, onSelectionChange, actionBarHeight, actionBarOverlay } =
     useActionBar({
       selectedKeys: selectedKeysProp as Selection | undefined,
@@ -364,6 +566,16 @@ const TableRoot = ({
       onSelectionChange: onSelectionChangeProp,
       actionBar,
     });
+
+  // The table is always controlled here, so dropping a change keeps it out.
+  // Covers select-all by keyboard, which the disabled checkbox doesn't, and
+  // also keeps Escape from clearing a selection until the data has arrived.
+  const handleSelectionChange = useCallback(
+    (keys: Selection) => {
+      if (!showsSkeletons) onSelectionChange(keys);
+    },
+    [showsSkeletons, onSelectionChange]
+  );
 
   // A live region rendered with the table would be inserted with its text
   // already in it on mount, which screen readers skip. The shared announcer's
@@ -375,71 +587,89 @@ const TableRoot = ({
 
   return (
     <TableContext value={ctx}>
-      <div
-        ref={containerRef}
-        data-scrolls={scrolls || undefined}
-        // Keeps the container filling its parent when the parent doesn't stretch.
-        className={cn(
-          'w-full',
-          // `overflow-x-auto` is the fallback that keeps the table scrolling for
-          // a theme that leaves `container` undefined. theme-rui's part sets it
-          // too, so don't "clean up" the duplicate.
-          scrolls && ['overflow-x-auto', classNames.container]
-        )}
-        onFocus={actionBarHeight ? scrollFocusedRowClearOfActionBar : undefined}
-      >
-        <ResizableTableContainer
-          // Containment keeps the measured width from following the table (DST-1836).
-          className="w-full [contain:inline-size]"
-          style={{ minWidth: minTableWidth }}
-        >
-          <RACTable
-            // Its own stacking context, so the sticky header, footer and
-            // columns order among themselves and never against the page.
-            className={cn('group/table isolate', classNames.table)}
-            treeColumn={treeColumn}
-            selectionBehavior="toggle"
-            selectedKeys={selectedKeys}
-            defaultSelectedKeys={
-              actionBar ? undefined : defaultSelectedKeysProp
-            }
-            onSelectionChange={onSelectionChange}
-            render={domProps => (
-              <TableElement
-                // Only a virtualized table renders a `<div>`, and Marigold's never is.
-                {...(domProps as ComponentProps<'table'>)}
-                // The theme owns the indent, so it only learns which one applies.
-                data-tree-indent={
-                  treeIndent === 'default' ? undefined : treeIndent
-                }
-                loading={loading}
-                onMinWidthChange={setMinTableWidth}
-              />
-            )}
-            {...props}
-          />
-          {actionBar && (
-            <>
-              {/* Gap between the last row and the bar. */}
-              <div
-                aria-hidden
-                className={classNames.actionBarSpacer}
-                style={{
-                  height: actionBarHeight ? 'var(--actionbar-offset, 8px)' : 0,
-                }}
-              />
-              {actionBarOverlay}
-              {/* Cancels the bar's own height, then slides open to it, so the
-                  content below moves smoothly instead of jumping. */}
-              <div
-                aria-hidden
-                className={classNames.actionBarSpacer}
-                style={{ marginTop: -actionBarHeight, height: actionBarHeight }}
-              />
-            </>
+      <TableSkeletonContext value={skeletonCtx}>
+        <div
+          ref={containerRef}
+          data-scrolls={scrolls || undefined}
+          // Keeps the container filling its parent when the parent doesn't stretch.
+          className={cn(
+            'w-full',
+            // `overflow-x-auto` is the fallback that keeps the table scrolling for
+            // a theme that leaves `container` undefined. theme-rui's part sets it
+            // too, so don't "clean up" the duplicate.
+            scrolls && ['overflow-x-auto', classNames.container]
           )}
-        </ResizableTableContainer>
-      </div>
+          onFocus={
+            actionBarHeight ? scrollFocusedRowClearOfActionBar : undefined
+          }
+        >
+          <ResizableTableContainer
+            // Containment keeps the measured width from following the table (DST-1836).
+            className="w-full [contain:inline-size]"
+            style={{ minWidth: minTableWidth }}
+          >
+            <RACTable
+              // Its own stacking context, so the sticky header, footer and
+              // columns order among themselves and never against the page.
+              className={cn('group/table isolate', classNames.table)}
+              treeColumn={treeColumn}
+              selectionBehavior="toggle"
+              selectedKeys={selectedKeys}
+              defaultSelectedKeys={
+                actionBar ? undefined : defaultSelectedKeysProp
+              }
+              onSelectionChange={handleSelectionChange}
+              // With "selection" a disabled row stays focusable and actionable,
+              // and a row can't opt back out, so skeleton rows need "all".
+              disabledBehavior={showsSkeletons ? 'all' : disabledBehavior}
+              render={domProps => (
+                <TableElement
+                  // Only a virtualized table renders a `<div>`, and Marigold's never is.
+                  {...(domProps as ComponentProps<'table'>)}
+                  // The theme owns the indent, so it only learns which one applies.
+                  data-tree-indent={
+                    treeIndent === 'default' ? undefined : treeIndent
+                  }
+                  loading={loading}
+                  onMinWidthChange={setMinTableWidth}
+                  onSkeletonColumnsChange={setMeasuredColumnsKey}
+                  onShowsSkeletonsChange={setShowsSkeletons}
+                  skeletonRows={
+                    findChild<TableBodyProps>(props.children, TableBody)?.props
+                      .skeletonRows
+                  }
+                />
+              )}
+              {...props}
+            />
+            {actionBar && (
+              <>
+                {/* Gap between the last row and the bar. */}
+                <div
+                  aria-hidden
+                  className={classNames.actionBarSpacer}
+                  style={{
+                    height: actionBarHeight
+                      ? 'var(--actionbar-offset, 8px)'
+                      : 0,
+                  }}
+                />
+                {actionBarOverlay}
+                {/* Cancels the bar's own height, then slides open to it, so the
+                  content below moves smoothly instead of jumping. */}
+                <div
+                  aria-hidden
+                  className={classNames.actionBarSpacer}
+                  style={{
+                    marginTop: -actionBarHeight,
+                    height: actionBarHeight,
+                  }}
+                />
+              </>
+            )}
+          </ResizableTableContainer>
+        </div>
+      </TableSkeletonContext>
     </TableContext>
   );
 };

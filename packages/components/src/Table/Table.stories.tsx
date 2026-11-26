@@ -23,6 +23,7 @@ import { Switch } from '../Switch/Switch';
 import { Text } from '../Text/Text';
 import { TextField } from '../TextField/TextField';
 import { Title } from '../Title/Title';
+import { VisuallyHidden } from '../VisuallyHidden/VisuallyHidden';
 import {
   expectFocusRingContrast,
   expectInsetFocusRingContrast,
@@ -839,6 +840,29 @@ Empty.test(
   }
 );
 
+Empty.test(
+  'Keeps the empty state while loading without skeletonRows',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { loading: true },
+  },
+  async ({ canvas }) => {
+    await expect(canvas.getByText('No results found.')).toBeInTheDocument();
+    await expect(canvas.getAllByRole('row')).toHaveLength(2);
+  }
+);
+
+Empty.test(
+  'Disables select-all while there are no rows',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { selectionMode: 'multiple' },
+  },
+  async ({ canvas }) => {
+    await expect(canvas.getByRole('checkbox')).toBeDisabled();
+  }
+);
+
 export const Loading = meta.story({
   tags: ['component-test'],
   // `loading` changes no pixels, the tests below guard it instead.
@@ -904,6 +928,446 @@ Loading.test(
       expect(screen.getByRole('toolbar')).toBeInTheDocument();
     });
     expect(screen.getAllByRole('status')).toHaveLength(1);
+  }
+);
+
+// Rendered skeletons: decorative, so hidden, and sized through `--width`.
+const skeletonsIn = (root: HTMLElement) =>
+  Array.from(root.querySelectorAll<HTMLElement>('[aria-hidden="true"]')).filter(
+    el => el.style.getPropertyValue('--width') !== ''
+  );
+
+/**
+ * The first load: `skeletonRows` fills an empty, loading body with skeleton
+ * rows that follow the columns, until the data arrives.
+ */
+const SkeletonRowsTable = (args: TableProps) => {
+  const [rows, setRows] = useState<typeof users>([]);
+  const loading = rows.length === 0;
+
+  return (
+    <Stack space={4}>
+      <Table aria-label="Orders" loading={loading} {...args}>
+        <Table.Header>
+          <Table.Column rowHeader>Name</Table.Column>
+          <Table.Column>Email</Table.Column>
+          <Table.Column alignX="right">Status</Table.Column>
+        </Table.Header>
+        <Table.Body
+          lang="en"
+          items={rows}
+          skeletonRows={3}
+          emptyState={() => <Text>No orders.</Text>}
+        >
+          {user => (
+            <Table.Row id={user.email}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell alignX="right">{user.status}</Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+      <Button onPress={() => setRows(users.slice(0, 2))}>Finish load</Button>
+    </Stack>
+  );
+};
+
+export const SkeletonRows = meta.story({
+  tags: ['component-test'],
+  args: { selectionMode: 'multiple' },
+  render: args => <SkeletonRowsTable {...args} />,
+});
+
+SkeletonRows.test(
+  'Renders the skeleton rows with one skeleton per column',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, canvasElement }) => {
+    // Header plus three skeleton rows.
+    await expect(canvas.getAllByRole('row')).toHaveLength(4);
+    await expect(skeletonsIn(canvasElement)).toHaveLength(9);
+    await expect(canvas.queryByText('No orders.')).not.toBeInTheDocument();
+  }
+);
+
+SkeletonRows.test(
+  'Keeps the skeleton rows out of selection',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    const [selectAll, ...rowCheckboxes] = canvas.getAllByRole('checkbox');
+
+    await expect(selectAll).toBeDisabled();
+    for (const checkbox of rowCheckboxes) {
+      await expect(checkbox).toBeDisabled();
+    }
+
+    await userEvent.click(selectAll);
+
+    await expect(selectAll).not.toBeChecked();
+  }
+);
+
+SkeletonRows.test(
+  'Ignores select-all by keyboard',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, userEvent }) => {
+    // Disabled rows take no focus, so the grid itself receives it.
+    await userEvent.tab();
+    await expect(canvas.getByRole('grid')).toHaveFocus();
+    // React Aria reads Cmd on macOS and Ctrl elsewhere.
+    const mod = /Mac/.test(navigator.platform) ? 'Meta' : 'Control';
+    await userEvent.keyboard(`{${mod}>}a{/${mod}}`);
+
+    await expect(canvas.getAllByRole('checkbox')[0]).not.toBeChecked();
+    for (const row of canvas.getAllByRole('row').slice(1)) {
+      await expect(row).not.toHaveAttribute('aria-selected', 'true');
+    }
+  }
+);
+
+SkeletonRows.test(
+  'Aligns a skeleton like its column',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvasElement }) => {
+    // The last skeleton sits in the right-aligned "Status" column.
+    const skeleton = skeletonsIn(canvasElement).at(-1)!;
+    const cell = skeleton.closest<HTMLElement>('[data-cell-content]')!;
+
+    await expect(cell).toHaveClass('text-right');
+  }
+);
+
+SkeletonRows.test(
+  'Replaces the skeletons with the data, nothing selected',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas, canvasElement, userEvent }) => {
+    await userEvent.click(canvas.getByRole('button', { name: 'Finish load' }));
+
+    await expect(skeletonsIn(canvasElement)).toHaveLength(0);
+    const [selectAll, ...rowCheckboxes] = canvas.getAllByRole('checkbox');
+    await expect(rowCheckboxes).toHaveLength(2);
+    await expect(selectAll).toBeEnabled();
+    await expect(selectAll).not.toBeChecked();
+  }
+);
+
+SkeletonRows.test(
+  'Keeps the body props while the skeleton rows show',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const [, body] = canvas.getAllByRole('rowgroup');
+
+    await expect(body).toHaveAttribute('lang', 'en');
+  }
+);
+
+SkeletonRows.test(
+  'Keeps the skeleton rows out of onRowAction when disabled rows stay actionable',
+  {
+    parameters: { chromatic: { disableSnapshot: true } },
+    args: { disabledBehavior: 'selection', onRowAction: fn() },
+  },
+  async ({ args, canvas, step, userEvent }) => {
+    await step('A skeleton row does not reach the handler', async () => {
+      const [, skeletonRow] = canvas.getAllByRole('row');
+      await userEvent.click(
+        within(skeletonRow).getAllByRole('gridcell').at(-1)!
+      );
+
+      await expect(args.onRowAction).not.toHaveBeenCalled();
+    });
+
+    await step('A real row does, once the data has arrived', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Finish load' })
+      );
+      await userEvent.click(canvas.getByText(users[0].email));
+
+      await expect(args.onRowAction).toHaveBeenCalledWith(users[0].email);
+    });
+  }
+);
+
+const composedColumns = ['Name', 'Email', 'Status'];
+
+// A wrapper of the kind apps write: the table can't see through it.
+const StatusColumn = () => <Table.Column>Status</Table.Column>;
+
+const ComposedSkeletonTable = ({
+  header,
+  ...args
+}: TableProps & { header: 'fragment' | 'wrapper' }) => {
+  const loading = true;
+
+  return (
+    <Table aria-label="Orders" loading={loading} {...args}>
+      <Table.Header>
+        {header === 'fragment' ? (
+          <>
+            {composedColumns.map((name, i) => (
+              <Table.Column key={name} rowHeader={i === 0}>
+                {name}
+              </Table.Column>
+            ))}
+          </>
+        ) : (
+          [
+            <Table.Column key="name" rowHeader>
+              Name
+            </Table.Column>,
+            <Table.Column key="email">Email</Table.Column>,
+            <StatusColumn key="status" />,
+          ]
+        )}
+      </Table.Header>
+      <Table.Body skeletonRows={3} emptyState={() => <Text>No orders.</Text>}>
+        {/* Children as apps often write them: `false` while loading. */}
+        {!loading &&
+          users.map(user => (
+            <Table.Row key={user.email}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>{user.email}</Table.Cell>
+              <Table.Cell>{user.status}</Table.Cell>
+            </Table.Row>
+          ))}
+      </Table.Body>
+    </Table>
+  );
+};
+
+/** Rows taller than one line of text, loaded and then reloaded. */
+const MeasuredSkeletonRowsTable = (args: TableProps) => {
+  const [rows, setRows] = useState<typeof users>([]);
+
+  return (
+    <Stack space={4}>
+      <Table aria-label="Orders" loading={rows.length === 0} {...args}>
+        <Table.Header>
+          <Table.Column rowHeader>Name</Table.Column>
+          <Table.Column>Actions</Table.Column>
+        </Table.Header>
+        <Table.Body items={rows} skeletonRows={2}>
+          {user => (
+            <Table.Row id={user.email}>
+              <Table.Cell>{user.name}</Table.Cell>
+              <Table.Cell>
+                <Button size="small" variant="ghost">
+                  Edit
+                </Button>
+              </Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+      <Button onPress={() => setRows(users.slice(0, 2))}>Finish load</Button>
+      <Button onPress={() => setRows([])}>Reload</Button>
+    </Stack>
+  );
+};
+
+export const SkeletonRowsMeasured = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  render: args => <MeasuredSkeletonRowsTable {...args} />,
+});
+
+SkeletonRowsMeasured.test(
+  'Sizes the next skeleton rows like the real rows',
+  async ({ canvas, step, userEvent }) => {
+    const bodyRow = () => canvas.getAllByRole('row')[1];
+    const firstLoad = bodyRow().getBoundingClientRect().height;
+
+    await step('Real rows with a button are taller than one line', async () => {
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Finish load' })
+      );
+
+      await expect(bodyRow().getBoundingClientRect().height).toBeGreaterThan(
+        firstLoad
+      );
+    });
+
+    await step('The next skeleton rows take their height', async () => {
+      const realRow = bodyRow().getBoundingClientRect().height;
+
+      await userEvent.click(canvas.getByRole('button', { name: 'Reload' }));
+
+      await expect(skeletonsIn(bodyRow())).not.toHaveLength(0);
+      await expect(bodyRow().getBoundingClientRect().height).toBeCloseTo(
+        realRow,
+        0
+      );
+    });
+  }
+);
+
+/**
+ * Starts with data. The button swaps the rows for skeleton rows and back, so
+ * you can compare both: the skeleton rows take the real rows' average height.
+ * `multiLine` gives cells of two and three lines, so the real rows differ.
+ */
+const SkeletonRowsToggleTable = ({
+  multiLine,
+  ...args
+}: TableProps & { multiLine?: boolean }) => {
+  const [loading, setLoading] = useState(false);
+
+  return (
+    <Stack space={4} alignX="left">
+      <Button onPress={() => setLoading(!loading)}>
+        {loading ? 'Show data' : 'Show skeleton'}
+      </Button>
+      <Table aria-label="Users" loading={loading} {...args}>
+        <Table.Header>
+          {multiLine ? (
+            <>
+              <Table.Column rowHeader>User</Table.Column>
+              <Table.Column>Contact</Table.Column>
+            </>
+          ) : (
+            <>
+              <Table.Column rowHeader>Name</Table.Column>
+              <Table.Column>Email</Table.Column>
+              <Table.Column>Location</Table.Column>
+            </>
+          )}
+          <Table.Column>Status</Table.Column>
+          <Table.Column alignX="right">Balance</Table.Column>
+          <Table.Column alignX="right">
+            <VisuallyHidden>Actions</VisuallyHidden>
+          </Table.Column>
+        </Table.Header>
+        <Table.Body items={loading ? [] : users} skeletonRows={users.length}>
+          {user => (
+            <Table.Row id={user.email}>
+              {multiLine ? (
+                <>
+                  <Table.Cell textValue={user.name}>
+                    <Stack>
+                      <Text weight="medium">{user.name}</Text>
+                      <Text color="secondary">{user.handle}</Text>
+                    </Stack>
+                  </Table.Cell>
+                  <Table.Cell>
+                    <Stack>
+                      <Text>{user.email}</Text>
+                      <Text color="secondary">{user.location}</Text>
+                      {/* Only some rows have a third line. */}
+                      {user.balance > 1000 && (
+                        <Text color="secondary">Key account</Text>
+                      )}
+                    </Stack>
+                  </Table.Cell>
+                </>
+              ) : (
+                <>
+                  <Table.Cell>{user.name}</Table.Cell>
+                  <Table.Cell>{user.email}</Table.Cell>
+                  <Table.Cell>{user.location}</Table.Cell>
+                </>
+              )}
+              <Table.Cell>
+                <Badge>{user.status}</Badge>
+              </Table.Cell>
+              <Table.Cell alignX="right">
+                <NumericFormat
+                  style="currency"
+                  currency="EUR"
+                  value={user.balance}
+                />
+              </Table.Cell>
+              <Table.Cell alignX="right">
+                <ActionMenu
+                  aria-label={`Actions for ${user.name}`}
+                  variant="ghost"
+                  size="small"
+                >
+                  <ActionMenu.Item id="edit">Edit</ActionMenu.Item>
+                  <ActionMenu.Item id="delete">Delete</ActionMenu.Item>
+                </ActionMenu>
+              </Table.Cell>
+            </Table.Row>
+          )}
+        </Table.Body>
+      </Table>
+    </Stack>
+  );
+};
+
+export const SkeletonRowsToggle = meta.story({
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { selectionMode: 'multiple' },
+  render: args => <SkeletonRowsToggleTable {...args} />,
+});
+
+export const SkeletonRowsToggleMultiLine = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { selectionMode: 'multiple' },
+  render: args => <SkeletonRowsToggleTable {...args} multiLine />,
+});
+
+SkeletonRowsToggleMultiLine.test(
+  'Gives each skeleton cell as many lines as its column had',
+  async ({ canvas, userEvent }) => {
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Show skeleton' })
+    );
+
+    const row = within(canvas.getAllByRole('row')[1]);
+    const user = row.getByRole('rowheader');
+    const [, contact, status] = row.getAllByRole('gridcell');
+    await expect(skeletonsIn(user)).toHaveLength(2);
+    await expect(skeletonsIn(contact)).toHaveLength(2);
+    await expect(skeletonsIn(status)).toHaveLength(1);
+  }
+);
+
+SkeletonRowsToggleMultiLine.test(
+  'Keeps the table as tall as the data while the skeleton shows',
+  async ({ canvas, userEvent }) => {
+    const bodyHeight = () =>
+      canvas.getAllByRole('rowgroup')[1].getBoundingClientRect().height;
+    const loaded = bodyHeight();
+
+    await userEvent.click(
+      canvas.getByRole('button', { name: 'Show skeleton' })
+    );
+
+    await expect(bodyHeight()).toBeCloseTo(loaded, 0);
+  }
+);
+
+/** Columns inside a Fragment, and body children that are `false` while loading. */
+export const SkeletonRowsInFragment = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { selectionMode: 'multiple' },
+  render: args => <ComposedSkeletonTable {...args} header="fragment" />,
+});
+
+SkeletonRowsInFragment.test(
+  'Shows skeleton rows when the children are false',
+  async ({ canvas, canvasElement }) => {
+    await expect(canvas.queryByText('No orders.')).not.toBeInTheDocument();
+    await expect(canvas.getAllByRole('row')).toHaveLength(4);
+    await expect(skeletonsIn(canvasElement)).toHaveLength(9);
+  }
+);
+
+/** A column behind a wrapper component, which the table can't see through. */
+export const SkeletonRowsWrappedColumn = meta.story({
+  tags: ['component-test'],
+  parameters: { chromatic: { disableSnapshot: true } },
+  args: { selectionMode: 'multiple' },
+  render: args => <ComposedSkeletonTable {...args} header="wrapper" />,
+});
+
+SkeletonRowsWrappedColumn.test(
+  'Fills every column behind a wrapper component',
+  async ({ canvas, canvasElement }) => {
+    await expect(canvas.getAllByRole('row')).toHaveLength(4);
+    await expect(skeletonsIn(canvasElement)).toHaveLength(9);
   }
 );
 

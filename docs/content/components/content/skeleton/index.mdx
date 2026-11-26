@@ -111,12 +111,12 @@ How `width` behaves:
 
 ### In a table
 
-For a table, render skeleton rows inside the real `<Table>` instead of drawing a separate placeholder. The header stays real, the columns keep their widths, and nothing shifts when the data arrives. Render as many rows as a page holds, and give each column a width that suits its content.
+For a table, let the table render the skeleton rows itself. The header stays real and the columns keep their widths.
 
-- **Set `loading`** on the table while the skeleton rows are shown. The table marks itself busy and announces the load to screen readers.
-- **Give the row header cells an empty `textValue`.** A row header needs a text value for type-to-select, and there is none yet.
-- **With selection,** keep `selectionMode` so the checkbox column stays in place, and pass the IDs of the skeleton rows in `disabledKeys`, so nobody can select a placeholder row. "Select all" still works on disabled rows, so control the selection and ignore changes while the skeleton rows are shown.
-- **Alignment follows the column.** A placeholder in a column with `alignX="right"` or `alignX="center"` lines up like the content it stands in for, so numbers and their placeholders share an edge.
+- **Set `loading`** on the table and `skeletonRows` on `<Table.Body>` while the first page loads. As long as the body has no rows, it shows that many skeleton rows instead of the empty state, and the table announces the load to screen readers. Use the number of rows a page holds.
+- **One prop, no shaping.** Every cell shows a bar that fills it. You don't place `<Skeleton>` in a table yourself.
+- **Lines and row height are automatic.** Before the first load, every cell shows one bar and a row is one line of text tall. Once the table has shown real rows, later skeleton rows take their average height, so the table keeps its total height, and each cell shows as many bars as its column usually has lines, for example two for a name with a handle below it. On the first load, rows with taller content, such as a button or text that wraps, grow when the data arrives, because nobody knows their height yet.
+- **Selection stays out of the way.** Nobody can select a skeleton row, and "select all" is disabled until the data has arrived.
 
 <ComponentDemo name="skeleton-table" />
 

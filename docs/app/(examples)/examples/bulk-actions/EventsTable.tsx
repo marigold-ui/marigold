@@ -6,8 +6,6 @@ import {
   Badge,
   Button,
   Center,
-  Skeleton,
-  type SkeletonProps,
   Table,
   Text,
   VisuallyHidden,
@@ -70,36 +68,6 @@ const NoDataEmptyState = () => (
       </Text>
     </Center>
   </div>
-);
-
-// Placeholder rows for the initial fetch (`isLoading`), rendered inside the
-// real table so the header and column widths stay put. Background refetches
-// keep the previous rows on screen and show FetchingIndicator instead.
-const skeletonCells: ReadonlyArray<
-  { column: string } & Pick<SkeletonProps, 'width' | 'height' | 'variant'>
-> = [
-  { column: 'name', width: '3/4' },
-  { column: 'date', width: '3/4' },
-  { column: 'venue', width: '2/3' },
-  { column: 'category', width: '3/4' },
-  { column: 'price', width: 'full' },
-  { column: 'status', width: 16, height: 5, variant: 'rounded' },
-  { column: 'reservations', width: '1/2' },
-  { column: 'actions', width: 8, height: 8 }, // Small button, sets the row height
-];
-
-const skeletonRowIds = (count: number) =>
-  Array.from({ length: count }, (_, i) => `skeleton-${i}`);
-
-const EventSkeletonRow = ({ id }: { id: string }) => (
-  <Table.Row id={id}>
-    {skeletonCells.map(({ column, ...cell }, i) => (
-      // The row header needs a text value for type-to-select, and there is none yet.
-      <Table.Cell key={column} textValue={i === 0 ? '' : undefined}>
-        <Skeleton {...cell} />
-      </Table.Cell>
-    ))}
-  </Table.Row>
 );
 
 // Per-row menu for one-off operations (see the Table Records pattern). It
@@ -195,7 +163,6 @@ export const EventsTable = () => {
     ? ''
     : `${totalItems} event${totalItems === 1 ? '' : 's'}`;
   const hasSelection = selected === 'all' || selected.size > 0;
-  const skeletonIds = isLoading ? skeletonRowIds(pageSize) : [];
 
   return (
     <div id={EVENTS_REGION_ID} className="scroll-mt-4">
@@ -204,13 +171,8 @@ export const EventsTable = () => {
         aria-label="Events"
         loading={isLoading}
         selectionMode="multiple"
-        // Placeholder rows can't be selected, but the checkbox column stays.
-        disabledKeys={skeletonIds}
         selectedKeys={selected}
-        // "Select all" ignores disabled rows, so drop it while the placeholders show.
-        onSelectionChange={keys => {
-          if (!isLoading) setSelected(keys);
-        }}
+        onSelectionChange={setSelected}
         actionBar={() => <BulkActionBar />}
       >
         {/* Columns with predictable short content get a fixed width; the two
@@ -242,19 +204,18 @@ export const EventsTable = () => {
           </Table.Column>
         </Table.Header>
         <Table.Body
+          skeletonRows={pageSize}
           emptyState={() =>
             isFiltered ? <FilterEmptyState /> : <NoDataEmptyState />
           }
         >
-          {isLoading
-            ? skeletonIds.map(id => <EventSkeletonRow key={id} id={id} />)
-            : items.map(event => (
-                <EventRow
-                  key={event.id}
-                  event={event}
-                  actionsDisabled={hasSelection}
-                />
-              ))}
+          {items.map(event => (
+            <EventRow
+              key={event.id}
+              event={event}
+              actionsDisabled={hasSelection}
+            />
+          ))}
         </Table.Body>
       </Table>
     </div>

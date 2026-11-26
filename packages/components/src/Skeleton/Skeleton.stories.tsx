@@ -184,31 +184,21 @@ Composition.test(
 );
 
 const columns = [
-  { name: 'Name', width: '3/4', alignX: 'left' },
-  { name: 'Email', width: 'full', alignX: 'left' },
-  { name: 'Total', width: '1/2', alignX: 'right' },
+  { name: 'Name', alignX: 'left' },
+  { name: 'Email', alignX: 'left' },
+  { name: 'Total', alignX: 'right' },
 ] as const;
-
-const skeletonRows = Array.from({ length: 5 }, (_, i) => `skeleton-${i}`);
 
 /**
  * Skeleton rows inside the real table, for the first load. The header stays
  * real, and `loading` on the table marks it busy and announces the load, so
- * the placeholders themselves stay silent.
+ * the skeletons themselves stay silent.
  */
 export const InTable = meta.story({
   tags: ['component-test'],
   parameters: { chromatic: { disableSnapshot: true } },
   render: () => (
-    <Table
-      aria-label="Orders"
-      loading
-      selectionMode="multiple"
-      // Placeholder rows can't be selected, but the checkbox column stays.
-      disabledKeys={skeletonRows}
-      // "Select all" ignores disabled rows, so keep the selection empty while loading.
-      selectedKeys={[]}
-    >
+    <Table aria-label="Orders" loading selectionMode="multiple">
       <Table.Header>
         {columns.map(({ name, alignX }, i) => (
           <Table.Column key={name} rowHeader={i === 0} alignX={alignX}>
@@ -216,18 +206,7 @@ export const InTable = meta.story({
           </Table.Column>
         ))}
       </Table.Header>
-      <Table.Body>
-        {skeletonRows.map(id => (
-          <Table.Row key={id} id={id}>
-            {columns.map(({ name, width }, i) => (
-              // A row header needs text for type-to-select, and there is none yet.
-              <Table.Cell key={name} textValue={i === 0 ? '' : undefined}>
-                <Skeleton width={width} />
-              </Table.Cell>
-            ))}
-          </Table.Row>
-        ))}
-      </Table.Body>
+      <Table.Body skeletonRows={5}>{[]}</Table.Body>
     </Table>
   ),
 });
@@ -238,21 +217,6 @@ InTable.test(
   { parameters: { chromatic: { disableSnapshot: true } } },
   async ({ canvasElement }) => {
     await expect(skeletonsIn(canvasElement)).toHaveLength(15);
-  }
-);
-
-InTable.test(
-  'follows the alignment of its column',
-  { parameters: { chromatic: { disableSnapshot: true } } },
-  async ({ canvasElement }) => {
-    // The last placeholder sits in the right-aligned "Total" column.
-    const skeleton = skeletonsIn(canvasElement).at(-1)!;
-    const cell = skeleton.closest<HTMLElement>('[data-cell-content]')!;
-
-    await expect(skeleton.getBoundingClientRect().right).toBeCloseTo(
-      cell.getBoundingClientRect().right,
-      0
-    );
   }
 );
 

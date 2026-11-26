@@ -7,7 +7,7 @@ import {
 } from 'react-aria-components/Table';
 import { cn } from '@marigold/system';
 import { Checkbox } from '../Checkbox/Checkbox';
-import { useTableContext } from './Context';
+import { useTableContext, useTableSkeletonContext } from './Context';
 import { renderStickyColumn } from './TableStickyCell';
 
 // Keys of the columns injected ahead of the consumer's, so the table can tell them apart.
@@ -44,6 +44,7 @@ const TableHeader = <T extends object>({
   const { selectionBehavior, selectionMode, allowsDragging } =
     useTableOptions();
   const { classNames } = useTableContext();
+  const { showsSkeletons } = useTableSkeletonContext();
 
   return (
     <RACTableHeader
@@ -71,7 +72,11 @@ const TableHeader = <T extends object>({
           width={injectedColumnWidth}
           className={classNames.column}
         >
-          {selectionMode === 'multiple' && <Checkbox slot="selection" />}
+          {selectionMode === 'multiple' && (
+            // React Aria disables "select all" only for an empty collection.
+            // `undefined` otherwise, or `false` would override that.
+            <Checkbox slot="selection" disabled={showsSkeletons || undefined} />
+          )}
         </Column>
       )}
       <Collection items={columns}>{children}</Collection>
