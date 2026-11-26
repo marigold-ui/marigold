@@ -26,7 +26,8 @@ describe('queryEvents', () => {
     const byName = queryEvents({ q: 'jazz night', pageSize: 'all' });
     expect(byName.totalItems).toBeGreaterThan(0);
 
-    const byVenue = queryEvents({ q: 'jazzhaus', pageSize: 'all' });
+    const byVenue = queryEvents({ q: 'cellar lounge', pageSize: 'all' });
+    expect(byVenue.totalItems).toBeGreaterThan(0);
     expect(byVenue.items.every(event => event.venue === 'Cellar Lounge')).toBe(
       true
     );
