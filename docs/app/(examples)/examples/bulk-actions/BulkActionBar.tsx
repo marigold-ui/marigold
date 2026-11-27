@@ -33,7 +33,7 @@ export const BulkActionBar = () => {
   return (
     <ActionBar>
       {actions.sending ? (
-        <Inline space={2} alignY="center">
+        <Inline space="related" alignY="center">
           <ProgressCircle />
           <Text aria-live="polite">
             Sending {actions.sending.done + 1} of {actions.sending.total}…

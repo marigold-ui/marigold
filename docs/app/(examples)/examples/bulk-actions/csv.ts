@@ -14,20 +14,24 @@ export const exportEventsToCsv = (events: readonly Event[]) => {
   const headers = [
     'Name',
     'Date',
+    'Time',
     'Venue',
     'Category',
     'Price (EUR)',
     'Status',
-    'Reservations',
+    'Tickets sold',
+    'Capacity',
   ];
   const rows = events.map(event => [
     event.name,
     event.date,
+    event.time,
     event.venue ?? '',
     event.category,
     event.price,
     event.status,
     event.reservations,
+    event.capacity,
   ]);
   const csv = [
     headers.join(','),

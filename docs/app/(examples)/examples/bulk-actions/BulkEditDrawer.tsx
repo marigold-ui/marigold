@@ -21,7 +21,7 @@ import { useBulkActions } from './hooks/useBulkActions';
 // every record shares the value, otherwise it stays empty with a "Multiple
 // values" placeholder. Venue and category apply implicitly once changed;
 // price is gated behind an explicit opt-in because an accidental overwrite is
-// expensive.
+// expensive, and its field only appears once the user opts in.
 
 /** The value shared by all records, or `undefined` when values differ. */
 const sharedValue = <K extends keyof Event>(records: Event[], field: K) =>
@@ -60,7 +60,10 @@ const BulkEditForm = ({
     <>
       <Drawer.Title>Edit {scope}</Drawer.Title>
       <Drawer.Content>
-        <Stack space={4}>
+        <Stack space="regular">
+          <Text fontSize="sm" variant="muted">
+            Only changed fields are updated.
+          </Text>
           <Select
             label="Venue"
             // `null` is a real agreement here (drafts without a venue), not a
@@ -91,28 +94,29 @@ const BulkEditForm = ({
               </Select.Option>
             ))}
           </Select>
-          <Stack space={2}>
+          <Stack space="related">
             <Checkbox
               label="Change ticket price"
               checked={editPrice}
               onChange={setEditPrice}
             />
-            <NumberField
-              label="Ticket price"
-              disabled={!editPrice}
-              value={price}
-              onChange={setPrice}
-              description={
-                sharedPrice === undefined
-                  ? 'Selected events currently have different prices.'
-                  : undefined
-              }
-              formatOptions={{ style: 'currency', currency: 'EUR' }}
-            />
+            {editPrice && (
+              <NumberField
+                label="New ticket price"
+                value={price}
+                onChange={setPrice}
+                description={
+                  sharedPrice === undefined
+                    ? 'The selected events have different prices today.'
+                    : undefined
+                }
+                formatOptions={{ style: 'currency', currency: 'EUR' }}
+              />
+            )}
           </Stack>
           <Text fontSize="sm" variant="muted" aria-live="polite">
             {changedFields.length === 0
-              ? 'No changes yet. Untouched fields stay as they are.'
+              ? 'No changes yet.'
               : `Will update ${changedFields.join(' and ')} on all selected events.`}
           </Text>
         </Stack>
@@ -149,7 +153,7 @@ export const BulkEditDrawer = ({
     <Drawer.Trigger>
       <Button disabled={disabled}>
         <Pencil />
-        Edit
+        Edit details
       </Button>
       <Drawer size="medium">
         {/* Re-key the form so it derives fresh values per selection. */}
