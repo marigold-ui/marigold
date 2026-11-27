@@ -93,12 +93,10 @@ export const Tray = ({
         <div
           data-tray
           className={cn(
-            "group/tray min-h-0 [grid-template-areas:'drag'_'title'_'content'_'actions']",
+            "group/tray min-h-0 [grid-template-areas:'title'_'content'_'actions']",
             classNames.container
           )}
         >
-          {/* Visual cue only, the whole sheet is swipeable. */}
-          <div className={cn('[grid-area:drag]', classNames.dragHandle)} />
           <Provider
             values={[
               [HeadingContext, rootHeadingProps],

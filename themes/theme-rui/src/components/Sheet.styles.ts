@@ -22,4 +22,8 @@ export const Sheet: ThemeComponent<'Sheet'> = {
     ],
   }),
   content: cva({ base: 'outline-hidden' }),
+  // Only a bottom sheet has one, above its content.
+  dragHandle: cva({
+    base: 'bg-border mx-auto mt-2 h-1.5 w-12 rounded-full',
+  }),
 };

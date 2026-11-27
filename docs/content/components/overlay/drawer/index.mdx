@@ -5,7 +5,7 @@ description: Component for showing additional content alongside the main page.
 
 import { DrawerAnatomy } from './drawer-anatomy';
 
-The `<Drawer>` is a slide-in panel that hosts a supplementary, in-context task alongside the main view, without blocking it. It is non-modal on desktop, falls back to a modal sheet on small screens, and is intended for light, single-step work.
+The `<Drawer>` is a slide-in panel that hosts a supplementary, in-context task alongside the main view, without blocking it. It is non-modal on desktop, rises from the bottom as a modal sheet on small screens, and is intended for light, single-step work.
 
 ## Anatomy
 
@@ -19,8 +19,8 @@ A `<Drawer>` slides in alongside the main page content. It is composed of an opt
   hosting the supplementary task.
 - **Title:** Optional heading at the top of the panel that gives context for
   the task inside.
-- **Close button:** Optional dismiss control in the top corner, opt in via the
-  `closeButton` prop.
+- **Close button:** Dismiss control in the top corner. Opt in via the
+  `closeButton` prop on desktop. It always shows on small screens.
 - **Content:** The body of the drawer, holding the main message or
   interactive elements like a form.
 - **Actions:** Bottom row of buttons for confirming or cancelling the task.
@@ -180,6 +180,27 @@ Drop an `<Accordion>` into a bled content area and its item dividers span the fu
 
 Reach for `bleed` only when the drawer body **is** a set of peer, equally weighted sections, such as grouped filters or a settings breakdown. For ordinary prose, a short form, or detail rows, keep the default padding so the content stays aligned as one column.
 
+### Small screens
+
+Below 640px the drawer rises from the bottom of the screen as a sheet that dims the page behind it. It fills almost the full height and leaves a strip of the page showing above it, so it still reads as something on top of the page. A handle at its top edge shows that it can be swiped.
+
+- **Swipe down to close it.** When the content scrolls, swiping down first scrolls it back to the top. The next swipe closes the drawer.
+- **Escape and a press on the dimmed page close it too.**
+- **The close button always shows**, whatever `closeButton` is set to, so there is always a way out that works with one tap.
+
+Swipe, Escape and a press outside can't be turned off separately. `keyboardDismissable={false}` turns off all three, which is what the next section uses.
+
+### Unsaved changes
+
+A drawer often holds a form. Closing it by accident throws away what was typed, and on a phone a swipe or a tap next to the drawer is an easy accident. Protect the form while it has unsaved changes:
+
+1. Set `keyboardDismissable={false}` while the form is dirty. Escape, a swipe and a press outside then leave the drawer open.
+2. Confirm on the explicit close path, the close button and a "Cancel" button, with [`useConfirmation`](/components/overlay/dialog#confirmation). The close button calls `onOpenChange(false)`, so ask there before you close.
+
+<ComponentDemo name="drawer-unsaved-changes" />
+
+Once the form is saved or reset, dismissal works as usual again. The drawer can't ask before a swipe closes it: by the time a swipe ends, the drawer is already off screen.
+
 ### Title and description
 
 `<Drawer.Title>` and `<Drawer.Description>` are slot-aware: the heading level, id, and `aria-labelledby` wiring are handled for you. `<Drawer.Header>` is an optional layout wrapper that groups a title and description into one header zone. For a title-only drawer, drop the title straight into `<Drawer>` without a header.
@@ -193,7 +214,9 @@ A drawer renders with the ARIA role `complementary` by default, which fits almos
 - For a filter panel, consider `role="search"` to give screen-reader users a more precise landmark.
 - For long-lived activity panels, consider `role="region"` with an `aria-label` if the panel is part of the persistent layout.
 
-On small screens, the drawer falls back to a modal sheet that traps focus inside the panel. On desktop the drawer is non-modal, so focus only returns to the trigger when the drawer closes. Dismissal on <kbd>Escape</kbd> is handled automatically.
+On small screens, the drawer is a modal dialog named by its title. Focus moves into it when it opens, stays inside while it is open and returns to the trigger when it closes. The `role` prop does not apply there, because a modal dialog is not a landmark. <kbd>Escape</kbd>, a swipe down and a press outside close it unless `keyboardDismissable` is `false`, and the close button always shows.
+
+On desktop the drawer is non-modal, so focus only returns to the trigger when the drawer closes. Dismissal on <kbd>Escape</kbd> is handled automatically.
 
 ## Props
 

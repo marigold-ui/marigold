@@ -1,27 +1,13 @@
-import type RAC from 'react-aria-components';
-import { Modal, ModalOverlay } from 'react-aria-components/Modal';
-import { cn, useSmallScreen } from '@marigold/system';
+import { cn } from '@marigold/system';
 import { NonModal } from '../Overlay/NonModal';
 import type { NonModalProps } from '../Overlay/NonModal';
-
-// Mobile Modal
-// ---------------
-const MobileModal = ({ children, ...props }: RAC.ModalOverlayProps) => (
-  <ModalOverlay
-    {...props}
-    className="fixed inset-0 z-50 h-(--visual-viewport-height)"
-  >
-    <Modal className="flex h-(--visual-viewport-height) *:flex-1">
-      {children}
-    </Modal>
-  </ModalOverlay>
-);
 
 // Props
 // ---------------
 /**
  * The open state is not a prop here: `Drawer` resolves it and publishes it
- * through `OverlayTriggerStateContext`, which both paths read.
+ * through `OverlayTriggerStateContext`, which `NonModal` reads. On small
+ * screens the Drawer renders a `Sheet` instead.
  */
 type DrawerModalProps = Omit<
   NonModalProps,
@@ -33,22 +19,9 @@ type DrawerModalProps = Omit<
 export const DrawerModal = ({
   children,
   className,
-  keyboardDismissable = true,
   ...props
-}: DrawerModalProps) => {
-  const isSmallScreen = useSmallScreen();
-
-  return isSmallScreen ? (
-    <MobileModal isKeyboardDismissDisabled={!keyboardDismissable}>
-      {children}
-    </MobileModal>
-  ) : (
-    <NonModal
-      {...props}
-      keyboardDismissable={keyboardDismissable}
-      className={cn('fixed z-50', className)}
-    >
-      {children}
-    </NonModal>
-  );
-};
+}: DrawerModalProps) => (
+  <NonModal {...props} className={cn('fixed z-50', className)}>
+    {children}
+  </NonModal>
+);

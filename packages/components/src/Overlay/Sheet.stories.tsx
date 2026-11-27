@@ -353,6 +353,29 @@ Basic.test(
 );
 
 Basic.test(
+  'A bottom sheet shows a drag handle above its content',
+  async ({ canvas, userEvent }) => {
+    const dialog = await openSheet({ canvas, userEvent });
+    const handle = dialog.firstElementChild as HTMLElement;
+
+    // Decorative and empty, the whole sheet is swipeable.
+    expect(handle).toBeEmptyDOMElement();
+    expect(handle.getBoundingClientRect().height).toBeGreaterThan(0);
+    expect(handle.nextElementSibling).toHaveTextContent('Sheet content');
+  }
+);
+
+Basic.test(
+  'A start sheet has no drag handle',
+  { args: { position: 'start' } },
+  async ({ canvas, userEvent }) => {
+    const dialog = await openSheet({ canvas, userEvent });
+
+    expect(dialog.firstElementChild).toHaveTextContent('Sheet content');
+  }
+);
+
+Basic.test(
   'From the start edge it fills the screen and shrinks above the keyboard',
   { args: { position: 'start' } },
   async ({ canvas, userEvent, step }) => {
