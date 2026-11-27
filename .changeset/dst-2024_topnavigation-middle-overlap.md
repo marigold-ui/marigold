@@ -1,5 +1,6 @@
 ---
 '@marigold/components': patch
+'@marigold/docs': patch
 ---
 
 fix(DST-2024): `TopNavigation.Middle` no longer overlaps the start content on narrow bars

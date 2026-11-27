@@ -227,6 +227,55 @@ TrailInStartLinkInMiddle.test(
   }
 );
 
+export const LongTrailInMiddle = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Sidebar.Provider>
+      {/* A bar narrower than the full trail. */}
+      <div style={{ width: 720 }}>
+        <TopNavigation {...args}>
+          <TopNavigation.Start>
+            <div className="min-h-topbar flex items-center">
+              <Sidebar.Toggle />
+            </div>
+          </TopNavigation.Start>
+          <TopNavigation.Middle aria-label="Breadcrumbs">
+            <div className="w-full min-w-0">
+              <Breadcrumbs>
+                <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+                <Breadcrumbs.Item href="/organisation">
+                  Organisation settings
+                </Breadcrumbs.Item>
+                <Breadcrumbs.Item href="/organisation/users">
+                  Users and permissions
+                </Breadcrumbs.Item>
+                <Breadcrumbs.Item href="/organisation/users/headliner">
+                  Chip &apos;Headliner&apos; Patterson
+                </Breadcrumbs.Item>
+              </Breadcrumbs>
+            </div>
+          </TopNavigation.Middle>
+          <TopNavigation.End>
+            <UserSection />
+          </TopNavigation.End>
+        </TopNavigation>
+      </div>
+    </Sidebar.Provider>
+  ),
+});
+
+LongTrailInMiddle.test(
+  'shortens a long trail in the middle instead of overflowing the bar',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const header = canvas.getByRole('banner');
+    const list = canvas.getByRole('list');
+
+    await expect(header.scrollWidth).toBeLessThanOrEqual(header.clientWidth);
+    await expect(list.scrollWidth).toBeLessThanOrEqual(list.clientWidth);
+  }
+);
+
 export const WithoutMiddle = meta.story({
   render: args => (
     <Sidebar.Provider>
