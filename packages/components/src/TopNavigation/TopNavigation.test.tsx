@@ -69,16 +69,17 @@ test('applies grid layout classes', () => {
   expect(nav.className).toMatch(/grid-template-areas/);
 });
 
-test('applies min-w-0 to all slots', () => {
+test('lets start and end shrink', () => {
   render(<WithSearchField.Component />);
 
   const nav = screen.getByRole('banner');
   // eslint-disable-next-line testing-library/no-node-access
-  const slots = nav.children;
+  const [start, , end] = Array.from(nav.children);
 
-  Array.from(slots).forEach(slot => {
-    expect(slot.className).toMatch(/min-w-0/);
-  });
+  // Middle keeps its content width (DST-2024). That is asserted in the
+  // browser by the `TrailInStartLinkInMiddle` story test.
+  expect(start.className).toMatch(/min-w-0/);
+  expect(end.className).toMatch(/min-w-0/);
 });
 
 test('applies alignX class to middle slot', () => {

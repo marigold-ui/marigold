@@ -61,7 +61,7 @@ For applications with multiple levels of navigation, combine `<TopNavigation>` w
   navigation and utility actions.
 </Callout>
 
-The `<TopNavigation.Middle>` slot adapts to your application's navigation model. We recommend using it for **Breadcrumbs** to give users a clear trail back to parent sections, or for a **search field** to provide quick access to content across the application. This flexibility lets the `<TopNavigation>` and `<Sidebar>` work as complementary layers. The top bar orients users globally, while the Sidebar guides them locally within the current section.
+The `<TopNavigation.Middle>` slot adapts to your application's navigation model. We recommend using it for **Breadcrumbs** to give users a clear trail back to parent sections, or for a **search field** to provide quick access to content across the application. This flexibility lets the `<TopNavigation>` and `<Sidebar>` work as complementary layers. The top bar orients users globally, while the Sidebar guides them locally within the current section. When the bar gets narrow, `<TopNavigation.Middle>` keeps the width of its content and the start and end slots shrink first, so long breadcrumbs in the start slot are cut off with an ellipsis instead of being covered.
 
 <GuidelineTiles>
   <Do>

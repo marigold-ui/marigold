@@ -5,6 +5,7 @@ import { useResponsiveValue } from '@marigold/system';
 import { Badge } from '../Badge/Badge';
 import { Breadcrumbs } from '../Breadcrumbs/Breadcrumbs';
 import { Inline } from '../Inline/Inline';
+import { LinkButton } from '../LinkButton';
 import { ActionMenu } from '../Menu/ActionMenu';
 import { Menu } from '../Menu/Menu';
 import { SearchField } from '../SearchField/SearchField';
@@ -166,6 +167,112 @@ OverflowSmallScreen.test(
     for (const link of canvas.getAllByRole('link')) {
       await expect(link.scrollWidth).toBeLessThanOrEqual(link.clientWidth);
     }
+  }
+);
+
+export const TrailInStartLinkInMiddle = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Sidebar.Provider>
+      {/* A bar narrower than trail, link and user section together. */}
+      <div style={{ width: 720 }}>
+        <TopNavigation {...args}>
+          <TopNavigation.Start>
+            <div className="min-h-topbar flex items-center">
+              <Sidebar.Toggle />
+            </div>
+            <div className="w-full min-w-0">
+              <Breadcrumbs>
+                <Breadcrumbs.Item href="/organisation">
+                  Organisation
+                </Breadcrumbs.Item>
+                <Breadcrumbs.Item href="/organisation/users">
+                  Users
+                </Breadcrumbs.Item>
+                <Breadcrumbs.Item href="/organisation/users/headliner">
+                  Chip &apos;Headliner&apos; Patterson
+                </Breadcrumbs.Item>
+              </Breadcrumbs>
+            </div>
+          </TopNavigation.Start>
+          <TopNavigation.Middle aria-label="Pattern" alignX="right">
+            <LinkButton variant="ghost" size="small" href="/patterns/app-frame">
+              App Frame Pattern
+            </LinkButton>
+          </TopNavigation.Middle>
+          <TopNavigation.End>
+            <UserSection />
+          </TopNavigation.End>
+        </TopNavigation>
+      </div>
+    </Sidebar.Provider>
+  ),
+});
+
+TrailInStartLinkInMiddle.test(
+  'keeps the middle content clear of the start content',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const middle = canvas.getByRole('navigation', { name: 'Pattern' });
+    const link = canvas.getByRole('link', { name: 'App Frame Pattern' });
+    const start = canvas.getByRole('banner').firstElementChild!;
+
+    const middleBox = middle.getBoundingClientRect();
+    const linkBox = link.getBoundingClientRect();
+
+    await expect(middleBox.width).toBeGreaterThanOrEqual(linkBox.width);
+    await expect(linkBox.left).toBeGreaterThanOrEqual(
+      start.getBoundingClientRect().right
+    );
+  }
+);
+
+export const LongTrailInMiddle = meta.story({
+  tags: ['component-test'],
+  render: args => (
+    <Sidebar.Provider>
+      {/* A bar narrower than the full trail. */}
+      <div style={{ width: 720 }}>
+        <TopNavigation {...args}>
+          <TopNavigation.Start>
+            <div className="min-h-topbar flex items-center">
+              <Sidebar.Toggle />
+            </div>
+          </TopNavigation.Start>
+          <TopNavigation.Middle aria-label="Breadcrumbs">
+            <div className="w-full min-w-0">
+              <Breadcrumbs>
+                <Breadcrumbs.Item href="/">Home</Breadcrumbs.Item>
+                <Breadcrumbs.Item href="/organisation">
+                  Organisation settings
+                </Breadcrumbs.Item>
+                <Breadcrumbs.Item href="/organisation/users">
+                  Users and permissions
+                </Breadcrumbs.Item>
+                <Breadcrumbs.Item href="/organisation/users/headliner">
+                  Chip &apos;Headliner&apos; Patterson
+                </Breadcrumbs.Item>
+              </Breadcrumbs>
+            </div>
+          </TopNavigation.Middle>
+          <TopNavigation.End>
+            <UserSection />
+          </TopNavigation.End>
+        </TopNavigation>
+      </div>
+    </Sidebar.Provider>
+  ),
+});
+
+LongTrailInMiddle.test(
+  'shortens a long trail in the middle instead of overflowing the bar',
+  { parameters: { chromatic: { disableSnapshot: true } } },
+  async ({ canvas }) => {
+    const header = canvas.getByRole('banner');
+    const list = canvas.getByRole('list');
+
+    await expect(header.scrollWidth).toBeLessThanOrEqual(header.clientWidth);
+    await expect(list.scrollWidth).toBeLessThanOrEqual(list.clientWidth);
   }
 );
 
