@@ -1,5 +1,242 @@
 # @marigold/docs
 
+## 19.0.0-beta.0
+
+### Patch Changes
+
+- d94a9a3: refactor(DST-1393): remove `<SVG>` from `@marigold/system`
+
+  `<SVG>` dates from before the move to `@marigold/icons`, where it was the base for icons. Icons now come from `@marigold/icons`, and for any other inline graphic a native `<svg>` with Tailwind classes does the same job without the extra component.
+
+  **Before:** `<SVG>` and `SVGProps` are exported from `@marigold/system` and documented under Components > Content > SVG.
+
+  **After:** both are gone. The SVG docs page redirects to the Iconography page, which explains how to replace it.
+
+  ### Migration
+
+  An app that still imports `<SVG>` fails to build after the upgrade. Use the matching icon from `@marigold/icons`, or a native `<svg>`. `<SVG>` always added `flex-none fill-current` and rendered at 24px unless you passed `size`, so carry those over:
+
+  - `size={32}` becomes `className="size-8"`. Without `size`, add `size-6`.
+  - `color="info-accent"` becomes `className="text-info-accent"`.
+  - Add `flex-none`, so the graphic does not shrink in a flex row, and `fill-current` where you relied on the default fill.
+
+  ```tsx
+  // Before
+  <SVG size={32} color="info-accent" viewBox="0 0 24 24">
+    <path d="…" />
+  </SVG>
+
+  // After
+  <svg className="text-info-accent size-8 flex-none fill-current" viewBox="0 0 24 24">
+    <path d="…" />
+  </svg>
+  ```
+
+  `marigold migrate v19` makes this change for you. It turns `size` into `width` and `height`, so a size class you already set still wins, and `color` into a `text-*` class. It reports what it cannot rewrite safely: spread props that may carry `size` or `color`, a `color` or `className` that is not a string literal, `SVGProps`, re-exports such as `export * from '@marigold/system'`, and `SVG` used as a value.
+
+  `ProgressCircle` and the sort icons in `Table` no longer use `<SVG>` internally.
+
+- 3244580: fix(DST-1610): keep `Columns` in their ratio and inside their container at every width
+
+  A column with content wider than its share used to take that width anyway. This broke the ratio, so two `Columns` stacked as a table stopped lining up, single columns dropped onto the next line, and a column wider than the row overflowed its container. Columns now keep the ratio from `columns` at every width, and wide content stays inside its column. A `fit` column still sizes to its content, capped at the row width.
+
+  Check your `Columns` on small screens. Three things render differently:
+
+  - Ratio columns no longer wrap by themselves when their content does not fit. They stay in one row. Set `collapseAt` to stack them below a width of your choice. A `fit` column without room left in the row still moves onto its own line.
+  - A field with a `width` now shrinks to its column. If the column's share is smaller, the value can be cut off. Give that column a larger ratio, use `fit` for it, or set `collapseAt`.
+  - Content that cannot shrink, such as an image or a plain `<table>`, now spills into the next column instead of widening the row. Give it a horizontal scroll area.
+
+- 70de810: feat(DST-1775): `value` means the selected key on ComboBox and Autocomplete
+
+  `<ComboBox>` and `<Autocomplete>` now use `value`, `defaultValue` and `onChange` for the selected option, the same as `<Select>` and react-aria. The input text moves to `inputValue`, `defaultInputValue` and `onInputChange`. Use the new `value` props in place of `selectedKey`, `defaultSelectedKey` and `onSelectionChange`, which react-aria has deprecated.
+
+  ```diff
+    <ComboBox
+  -   value={filterText}
+  -   onChange={setFilterText}
+  -   selectedKey={animal}
+  -   onSelectionChange={setAnimal}
+  +   inputValue={filterText}
+  +   onInputChange={setFilterText}
+  +   value={animal}
+  +   onChange={setAnimal}
+      label="Animal"
+    >
+  ```
+
+  A string `value` still compiles after the upgrade, because a key can be a string, but it is then looked up as an option `id` and the input stays empty. After upgrading, run `marigold migrate v19 <path> --dry-run`, read the report, then run `marigold migrate v19 <path>` to apply it before writing new code. It renames both prop sets on every ComboBox and Autocomplete and skips elements that already use the `inputValue` props. The CLI then records the migration in your `package.json`, so it never offers to rename the same props twice.
+
+  The codemod only sees props written on the element. Spread props get a warning: a react-hook-form `{...field}` spread hides the change from the typechecker too, so pass the handler explicitly as `onInputChange={field.onChange}` for text or `onChange={field.onChange}` for a selection. Your own wrapper components that pass `value` through are not flagged at all, so check those by hand.
+
+  On `<Autocomplete>`, a consumer `onChange` no longer disables `onSubmit`. Both now run when an option is picked.
+
+- bfbfe77: refactor(DST-1865): build the mobile tray on React Aria's `Sheet`
+
+  The bottom sheet behind Select, ComboBox, Autocomplete, TagField, DatePicker, DateRangePicker, Menu, ActionMenu and the Calendar presets on small screens now runs on React Aria's `Sheet` through a new internal `Sheet` primitive, instead of its own `motion` drag handling. The components and their props are unchanged.
+
+  What changes for users of those components on small screens:
+
+  - A downward swipe anywhere on the tray closes it, not only on the drag handle. When the content can scroll, it scrolls first.
+  - The backdrop fades with the swipe.
+  - Focus returns to the trigger on close, also without reduced motion.
+  - Escape and a press outside are ignored while the tray slides in, so a double tap on the trigger opens it instead of closing it again.
+  - Opening the mobile ComboBox, Autocomplete or TagField no longer scrolls the page behind the tray.
+  - The tray moves above the on-screen keyboard instead of staying behind it, so the results and actions stay in view while typing.
+  - The search field in a tray uses 16px text, so iOS Safari no longer zooms in when it gets focus.
+
+  The [Responsive](/foundations/responsive#overlays-on-small-screens) foundations page describes how the tray behaves.
+
+  Update `@marigold/theme-rui` together with `@marigold/components`. An older theme without `Sheet` styles makes the tray throw on small screens.
+
+  ### Custom theme migration
+
+  This release adds a new required theme component, `Sheet`, and removes the `overlay` slot from the `Tray` theme component. **Custom themes must be updated, or every tray-based component throws on small screens.**
+
+  Without a `Sheet` entry, the page throws as soon as a Select, ComboBox, Autocomplete, TagField, DatePicker, DateRangePicker, Menu or ActionMenu renders on a small screen, even before it opens:
+
+  ```
+  Error: Component "Sheet" is missing styles in the current theme.
+  ```
+
+  1. Add a `Sheet` theme component. `backdrop` dims the page behind the tray, `container` is the tray surface and `content` is the dialog inside it:
+
+     ```ts
+     import { cva } from '@marigold/system';
+
+     export const Sheet = {
+       backdrop: cva({
+         base: "data-[stack-index='0']:bg-overlay-backdrop",
+       }),
+       container: cva({
+         base: [
+           'w-full border-0 inset-shadow-black inset-shadow-sm/20',
+           'rounded-b-none ui-surface shadow-elevation-overlay outline-hidden',
+         ],
+       }),
+       content: cva({ base: 'outline-hidden' }),
+     };
+     ```
+
+  2. Remove `overlay` from your `Tray` theme component. Its backdrop styles belong in `Sheet.backdrop`. Positioning such as `fixed inset-0` is no longer needed.
+  3. Move the surface styles (background, border, shadow, rounding) from `Tray.container` to `Sheet.container`. `Tray.container` only lays out the grid inside the tray now, for example `grid grid-rows-[auto_auto_1fr_auto]`.
+  4. Replace `group-[[role=dialog]]/tray:` with `group-data-tray/tray:` wherever your theme styles something inside a tray, as the ListBox and Calendar styles do. The tray's group moved off the dialog element, so the old selector silently matches nothing and the list or calendar in a tray gets its ring and padding back.
+  5. Keep theme-rui's `@keyframes fade-in` and its `--animate-fade-in` variable, which a theme copied from theme-rui already has. The backdrop fades with the swipe through these keyframes. Without them the page still dims, but the dim does not follow the tray.
+
+  `marigold migrate v19` does steps 1 and 4 for you: it adds the `Sheet` theme component with these styles when your theme has a `Tray`, rewrites the tray selector in theme files that import from `@marigold/`, and warns that `Tray.overlay` and the surface styles have moved, since steps 2 and 3 depend on your customizations. A selector in a plain CSS file needs step 4 by hand.
+
+  The tray sets `--sheet-chrome` on its dialog, the height its handle, title and actions take up. Theme styles that give tray content a fixed height can use `calc(var(--sheet-available) - var(--sheet-chrome))` instead of a hard-coded offset.
+
+- 6d5702b: refactor(DST-1867): render the mobile Sidebar drawer through the internal `Sheet`
+
+  On small screens the `Sidebar` (single column and `Sidebar.Rail`) now opens as a full-width sheet from the start edge, built on the same internal `Sheet` as the tray. Props and the desktop sidebar are unchanged.
+
+  What changes for users on small screens:
+
+  - A swipe toward the start edge closes the drawer. Swiping up and down still scrolls the navigation, and drilling into a section slides inside the drawer without moving it.
+  - The slide in and out follows the swipe and mirrors in right-to-left languages, where the drawer comes from the right.
+  - Escape, the close button, tapping a link and <kbd>Cmd+B</kbd> / <kbd>Ctrl+B</kbd> close it as before, and focus returns to the toggle.
+
+  **Changed accessibility contract.** The open drawer is now a `dialog` named "Sidebar" ("Seitenleiste" in German). The `aside` inside it no longer carries that name, so it is no longer announced as a named complementary landmark. Tests that look the mobile drawer up by its landmark, for example `getByRole('complementary', { name: 'Sidebar' })`, need `getByRole('dialog', { name: 'Sidebar' })` instead. The desktop sidebar keeps its named `aside`.
+
+  Update `@marigold/theme-rui` together with `@marigold/components`.
+
+  ### Custom theme migration
+
+  The `Sidebar` theme component loses its `overlay` and `modal` slots, and theme-rui no longer defines `animate-slide-in-left` / `animate-slide-out-left`.
+
+  1. Remove `overlay` and `modal` from your `Sidebar` theme component. The backdrop, surface, shadow and slide now come from `Sheet`. Keep styling the drawer's contents through `Sidebar.root`.
+  2. Remove any `animate-slide-in-left` / `animate-slide-out-left` classes and the `--animate-slide-in-left`, `--animate-slide-out-left` and `@keyframes slide-in-left` definitions from your theme, unless your own app uses them.
+  3. If your `Sheet.container` styles only bottom sheets, scope them to `data-[position=bottom]:` and give the drawer its own look with `data-[position=left]:` / `data-[position=right]:`. theme-rui squares the drawer's corners and keeps the lit top rim on bottom sheets only:
+
+     ```ts
+     container: cva({
+       base: [
+         'w-full border-0 ui-surface shadow-elevation-overlay outline-hidden',
+         'data-[position=bottom]:rounded-b-none',
+         'data-[position=bottom]:inset-shadow-black data-[position=bottom]:inset-shadow-sm/20',
+         'data-[position=left]:rounded-none data-[position=right]:rounded-none',
+       ],
+     }),
+     ```
+
+  `marigold migrate v19` adds a `Sheet` theme component with these styles when your theme has a `Tray` or a `Sidebar`, and warns that `Sidebar.overlay` and `Sidebar.modal` have moved. Steps 1 to 3 depend on your customizations, so make them by hand.
+
+- ae4185b: feat(DST-1969): `marigold migrate` records applied migrations
+
+  After an applied run, `marigold migrate` records the last migration in the `package.json` that declares `@marigold/components`, or `@marigold/system` for a standalone theme package:
+
+  ```json
+  "marigold": { "migrated": "v19" }
+  ```
+
+  Commit this field with the migrated code. In a standalone theme package, the installed `@marigold/system` stands in for `@marigold/components`, so detection and the recorded migration work there too. The field decides what a bare `marigold migrate` proposes: only migrations newer than the recorded one, and only once their major version is installed. Upgrade first, then migrate. On a version older than the next migration, the CLI now says to upgrade instead of proposing it.
+
+  Running a recorded migration by name prints a warning, changes nothing and exits with code 1, so a second run can no longer rename props it already renamed. A partial run is recorded too, and lists what it skipped with the `--only` command that applies it later.
+
+  Since the record belongs to a package, an applied run now has to target the folder of that `package.json`. A subfolder, such as a theme directory, or a monorepo root is refused with the command to run instead. In a monorepo, migrate each package that declares one of them. A run on a package leaves out nested packages that declare one of them, since each records its own run, and names them in the output. `--dry-run` still works on any path.
+
+  This is breaking for scripts that call the CLI: an applied run on a subfolder or a monorepo root, and a named run of a recorded migration, now exit with code 1 instead of running.
+
+- d4f6413: fix(DST-2004): the docs search used by the `marigold-docs` MCP includes props tables again
+
+  The release job now builds the props tables before it rebuilds the search index, so a search for a component returns its props. Long props tables are split by rows into several search entries, each with the table header.
+
+- 6d0d1fb: docs(DST-2008): the Pick example lists invented venues instead of real ones
+
+  The Pick example and the venue demos share fifty invented venues with full records and photos, so no real venue appears next to an invented rating, status or day rate.
+
+- 4abbeef: docs(DST-2009): fix the defects the design review found in the examples
+
+  The examples no longer name real venues, organisations or domains, and their table rows, cards, tabs and fields all have accessible names. The password form refuses empty, short and mismatched passwords, the event form's date and contact fields fit a phone screen, and the event-form and filter pattern descriptions and the Forms and App Frame docs match the code again.
+
+- 4abbeef: docs(DST-2010): the examples share one fictional customer, its figures and dates relative to today
+
+  The examples now all belong to Riverside Events GmbH: the top bar shows its name and a signed-in staff member, Dashboard and Analytics read the same figures, and activity, sessions, invoices and the bulk-actions events are dated relative to today instead of June 2026. House rules for writing examples live in `docs/app/(examples)/CLAUDE.md`.
+
+- 2d3d1d6: docs(DST-2016): new marigold photos in the Aspect demos
+
+  The two marigold images are regenerated as real-looking photos, a dew-covered bloom and a field under a blue sky, at a fraction of the old file size. The image demo now sizes its image to the frame, so its top and bottom crops actually differ.
+
+- 85dc543: docs(DST-2016): remove images the docs no longer use
+
+  Deletes fifteen old venue photos and three other images that no page, demo or example references, about 2.6 MB.
+
+- c5d9ca1: docs(DST-2016): recast the demo people as Riverside Events staff with new portraits
+
+  The people in the docs demos and examples are now the twelve staff of Riverside Events, an event organiser, in four teams. All portraits and ten venue photos are regenerated in one photographic look and served as small WebP files.
+
+- 8923b47: docs(DST-2021): move the legal links into the examples' sidebar
+
+  The examples no longer show the docs footer below the app, so a page ends where the example ends. Impressum, Datenschutz and Cookie settings now sit under a Legal item at the bottom of the examples' sidebar.
+
+- bfc35a5: docs(DSTSUP-338): show the command palette in the examples
+
+  The examples' top navigation now holds a command palette. It switches the organizer people work in, opens venues and members, and goes to pages and actions. New venue list and detail pages show a gallery of clickable cards and the detail layout. On every docs page, ⌘K now leaves the key to a palette on the page that handles it first.
+
+- 1904db5: docs(DSTSUP-339): note that ui-soft and ui-contrast draw on ::before
+
+  The elevation page now says that caps draw on `::before` and create a stacking context, so custom elements with `ui-soft` or `ui-contrast` should not use `::before` themselves or set `overflow: hidden`. Put the caps on elements that can hold content, such as `<button>` or `<a>`, not on `<input>`, where the cap doesn't show.
+
+- Updated dependencies [d94a9a3]
+- Updated dependencies [d94a9a3]
+- Updated dependencies [3b1173a]
+- Updated dependencies [3244580]
+- Updated dependencies [70de810]
+- Updated dependencies [0ae0ce2]
+- Updated dependencies [bfbfe77]
+- Updated dependencies [6d5702b]
+- Updated dependencies [3250bc7]
+- Updated dependencies [db282aa]
+- Updated dependencies [75963a6]
+- Updated dependencies [0d96d86]
+- Updated dependencies [f46e8fa]
+- Updated dependencies [1904db5]
+- Updated dependencies [1904db5]
+  - @marigold/system@19.0.0-beta.0
+  - @marigold/components@19.0.0-beta.0
+  - @marigold/theme-rui@7.0.0-beta.0
+  - @marigold/icons@2.0.7-beta.0
+
 ## 18.5.0
 
 ### Patch Changes
