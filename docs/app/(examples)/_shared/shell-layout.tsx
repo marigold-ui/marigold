@@ -293,11 +293,12 @@ export const ShellLayout = ({
             </TopNavigation.Start>
             {pattern?.docsHref && pattern.docsLabel && (
               <TopNavigation.Middle aria-label="Pattern" alignX="right">
-                {/* Below `sm` the user section needs the room; the rail's
-                    Docs tile links the same page in the drawer. CSS, not
+                {/* Below `xl` the trail and the user section fill the bar, and
+                    the link would overlap a long trail such as a user's
+                    name; the rail's Docs tile links the same page. CSS, not
                     `useSmallScreen()`, so phones get no flash of the link
-                    before hydration. Same wrapper as the trail above. */}
-                <div className="max-sm:hidden">
+                    before hydration. */}
+                <div className="max-xl:hidden">
                   <LinkButton
                     variant="ghost"
                     size="small"
