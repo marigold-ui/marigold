@@ -966,8 +966,9 @@ const SAVED_NAME = 'Summer concert';
 
 const UnsavedChangesDemo = (args: DrawerProps) => {
   const [open, setOpen] = useState(false);
-  const [name, setName] = useState(SAVED_NAME);
-  const dirty = name !== SAVED_NAME;
+  const [saved, setSaved] = useState(SAVED_NAME);
+  const [name, setName] = useState(saved);
+  const dirty = name !== saved;
   const confirm = useConfirmation();
 
   // The explicit close path: the close button and "Cancel".
@@ -981,7 +982,12 @@ const UnsavedChangesDemo = (args: DrawerProps) => {
       });
       if (result !== 'confirmed') return;
     }
-    setName(SAVED_NAME);
+    setName(saved);
+    setOpen(false);
+  };
+
+  const save = () => {
+    setSaved(name);
     setOpen(false);
   };
 
@@ -1002,7 +1008,7 @@ const UnsavedChangesDemo = (args: DrawerProps) => {
         </Drawer.Content>
         <Drawer.Actions>
           <Button onPress={close}>Cancel</Button>
-          <Button variant="primary" onPress={() => setOpen(false)}>
+          <Button variant="primary" onPress={save}>
             Save
           </Button>
         </Drawer.Actions>
@@ -1068,6 +1074,27 @@ UnsavedChanges.test(
       await userEvent.click(
         within(alert).getByRole('button', { name: 'Discard' })
       );
+      await waitFor(() => expect(dialog).not.toBeInTheDocument());
+    });
+
+    await step('after "Save", Escape closes it again', async () => {
+      await userEvent.click(canvas.getByRole('button', { name: 'Edit event' }));
+      dialog = await waitFor(() =>
+        canvas.getByRole('dialog', { name: 'Edit event' })
+      );
+      await userEvent.type(canvas.getByLabelText('Name'), '!');
+      await userEvent.click(canvas.getByRole('button', { name: 'Save' }));
+      await waitFor(() => expect(dialog).not.toBeInTheDocument());
+
+      await userEvent.click(canvas.getByRole('button', { name: 'Edit event' }));
+      dialog = await waitFor(() =>
+        canvas.getByRole('dialog', { name: 'Edit event' })
+      );
+      await waitFor(() =>
+        expect(dialog.parentElement).toHaveAttribute('data-expanded')
+      );
+      expect(canvas.getByLabelText('Name')).toHaveValue(`${SAVED_NAME}!`);
+      await userEvent.keyboard('{Escape}');
       await waitFor(() => expect(dialog).not.toBeInTheDocument());
     });
   }

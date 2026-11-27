@@ -7,10 +7,12 @@ import {
   useConfirmation,
 } from '@marigold/components';
 
-const saved = { name: 'Summer concert', venue: 'Open-air stage' };
-
 export default () => {
   const [open, setOpen] = useState(false);
+  const [saved, setSaved] = useState({
+    name: 'Summer concert',
+    venue: 'Open-air stage',
+  });
   const [values, setValues] = useState(saved);
   const dirty = values.name !== saved.name || values.venue !== saved.venue;
   const confirm = useConfirmation();
@@ -27,6 +29,11 @@ export default () => {
       if (result !== 'confirmed') return;
     }
     setValues(saved);
+    setOpen(false);
+  };
+
+  const save = () => {
+    setSaved(values);
     setOpen(false);
   };
 
@@ -58,7 +65,7 @@ export default () => {
         </Drawer.Content>
         <Drawer.Actions>
           <Button onPress={close}>Cancel</Button>
-          <Button variant="primary" onPress={() => setOpen(false)}>
+          <Button variant="primary" onPress={save}>
             Save
           </Button>
         </Drawer.Actions>
