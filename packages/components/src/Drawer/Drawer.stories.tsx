@@ -946,6 +946,45 @@ SwipeOnSmallScreen.test(
 );
 
 SwipeOnSmallScreen.test(
+  'Moves focus into the sheet and back to the trigger when it closes',
+  async ({ canvas, userEvent, step }) => {
+    const trigger = canvas.getByRole('button', { name: 'Open Drawer' });
+
+    await step('close button', async () => {
+      const dialog = await openSheetDrawer({ canvas, userEvent });
+      await waitFor(() => expect(dialog).toHaveFocus());
+
+      await userEvent.click(
+        canvas.getByRole('button', { name: 'Dismiss drawer' })
+      );
+
+      await waitFor(() => expect(dialog).not.toBeInTheDocument());
+      await waitFor(() => expect(trigger).toHaveFocus());
+    });
+
+    await step('Escape', async () => {
+      const dialog = await openSheetDrawer({ canvas, userEvent });
+      await waitFor(() => expect(dialog).toHaveFocus());
+
+      await userEvent.keyboard('{Escape}');
+
+      await waitFor(() => expect(dialog).not.toBeInTheDocument());
+      await waitFor(() => expect(trigger).toHaveFocus());
+    });
+
+    await step('swipe down', async () => {
+      const dialog = await openSheetDrawer({ canvas, userEvent });
+      await waitFor(() => expect(dialog).toHaveFocus());
+
+      swipeDown(dialog);
+
+      await waitFor(() => expect(dialog).not.toBeInTheDocument());
+      await waitFor(() => expect(trigger).toHaveFocus());
+    });
+  }
+);
+
+SwipeOnSmallScreen.test(
   'A swipe down does not close it with keyboardDismissable={false}',
   { args: { keyboardDismissable: false } },
   async ({ canvas, userEvent }) => {
