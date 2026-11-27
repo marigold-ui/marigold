@@ -13,7 +13,7 @@ const events = [
   { id: '1', name: 'Jazz Night', detail: 'Aug 12, 2026 · Cellar Lounge' },
   {
     id: '2',
-    name: 'Open Air Kino',
+    name: 'Film Club',
     detail: 'Aug 15, 2026 · Bloomfield Garden Lawn',
   },
   {
@@ -23,13 +23,13 @@ const events = [
   },
   {
     id: '4',
-    name: 'Herbstmarkt',
+    name: "Makers' Market",
     detail: 'Sep 5, 2026 · Broadway Community Center',
   },
   { id: '5', name: 'Wine Tasting', detail: 'Sep 12, 2026 · Oak Ridge Barn' },
   {
     id: '6',
-    name: 'Klassik im Park',
+    name: 'Strings by Candlelight',
     detail: 'Sep 19, 2026 · Main Street Park Amphitheater',
   },
 ];

@@ -20,9 +20,9 @@ interface Event {
 
 const initialEvents: Event[] = [
   { id: '1', name: 'Jazz Night', status: 'Draft', hasDescription: true },
-  { id: '2', name: 'Open Air Kino', status: 'Draft', hasDescription: false },
+  { id: '2', name: 'Film Club', status: 'Draft', hasDescription: false },
   { id: '3', name: 'Poetry Slam', status: 'Draft', hasDescription: true },
-  { id: '4', name: 'Herbstmarkt', status: 'Draft', hasDescription: false },
+  { id: '4', name: "Makers' Market", status: 'Draft', hasDescription: false },
   { id: '5', name: 'Wine Tasting', status: 'Draft', hasDescription: true },
 ];
 

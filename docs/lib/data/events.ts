@@ -79,7 +79,7 @@ export const events: Event[] = [
   },
   {
     id: '2',
-    name: 'Sommerbühne: Impro',
+    name: 'Improv Jam',
     date: '2026-08-14',
     time: '20:00',
     venue: 'Maple Court Theatre',
@@ -91,7 +91,7 @@ export const events: Event[] = [
   },
   {
     id: '3',
-    name: 'Open Air Kino: Cinema Paradiso',
+    name: 'Film Club: Cinema Paradiso',
     date: '2026-08-15',
     time: '21:30',
     venue: 'Bloomfield Garden Lawn',
@@ -103,7 +103,7 @@ export const events: Event[] = [
   },
   {
     id: '4',
-    name: 'Weinprobe am Marktplatz',
+    name: 'Market Square Wine Tasting',
     date: '2026-08-16',
     time: '18:30',
     venue: null,
@@ -115,7 +115,7 @@ export const events: Event[] = [
   },
   {
     id: '5',
-    name: 'Kammerkonzert: Schubert',
+    name: 'An Evening of Schubert',
     date: '2026-08-19',
     time: '20:00',
     venue: 'Grand Avenue Ballroom',
@@ -139,7 +139,7 @@ export const events: Event[] = [
   },
   {
     id: '7',
-    name: 'Open Air Kino: Nosferatu',
+    name: 'Nosferatu with Live Score',
     date: '2026-08-22',
     time: '21:30',
     venue: 'Bloomfield Garden Lawn',
@@ -151,7 +151,7 @@ export const events: Event[] = [
   },
   {
     id: '8',
-    name: 'Craft-Bier-Festival',
+    name: 'Craft Beer Festival',
     date: '2026-08-23',
     time: '18:30',
     venue: null,
@@ -175,7 +175,7 @@ export const events: Event[] = [
   },
   {
     id: '10',
-    name: 'Flohmarkt im Park',
+    name: 'Vintage & Flea Market',
     date: '2026-08-30',
     time: '10:00',
     venue: 'Main Street Park Amphitheater',
@@ -187,7 +187,7 @@ export const events: Event[] = [
   },
   {
     id: '11',
-    name: 'Theater: Der Besuch der alten Dame',
+    name: 'The Visit',
     date: '2026-09-04',
     time: '19:30',
     venue: 'Shakytown Comedy Club',
@@ -199,7 +199,7 @@ export const events: Event[] = [
   },
   {
     id: '12',
-    name: 'Herbstmarkt',
+    name: "Makers' Market",
     date: '2026-09-05',
     time: '10:00',
     venue: 'Broadway Community Center',
@@ -223,7 +223,7 @@ export const events: Event[] = [
   },
   {
     id: '14',
-    name: 'Klassik im Park',
+    name: 'Strings by Candlelight',
     date: '2026-09-11',
     time: '20:00',
     venue: 'Main Street Park Amphitheater',
@@ -235,7 +235,7 @@ export const events: Event[] = [
   },
   {
     id: '15',
-    name: 'Wine Tasting: Baden',
+    name: 'Natural Wine Tasting',
     date: '2026-09-12',
     time: '18:30',
     venue: 'Oak Ridge Barn',
@@ -247,7 +247,7 @@ export const events: Event[] = [
   },
   {
     id: '16',
-    name: 'Comedy Slam',
+    name: 'Stand-up Showcase',
     date: '2026-09-13',
     time: '20:00',
     venue: 'Maple Court Theatre',
@@ -259,7 +259,7 @@ export const events: Event[] = [
   },
   {
     id: '17',
-    name: 'Swing Evening',
+    name: 'Swing Dance Social',
     date: '2026-09-18',
     time: '20:00',
     venue: 'Oak Ridge Barn',
@@ -271,7 +271,7 @@ export const events: Event[] = [
   },
   {
     id: '18',
-    name: 'Kindertheater: Räuber Hotzenplotz',
+    name: 'The Robber Hotzenplotz (Ages 5+)',
     date: '2026-09-19',
     time: '15:00',
     venue: 'Shakytown Comedy Club',
@@ -283,7 +283,7 @@ export const events: Event[] = [
   },
   {
     id: '19',
-    name: 'Genussmarkt',
+    name: 'Street Food Market',
     date: '2026-09-20',
     time: '10:00',
     venue: null,
@@ -307,7 +307,7 @@ export const events: Event[] = [
   },
   {
     id: '21',
-    name: 'Theater: Faust I',
+    name: 'Faust, Part One',
     date: '2026-10-02',
     time: '19:30',
     venue: 'Shakytown Comedy Club',
@@ -319,7 +319,7 @@ export const events: Event[] = [
   },
   {
     id: '22',
-    name: 'Oktober-Weinfest',
+    name: "Winemakers' Fair",
     date: '2026-10-03',
     time: '18:30',
     venue: 'Oak Ridge Barn',
@@ -331,7 +331,7 @@ export const events: Event[] = [
   },
   {
     id: '23',
-    name: 'Piano Recital: Chopin',
+    name: 'Chopin Piano Recital',
     date: '2026-10-04',
     time: '20:00',
     venue: 'Grand Avenue Ballroom',
@@ -343,7 +343,7 @@ export const events: Event[] = [
   },
   {
     id: '24',
-    name: 'Poetry Slam: Herbstspecial',
+    name: 'Poetry Slam All-Stars',
     date: '2026-10-09',
     time: '20:00',
     venue: 'Maple Court Theatre',
@@ -355,7 +355,7 @@ export const events: Event[] = [
   },
   {
     id: '25',
-    name: 'Nachtflohmarkt',
+    name: 'Night Flea Market',
     date: '2026-10-10',
     time: '18:00',
     venue: 'Broadway Community Center',
@@ -367,7 +367,7 @@ export const events: Event[] = [
   },
   {
     id: '26',
-    name: 'Sinfoniekonzert: Brahms',
+    name: 'Brahms: Symphony No. 4',
     date: '2026-10-16',
     time: '20:00',
     venue: 'Grand Avenue Ballroom',
@@ -391,7 +391,7 @@ export const events: Event[] = [
   },
   {
     id: '28',
-    name: 'Impro-Theater: Herbstshow',
+    name: 'Improv Battle',
     date: '2026-10-23',
     time: '20:00',
     venue: 'Maple Court Theatre',
@@ -415,7 +415,7 @@ export const events: Event[] = [
   },
   {
     id: '30',
-    name: 'Halloween-Kino: Psycho',
+    name: 'Hitchcock Night: Psycho',
     date: '2026-10-30',
     time: '21:30',
     venue: 'Bloomfield Garden Lawn',
@@ -427,7 +427,7 @@ export const events: Event[] = [
   },
   {
     id: '31',
-    name: 'Kabarett: Jahresrückblick',
+    name: 'The Satire Hour',
     date: '2026-11-06',
     time: '20:00',
     venue: 'Shakytown Comedy Club',
@@ -439,7 +439,7 @@ export const events: Event[] = [
   },
   {
     id: '32',
-    name: 'Martinimarkt',
+    name: 'Antiques Market',
     date: '2026-11-07',
     time: '10:00',
     venue: 'Broadway Community Center',
@@ -451,7 +451,7 @@ export const events: Event[] = [
   },
   {
     id: '33',
-    name: 'Chamber Music: Beethoven',
+    name: 'Beethoven String Quartets',
     date: '2026-11-13',
     time: '20:00',
     venue: 'Grand Avenue Ballroom',
@@ -475,7 +475,7 @@ export const events: Event[] = [
   },
   {
     id: '35',
-    name: 'Theater: Die Physiker',
+    name: 'The Physicists',
     date: '2026-11-20',
     time: '19:30',
     venue: 'Shakytown Comedy Club',
@@ -499,7 +499,7 @@ export const events: Event[] = [
   },
   {
     id: '37',
-    name: 'Adventsmarkt Eröffnung',
+    name: 'Art & Design Market',
     date: '2026-11-27',
     time: '16:00',
     venue: 'Main Street Park Amphitheater',
@@ -511,7 +511,7 @@ export const events: Event[] = [
   },
   {
     id: '38',
-    name: 'Winter Poetry Slam',
+    name: 'Spoken Word Open Mic',
     date: '2026-11-28',
     time: '20:00',
     venue: 'Maple Court Theatre',
@@ -523,7 +523,7 @@ export const events: Event[] = [
   },
   {
     id: '39',
-    name: 'Weihnachtskonzert',
+    name: 'Gospel Choir Concert',
     date: '2026-12-05',
     time: '18:00',
     venue: 'Grand Avenue Ballroom',
@@ -535,7 +535,7 @@ export const events: Event[] = [
   },
   {
     id: '40',
-    name: 'Glühwein & Jazz',
+    name: 'Jazz & Tapas Evening',
     date: '2026-12-11',
     time: '18:30',
     venue: null,
@@ -547,7 +547,7 @@ export const events: Event[] = [
   },
   {
     id: '41',
-    name: 'Silvesterkonzert',
+    name: 'Gala Concert',
     date: '2026-12-31',
     time: '19:00',
     venue: 'Grand Avenue Ballroom',
@@ -559,7 +559,7 @@ export const events: Event[] = [
   },
   {
     id: '42',
-    name: 'Neujahrskabarett',
+    name: 'Sketch Comedy Live',
     date: '2027-01-16',
     time: '20:00',
     venue: 'Shakytown Comedy Club',

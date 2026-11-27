@@ -20,9 +20,9 @@ interface Event {
 
 const initialEvents: Event[] = [
   { id: '1', name: 'Jazz Night', date: 'Aug 12, 2026', reservations: 47 },
-  { id: '2', name: 'Open Air Kino', date: 'Aug 15, 2026', reservations: 112 },
+  { id: '2', name: 'Film Club', date: 'Aug 15, 2026', reservations: 112 },
   { id: '3', name: 'Poetry Slam', date: 'Aug 21, 2026', reservations: 0 },
-  { id: '4', name: 'Herbstmarkt', date: 'Sep 5, 2026', reservations: 23 },
+  { id: '4', name: "Makers' Market", date: 'Sep 5, 2026', reservations: 23 },
   { id: '5', name: 'Wine Tasting', date: 'Sep 12, 2026', reservations: 65 },
 ];
 

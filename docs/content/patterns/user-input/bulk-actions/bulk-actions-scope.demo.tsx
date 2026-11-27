@@ -19,7 +19,7 @@ const events = [
   },
   {
     id: '2',
-    name: 'Open Air Kino',
+    name: 'Film Club',
     date: 'Aug 15, 2026',
     status: 'On sale',
   },
@@ -31,7 +31,7 @@ const events = [
   },
   {
     id: '4',
-    name: 'Herbstmarkt',
+    name: "Makers' Market",
     date: 'Sep 5, 2026',
     status: 'Draft',
   },
