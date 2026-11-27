@@ -6,7 +6,7 @@ import { DAY, daysBetween } from './dates';
 // is reachable: drafts without a venue make `publish` fail deterministically
 // (the partial-failure + retry loop), events sharing a venue/category/price
 // drive the "Multiple values" handling in the bulk-edit drawer, and the
-// reservation counts feed the impact summary in the delete confirmation.
+// tickets-sold counts feed the impact summary in the delete confirmation.
 
 export const eventStatuses = ['Draft', 'On sale', 'Archived'] as const;
 export type EventStatus = (typeof eventStatuses)[number];
@@ -45,7 +45,7 @@ export interface Event {
   /** Ticket price in EUR. `0` marks a free event. */
   price: number;
   status: EventStatus;
-  /** Active ticket reservations — the blast radius named when deleting. */
+  /** Tickets sold so far, shown as "Tickets sold" and named when deleting. */
   reservations: number;
   /** Tickets on offer. Reservations are counted against it. */
   capacity: number;

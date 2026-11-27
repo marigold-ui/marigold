@@ -59,11 +59,7 @@ const NoDataEmptyState = () => (
   <EmptyState
     title="No events yet"
     description="Create your first event to start selling tickets."
-    action={
-      <LinkButton variant="primary" href="/examples/event-form">
-        Create event
-      </LinkButton>
-    }
+    action={<LinkButton href="/examples/event-form">Create event</LinkButton>}
   />
 );
 
@@ -174,15 +170,12 @@ const EventRow = ({
       {event.price === 0 ? (
         'Free'
       ) : (
-        <>
-          {'From '}
-          <NumericFormat
-            style="currency"
-            value={event.price}
-            currency="EUR"
-            maximumFractionDigits={0}
-          />
-        </>
+        <NumericFormat
+          style="currency"
+          value={event.price}
+          currency="EUR"
+          maximumFractionDigits={0}
+        />
       )}
     </Table.Cell>
     <Table.Cell>
