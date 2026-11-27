@@ -4,7 +4,13 @@ import {
   useQueryStates,
 } from 'nuqs';
 
-const sortColumns = ['name', 'capacity', 'price'] as const;
+const sortColumns = [
+  'name',
+  'capacity',
+  'price',
+  'rating',
+  'available',
+] as const;
 const sortDirections = ['ascending', 'descending'] as const;
 
 const sortParsers = {

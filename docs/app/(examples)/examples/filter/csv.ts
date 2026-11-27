@@ -13,9 +13,10 @@ export const exportVenuesToCsv = (venues: readonly Venue[]) => {
     'City',
     'Country',
     'Capacity',
-    'Max Price (EUR)',
+    'Price from (EUR)',
+    'Price to (EUR)',
     'Rating',
-    'Next Available',
+    'Next available',
   ];
   const rows = venues.map(v => [
     v.name,
@@ -23,6 +24,7 @@ export const exportVenuesToCsv = (venues: readonly Venue[]) => {
     v.city,
     v.country,
     v.capacity,
+    v.price.from,
     v.price.to,
     v.rating,
     v.nextAvailable,

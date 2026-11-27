@@ -31,11 +31,13 @@ import {
   Tag,
   TagField,
   Text,
+  Tooltip,
   VisuallyHidden,
   parseFormData,
 } from '@marigold/components';
-import { ListFilter } from '@marigold/icons';
+import { Download, ListFilter } from '@marigold/icons';
 import { FetchingIndicator } from './FetchingIndicator';
+import { exportVenuesToCsv } from './csv';
 import { venueKeys } from './hooks/queryKeys';
 import { useDeletedVenues } from './hooks/useDeletedVenues';
 import {
@@ -50,13 +52,15 @@ import {
 } from './hooks/useFilter';
 import { useFilterPreview } from './hooks/useFilterPreview';
 import { useSearch } from './hooks/useSearch';
+import { useVenueParams } from './hooks/useVenues';
+import { fetchVenues } from './hooks/venuesApi';
 
 // Muted count inside the label, so assistive tech announces it with the option.
 const withCount = (label: string, count?: number) =>
   count === undefined ? (
     label
   ) : (
-    <Inline space={2} alignY="center">
+    <Inline space="related" alignY="center">
       {label}
       <Text variant="muted">({count})</Text>
     </Inline>
@@ -105,7 +109,7 @@ const toDateRange = (available: string[]) =>
 // number of active filters inside it.
 const SectionHeader = ({ title, count }: { title: string; count: number }) => (
   <Accordion.Header>
-    <Inline space={2} alignY="center">
+    <Inline space="related" alignY="center">
       {title}
       {count > 0 && <Badge>{count}</Badge>}
     </Inline>
@@ -134,7 +138,7 @@ const FilterForm = ({
     <Accordion.Item id="essentials">
       <SectionHeader title="Essentials" count={sectionCounts.essentials} />
       <Accordion.Content>
-        <Stack space="group">
+        <Stack space="regular">
           <OptionGroup
             label="Type"
             name="types"
@@ -145,7 +149,7 @@ const FilterForm = ({
           <TagField
             label="City"
             name="city"
-            placeholder="Search cities..."
+            placeholder="Search cities"
             defaultValue={filter.city}
             onChange={onDraftChange}
           >
@@ -163,7 +167,7 @@ const FilterForm = ({
             onChange={onDraftChange}
           />
           <NumberField
-            label="Min. Capacity"
+            label="Min. capacity"
             name="capacity"
             defaultValue={filter.capacity}
             minValue={0}
@@ -174,7 +178,7 @@ const FilterForm = ({
               arrow keys stay usable, with 20 stops below 10,000 where most
               venues sit. */}
           <Slider
-            label="Max. Price"
+            label="Max. price"
             name="price"
             defaultValue={filter.price}
             step={500}
@@ -192,11 +196,11 @@ const FilterForm = ({
     <Accordion.Item id="quality">
       <SectionHeader title="Quality" count={sectionCounts.quality} />
       <Accordion.Content>
-        <Stack space="group">
+        <Stack space="regular">
           {/* Same tiers as the quick filter in the bar — both edit the same
               `rating` state, so they always agree. */}
           <Radio.Group
-            label="Min. Rating"
+            label="Min. rating"
             name="rating"
             orientation="horizontal"
             defaultValue={
@@ -226,7 +230,7 @@ const FilterForm = ({
     <Accordion.Item id="facilities">
       <SectionHeader title="Facilities" count={sectionCounts.facilities} />
       <Accordion.Content>
-        <Stack space="group">
+        <Stack space="regular">
           <OptionGroup
             label="Amenities"
             name="amenities"
@@ -284,7 +288,7 @@ const TypeQuickFilter = () => {
       // Show the dimension and a count, the applied tags carry the values.
       renderValue={(_items, { count }) => (
         <>
-          <Inline space={2} alignY="center" aria-hidden="true">
+          <Inline space="related" alignY="center" aria-hidden="true">
             <span>Type</span>
             <Badge>{count}</Badge>
           </Inline>
@@ -413,7 +417,7 @@ export const FilterBar = () => {
         </Button>
         <Drawer closeButton>
           <Form ref={formRef} onSubmit={onFilterSubmit} unstyled>
-            <Drawer.Title>Filter Venues</Drawer.Title>
+            <Drawer.Title>Filter venues</Drawer.Title>
             <Drawer.Content>
               {/* FilterForm is uncontrolled. Remount on URL state changes
                     so defaultValue picks up the latest filter values. */}
@@ -443,11 +447,36 @@ export const FilterBar = () => {
           </Form>
         </Drawer>
       </Drawer.Trigger>
-      <Inline alignY="center" space="related">
+      <Inline alignY="center" space="related" noWrap>
         <FetchingIndicator />
         <ResetDemo />
+        <ExportButton />
       </Inline>
     </Inline>
+  );
+};
+
+// A view action: exports the whole filtered result, not only the visible
+// page, so it fetches the same query once more without pagination. Icon-only
+// with a tooltip, so the bar keeps room for the search field on a phone.
+const ExportButton = () => {
+  const params = useVenueParams();
+
+  return (
+    <Tooltip.Trigger>
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label="Export venues as CSV"
+        onPress={async () => {
+          const { items } = await fetchVenues({ ...params, pageSize: 'all' });
+          exportVenuesToCsv(items);
+        }}
+      >
+        <Download aria-hidden="true" />
+      </Button>
+      <Tooltip>Export as CSV</Tooltip>
+    </Tooltip.Trigger>
   );
 };
 

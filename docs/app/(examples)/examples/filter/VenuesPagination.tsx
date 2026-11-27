@@ -1,6 +1,6 @@
 'use client';
 
-import { Inline, Pagination, Select, Text } from '@marigold/components';
+import { Inline, Pagination, Select, Split, Text } from '@marigold/components';
 import { VENUES_REGION_ID } from './VenuesTable';
 import { usePagination } from './hooks/usePagination';
 import { useVenues } from './hooks/useVenues';
@@ -26,13 +26,12 @@ export const VenuesPagination = () => {
 
   const from = (safePage - 1) * pageSize + 1;
   const to = Math.min(safePage * pageSize, totalItems);
-  const summary = `Showing ${from}–${to} of ${totalItems}`;
-
   return (
-    <div className="grid grid-cols-[1fr_auto_1fr] items-center gap-6">
+    <Inline alignY="center">
       <Text variant="muted" fontSize="sm">
-        {summary}
+        Showing {from} - {to} of {totalItems}
       </Text>
+      <Split />
       <Pagination
         key={totalPages}
         page={safePage}
@@ -40,7 +39,8 @@ export const VenuesPagination = () => {
         pageSize={pageSize}
         onChange={onPageChange}
       />
-      <Inline space="related" alignY="center" alignX="right">
+      <Split />
+      <Inline space="related" alignY="center">
         <Text id="page-size" fontSize="sm">
           Results per page
         </Text>
@@ -57,6 +57,6 @@ export const VenuesPagination = () => {
           ))}
         </Select>
       </Inline>
-    </div>
+    </Inline>
   );
 };

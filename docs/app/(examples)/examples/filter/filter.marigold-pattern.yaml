@@ -4,8 +4,13 @@ brief: >-
   filter bar (multi-select and single-select Selects), a Drawer-based filter
   form grouped into Accordion sections with active-count badges, live
   per-option counts and a "Show N results" preview on Apply, and removable
-  "applied filter" chips. Filter and search state is synced to the URL query
-  string so views are shareable and survive reloads.
+  applied-filter tags in operator wording ("Type is Club or Lounge"). The
+  table has fixed column widths, a pinned name column inside Scrollable,
+  sorting on name, capacity, price, rating and availability, and a per-row
+  delete with confirmation and optimistic update. An Export view action at
+  the end of the bar downloads the whole filtered result. Filter, search,
+  sort and pagination state is synced to the URL query string so views are
+  shareable and survive reloads.
 patterns:
   - user-input/filter
   - data/fetching-and-mutations
@@ -51,7 +56,12 @@ mock_data:
       // URL stays clean when a dimension is unused.
       import type { Venue } from '@/lib/data/venues';
 
-      export type VenueSortColumn = 'name' | 'capacity' | 'price';
+      export type VenueSortColumn =
+        | 'name'
+        | 'capacity'
+        | 'price'
+        | 'rating'
+        | 'available';
       export type VenueSortDirection = 'ascending' | 'descending';
 
       export interface VenueQueryParams {
