@@ -131,6 +131,8 @@ Pass a component name (case-insensitive, so `Button`, `button`, and `BUTTON` all
   plain` (ANSI-stripped, ideal for piping into other tools).
 </Callout>
 
+The docs describe the latest release. When the `@marigold/components` installed in your project is an older minor or major version, `marigold docs` prints a one-line warning naming both versions. A newer patch alone adds no components or props, so it doesn't warn. It goes to stderr, so piped output stays clean. With `--format json`, the warning is a `warning` field with `installed`, `docs` and `message` instead, and the field is absent when the versions match.
+
 ### marigold search
 
 Find components by what their docs say: title, description, section headings and section prose, not just the name. Use it when you know the job but not the component.
@@ -148,7 +150,7 @@ marigold search modal --format json
 | `--fresh`         | Bypass the local cache                             |
 | `--offline`       | Use only the local cache, failing if it is missing |
 
-Each result carries the component name, its slug, a score and the best matching section. A query without matches exits `0`. The index covers component pages only, so use `marigold examples list` to browse patterns and `marigold list --category foundations` to browse foundations.
+Each result carries the component name, its slug, a score and the best matching section. A query without matches exits `0`. Like `marigold docs`, it warns on stderr when your installed `@marigold/components` is an older minor or major version than the docs. The index covers component pages only, so use `marigold examples list` to browse patterns and `marigold list --category foundations` to browse foundations.
 
 ### marigold list
 

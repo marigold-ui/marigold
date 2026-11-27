@@ -1,5 +1,9 @@
 import { type Section, getPageDocs } from '../lib/docs.js';
 import { type OutputFormat, formatDocs } from '../lib/format.js';
+import {
+  type VersionWarning,
+  loadVersionWarning,
+} from '../lib/version-warning.js';
 
 export interface RunDocsOptions {
   component: string;
@@ -7,6 +11,8 @@ export interface RunDocsOptions {
   format?: OutputFormat;
   fresh?: boolean;
   offline?: boolean;
+  /** Where to look for the installed `@marigold/components`. */
+  cwd?: string;
 }
 
 export interface RunDocsResult {
@@ -14,6 +20,8 @@ export interface RunDocsResult {
   cacheHit: boolean;
   // The manifest slug the input resolved to, e.g. `components/actions/button`.
   slug: string;
+  // Set when the installed `@marigold/components` is older than the docs.
+  warning: VersionWarning | null;
 }
 
 export const runDocs = async (
@@ -29,6 +37,12 @@ export const runDocs = async (
     offline: options.offline,
   });
 
-  const output = formatDocs(docs, options.format ?? 'markdown');
-  return { output, cacheHit: docs.cacheHit, slug: docs.slug };
+  // The manifest is cached by now, so this reads it from disk.
+  const warning = await loadVersionWarning({
+    cwd: options.cwd,
+    offline: options.offline,
+  });
+
+  const output = formatDocs(docs, options.format ?? 'markdown', warning);
+  return { output, cacheHit: docs.cacheHit, slug: docs.slug, warning };
 };

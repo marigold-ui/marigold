@@ -10,6 +10,7 @@ import {
 } from './manifest.js';
 import type { SearchResult } from './search.js';
 import { stripAnsi } from './strip-ansi.js';
+import type { VersionWarning } from './version-warning.js';
 
 export type OutputFormat = 'markdown' | 'json' | 'plain';
 
@@ -70,10 +71,15 @@ const renderMarkdownToTerminal = (md: string): string => {
   return out.join('\n').replace(/\n{3,}/g, '\n\n');
 };
 
-export const formatDocs = (docs: PageDocs, format: OutputFormat): string => {
+export const formatDocs = (
+  docs: PageDocs,
+  format: OutputFormat,
+  warning: VersionWarning | null = null
+): string => {
   if (format === 'json') {
     return JSON.stringify(
       {
+        ...(warning && { warning }),
         kind: docs.kind,
         name: docs.name,
         slug: docs.slug,

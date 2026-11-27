@@ -650,3 +650,60 @@ describe('main() — validate command', () => {
     });
   });
 });
+
+describe('main() — version warning', () => {
+  const warning = {
+    installed: '17.4.0',
+    docs: '18.2.1',
+    message:
+      'These docs describe @marigold/components 18.2.1, but 17.4.0 is installed.',
+  };
+  const stderr = () => stderrSpy.mock.calls.flat().join('');
+  const stdout = () => stdoutSpy.mock.calls.flat().join('');
+
+  test('docs prints the warning on stderr, not stdout', async () => {
+    vi.mocked(runDocs).mockResolvedValueOnce({
+      output: 'docs output',
+      cacheHit: false,
+      slug: 'components/actions/button',
+      warning,
+    });
+
+    await main(['docs', 'Button', '--format', 'markdown']);
+
+    expect(stderr()).toContain(warning.message);
+    expect(stdout()).not.toContain(warning.message);
+  });
+
+  test('docs --format json leaves the warning to the JSON field', async () => {
+    vi.mocked(runDocs).mockResolvedValueOnce({
+      output: '{}',
+      cacheHit: false,
+      slug: 'components/actions/button',
+      warning,
+    });
+
+    await main(['docs', 'Button', '--format', 'json']);
+
+    expect(stderr()).not.toContain(warning.message);
+  });
+
+  test('search prints the warning on stderr in every format', async () => {
+    vi.mocked(runSearch).mockResolvedValueOnce({
+      output: '[]',
+      cacheHit: false,
+      warning,
+    });
+
+    await main(['search', 'tag', '--format', 'json']);
+
+    expect(stderr()).toContain(warning.message);
+    expect(stdout()).toBe('[]\n');
+  });
+
+  test('prints nothing when there is no warning', async () => {
+    await main(['docs', 'Button', '--format', 'markdown']);
+
+    expect(stderr()).not.toContain('Warning');
+  });
+});

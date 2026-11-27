@@ -35,6 +35,7 @@ import {
   intArg,
   unresolvedArg,
 } from '../lib/telemetry.js';
+import type { VersionWarning } from '../lib/version-warning.js';
 
 // Package root: dist/bin/marigold.mjs → ../.. = packages/cli/
 const packageRoot = path.join(
@@ -296,6 +297,12 @@ const writeOutput = (output: string): void => {
   if (!output.endsWith('\n')) process.stdout.write('\n');
 };
 
+// On stderr so piped stdout stays clean for `grep` and JSON parsers.
+const writeVersionWarning = (warning: VersionWarning | null): void => {
+  if (warning)
+    process.stderr.write(pc.yellow(`Warning: ${warning.message}`) + '\n');
+};
+
 export const main = async (
   argv: string[] = process.argv.slice(2)
 ): Promise<number> => {
@@ -361,6 +368,8 @@ export const main = async (
       });
 
       writeOutput(result.output);
+      // `--format json` carries the warning as a field instead.
+      if (format !== 'json') writeVersionWarning(result.warning);
       cacheHit = result.cacheHit;
       telemetryArgs = { ...telemetryArgs, component: result.slug };
     } else if (command === 'list') {
@@ -424,6 +433,7 @@ export const main = async (
       });
 
       writeOutput(result.output);
+      writeVersionWarning(result.warning);
       cacheHit = result.cacheHit;
     } else if (command === 'examples') {
       const { positionals, values } = parseExamplesCommand(rest);
