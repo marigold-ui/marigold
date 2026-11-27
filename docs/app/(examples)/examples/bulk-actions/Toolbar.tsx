@@ -1,12 +1,20 @@
 'use client';
 
-import { type EventStatus, eventStatuses } from '@/lib/data/events';
+import type { EventStatus } from '@/lib/data/events';
 import { useState } from 'react';
-import { Button, Inline, SearchField, Select } from '@marigold/components';
+import {
+  Button,
+  Inline,
+  SearchField,
+  SegmentedControl,
+} from '@marigold/components';
 import { FetchingIndicator } from './FetchingIndicator';
 import { useSearch, useStatusFilter } from './hooks/useEventsParams';
 import { useSelection } from './hooks/useSelection';
 import { useSession } from './hooks/useSession';
+
+// Live events first, then work in progress, then what is over.
+const scopes: EventStatus[] = ['On sale', 'Draft', 'Archived'];
 
 export const Toolbar = () => {
   const [search, setSearch] = useSearch();
@@ -26,10 +34,28 @@ export const Toolbar = () => {
 
   return (
     <Inline space="related" alignX="between" alignY="center">
-      <Inline alignY="input" space="related">
+      <Inline alignY="center" space="related">
+        {/* The status is a scope switch, not one more filter: it decides
+            which set of events the list shows, so it comes first (Filter
+            pattern, "Quick filters"). */}
+        <SegmentedControl
+          aria-label="Show events"
+          width="fit"
+          value={status ?? 'all'}
+          onChange={key =>
+            setStatus(key === 'all' ? null : (key as EventStatus))
+          }
+        >
+          <SegmentedControl.Option value="all">All</SegmentedControl.Option>
+          {scopes.map(candidate => (
+            <SegmentedControl.Option key={candidate} value={candidate}>
+              {candidate}
+            </SegmentedControl.Option>
+          ))}
+        </SegmentedControl>
         <SearchField
           aria-label="Search events"
-          description="Search by name or venue"
+          placeholder="Search events or venues"
           width={64}
           autoComplete="off"
           value={text}
@@ -37,21 +63,6 @@ export const Toolbar = () => {
           onSubmit={setSearch}
           onClear={() => setSearch('')}
         />
-        <Select
-          aria-label="Filter by status"
-          width={36}
-          value={status ?? 'all'}
-          onChange={key =>
-            setStatus(key === 'all' ? null : (key as EventStatus))
-          }
-        >
-          <Select.Option id="all">All statuses</Select.Option>
-          {eventStatuses.map(candidate => (
-            <Select.Option key={candidate} id={candidate}>
-              {candidate}
-            </Select.Option>
-          ))}
-        </Select>
       </Inline>
       <Inline alignY="center" space="related">
         <FetchingIndicator />

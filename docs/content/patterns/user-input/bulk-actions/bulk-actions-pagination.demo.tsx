@@ -14,14 +14,24 @@ const pageSize = 4;
 
 const events = [
   { id: '1', name: 'Jazz Night', date: 'Aug 12, 2026', status: 'On sale' },
-  { id: '2', name: 'Open Air Kino', date: 'Aug 15, 2026', status: 'On sale' },
+  { id: '2', name: 'Film Club', date: 'Aug 15, 2026', status: 'On sale' },
   { id: '3', name: 'Poetry Slam', date: 'Aug 21, 2026', status: 'Draft' },
-  { id: '4', name: 'Herbstmarkt', date: 'Sep 5, 2026', status: 'Draft' },
+  { id: '4', name: "Makers' Market", date: 'Sep 5, 2026', status: 'Draft' },
   { id: '5', name: 'Wine Tasting', date: 'Sep 12, 2026', status: 'On sale' },
-  { id: '6', name: 'Krimi Dinner', date: 'Sep 19, 2026', status: 'On sale' },
+  {
+    id: '6',
+    name: 'Murder Mystery Dinner',
+    date: 'Sep 19, 2026',
+    status: 'On sale',
+  },
   { id: '7', name: 'Comedy Club', date: 'Sep 26, 2026', status: 'Draft' },
-  { id: '8', name: 'Filmkonzert', date: 'Oct 3, 2026', status: 'On sale' },
-  { id: '9', name: 'Lesung am See', date: 'Oct 10, 2026', status: 'Draft' },
+  { id: '8', name: 'Film Music Gala', date: 'Oct 3, 2026', status: 'On sale' },
+  {
+    id: '9',
+    name: 'Lakeside Author Reading',
+    date: 'Oct 10, 2026',
+    status: 'Draft',
+  },
 ];
 
 export default () => {

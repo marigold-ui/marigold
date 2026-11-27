@@ -145,7 +145,9 @@ export const BulkActionsProvider = ({ children }: PropsWithChildren) => {
     );
     const impact =
       reservations > 0
-        ? `This will cancel ${reservations} ticket reservations and notify the ticket buyers. `
+        ? `This will cancel ${reservations} sold ticket${
+            reservations === 1 ? '' : 's'
+          } and notify the ticket buyers. `
         : '';
 
     const result = await confirm({

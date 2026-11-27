@@ -76,7 +76,7 @@ export const useRowActions = () => {
   const deleteEvent = async (event: Event) => {
     const impact =
       event.reservations > 0
-        ? `This will cancel ${event.reservations} ticket reservation${
+        ? `This will cancel ${event.reservations} sold ticket${
             event.reservations === 1 ? '' : 's'
           } and notify the ticket buyers. `
         : '';

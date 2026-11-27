@@ -9,14 +9,14 @@ import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 import {
   Button,
-  Center,
   Description,
+  ErrorState,
+  LinkButton,
   Page,
   Panel,
-  Stack,
-  Text,
   Title,
 } from '@marigold/components';
+import { CalendarPlus } from '@marigold/icons';
 import { EventsPagination } from './EventsPagination';
 import { EventsTable } from './EventsTable';
 import { Toolbar } from './Toolbar';
@@ -36,21 +36,11 @@ const EventsData = () => {
       onReset={reset}
       fallbackRender={({ resetErrorBoundary }) => (
         <Panel.Content>
-          <div className="grid min-h-64 place-items-center">
-            <Center>
-              <Stack space={2} alignX="center">
-                <Text fontSize="lg" weight="bold">
-                  Could not load events
-                </Text>
-                <Text variant="muted">
-                  Something went wrong while fetching data.
-                </Text>
-                <Button variant="primary" onPress={resetErrorBoundary}>
-                  Try again
-                </Button>
-              </Stack>
-            </Center>
-          </div>
+          <ErrorState
+            title="Events could not be loaded"
+            description="Check your connection and try again."
+            action={<Button onPress={resetErrorBoundary}>Try again</Button>}
+          />
         </Panel.Content>
       )}
     >
@@ -75,9 +65,12 @@ const BulkActionsPage = () => (
           <Page.Header>
             <Title>Events</Title>
             <Description>
-              Select events in the table and run one operation across all of
-              them.
+              Publish drafts, change prices and archive events that are over.
             </Description>
+            <LinkButton variant="primary" href="/examples/event-form">
+              <CalendarPlus />
+              Create event
+            </LinkButton>
           </Page.Header>
           <Panel aria-label="Events">
             <Panel.Content>

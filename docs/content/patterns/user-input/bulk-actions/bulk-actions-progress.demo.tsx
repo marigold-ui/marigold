@@ -13,11 +13,11 @@ import { Download, Send } from '@marigold/icons';
 
 const events = [
   { id: '1', name: 'Jazz Night', tickets: 214 },
-  { id: '2', name: 'Open Air Kino', tickets: 460 },
+  { id: '2', name: 'Film Club', tickets: 460 },
   { id: '3', name: 'Poetry Slam', tickets: 95 },
-  { id: '4', name: 'Herbstmarkt', tickets: 310 },
+  { id: '4', name: "Makers' Market", tickets: 310 },
   { id: '5', name: 'Wine Tasting', tickets: 58 },
-  { id: '6', name: 'Klassik im Park', tickets: 127 },
+  { id: '6', name: 'Strings by Candlelight', tickets: 127 },
 ];
 
 const wait = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

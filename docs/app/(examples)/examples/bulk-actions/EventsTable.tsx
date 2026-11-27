@@ -5,14 +5,15 @@ import {
   ActionMenu,
   Badge,
   Button,
-  Center,
+  EmptyState,
   Inline,
+  LinkButton,
   Stack,
   Table,
   Text,
   VisuallyHidden,
 } from '@marigold/components';
-import { NumericFormat } from '@marigold/system';
+import { DateFormat, NumericFormat } from '@marigold/system';
 import { BulkActionBar } from './BulkActionBar';
 import { useEvents } from './hooks/useEvents';
 import { useSearch, useStatusFilter } from './hooks/useEventsParams';
@@ -23,15 +24,17 @@ import { useSelection } from './hooks/useSelection';
 // row of the new page.
 export const EVENTS_REGION_ID = 'events-region';
 
-// Fixture dates are ISO; a fixed locale keeps prerender and browser output
-// identical.
-const dateFormat = new Intl.DateTimeFormat('en-US', { dateStyle: 'medium' });
-const formatDate = (date: string) => dateFormat.format(new Date(date));
+// Date and time are stored as the venue's wall-clock time. Reading them as
+// UTC and formatting in UTC shows exactly what was stored, whatever the
+// reader's time zone.
+const startsAt = (event: Event) => new Date(`${event.date}T${event.time}:00Z`);
 
-const statusVariant = (status: EventStatus) => {
-  if (status === 'On sale') return 'success';
-  if (status === 'Draft') return 'info';
-  return undefined;
+// Colour only where the status asks for attention (ADR-0009): on sale is
+// live, a draft still needs work, an archived event is over.
+const statusVariant: Record<EventStatus, 'success' | 'info' | undefined> = {
+  'On sale': 'success',
+  Draft: 'info',
+  Archived: undefined,
 };
 
 const FilterEmptyState = () => {
@@ -44,32 +47,20 @@ const FilterEmptyState = () => {
   };
 
   return (
-    <div className="grid min-w-xl place-items-center py-10">
-      <Center>
-        <Text fontSize="lg" weight="bold">
-          No events match your criteria
-        </Text>
-        <Text variant="muted">Try adjusting your search or status filter.</Text>
-        <Button variant="ghost" onPress={clearAll}>
-          Clear all filters
-        </Button>
-      </Center>
-    </div>
+    <EmptyState
+      title="No events match your search"
+      description="Try another name or venue, or clear the filters."
+      action={<Button onPress={clearAll}>Clear all filters</Button>}
+    />
   );
 };
 
 const NoDataEmptyState = () => (
-  <div className="grid min-w-xl place-items-center py-10">
-    <Center>
-      <Text fontSize="lg" weight="bold">
-        No events left
-      </Text>
-      <Text variant="muted">
-        Every event was deleted this session. Use “Reset demo” to bring them
-        back.
-      </Text>
-    </Center>
-  </div>
+  <EmptyState
+    title="No events yet"
+    description="Create your first event to start selling tickets."
+    action={<LinkButton href="/examples/event-form">Create event</LinkButton>}
+  />
 );
 
 // Co-located skeleton that mirrors the table's row rhythm. Shown only for the
@@ -79,9 +70,9 @@ export const EventsTableSkeleton = ({ rows = 10 }: { rows?: number }) => (
   <>
     <VisuallyHidden role="status">Loading events…</VisuallyHidden>
     <div aria-hidden>
-      <Stack space={4}>
+      <Stack space="regular">
         {Array.from({ length: rows }, (_, i) => `skeleton-${i}`).map(key => (
-          <Inline key={key} space={6} alignY="center">
+          <Inline key={key} space="regular" alignY="center">
             <div className="h-4 w-1/4 animate-pulse rounded bg-current/10" />
             <div className="h-4 w-1/6 animate-pulse rounded bg-current/10" />
             <div className="h-4 grow animate-pulse rounded bg-current/10" />
@@ -96,7 +87,9 @@ export const EventsTableSkeleton = ({ rows = 10 }: { rows?: number }) => (
 );
 
 // Per-row menu for one-off operations (see the Table Records pattern). It
-// carries the same verbs as the bulk bar, scoped to one named event. While
+// carries the same verbs as the bulk bar, scoped to one named event, and
+// offers only what the event's status allows: nothing to publish on an event
+// that is already on sale, nothing to archive twice. While
 // rows are selected the bar owns the scope, so the menu disables — bulk and
 // per-row actions take turns instead of competing for the same press
 // (bulk-actions pattern, "Choosing actions").
@@ -122,9 +115,15 @@ const RowActions = ({
         if (key === 'delete') actions.deleteEvent(event);
       }}
     >
-      <ActionMenu.Item id="publish">Publish</ActionMenu.Item>
-      <ActionMenu.Item id="archive">Archive</ActionMenu.Item>
-      <ActionMenu.Item id="remind">Send reminder</ActionMenu.Item>
+      {event.status !== 'On sale' && (
+        <ActionMenu.Item id="publish">Publish</ActionMenu.Item>
+      )}
+      {event.status !== 'Archived' && (
+        <ActionMenu.Item id="archive">Archive</ActionMenu.Item>
+      )}
+      {event.status === 'On sale' && (
+        <ActionMenu.Item id="remind">Send reminder</ActionMenu.Item>
+      )}
       <ActionMenu.Item id="delete" variant="destructive">
         Delete
       </ActionMenu.Item>
@@ -141,26 +140,43 @@ const EventRow = ({
 }) => (
   <Table.Row id={event.id}>
     <Table.Cell textValue={event.name}>
-      <Text weight="medium">{event.name}</Text>
+      <Stack>
+        <Text weight="medium">{event.name}</Text>
+        <Text fontSize="sm" variant="muted">
+          {event.category}
+        </Text>
+      </Stack>
     </Table.Cell>
-    <Table.Cell>{formatDate(event.date)}</Table.Cell>
     <Table.Cell>
-      {event.venue ?? <Text variant="muted">No venue</Text>}
-    </Table.Cell>
-    <Table.Cell>{event.category}</Table.Cell>
-    <Table.Cell>
-      <NumericFormat
-        style="currency"
-        value={event.price}
-        currency="EUR"
-        maximumFractionDigits={0}
+      <DateFormat
+        value={startsAt(event)}
+        dateStyle="medium"
+        timeStyle="short"
+        timeZone="UTC"
       />
     </Table.Cell>
     <Table.Cell>
-      <Badge variant={statusVariant(event.status)}>{event.status}</Badge>
+      {event.venue ?? <Text variant="muted">No venue</Text>}
+    </Table.Cell>
+    <Table.Cell>
+      <Badge variant={statusVariant[event.status]}>{event.status}</Badge>
     </Table.Cell>
     <Table.Cell>
       <NumericFormat value={event.reservations} />
+      {' / '}
+      <NumericFormat value={event.capacity} />
+    </Table.Cell>
+    <Table.Cell>
+      {event.price === 0 ? (
+        'Free'
+      ) : (
+        <NumericFormat
+          style="currency"
+          value={event.price}
+          currency="EUR"
+          maximumFractionDigits={0}
+        />
+      )}
     </Table.Cell>
     <Table.Cell>
       <RowActions event={event} disabled={actionsDisabled} />
@@ -199,28 +215,28 @@ export const EventsTable = () => {
         actionBar={() => <BulkActionBar />}
       >
         {/* Columns with predictable short content get a fixed width; the two
-            text columns share the rest, weighted toward the event name. */}
+            text columns share the rest, weighted toward the event name so the
+            slack on a wide screen does not push the date away from it. Status
+            sits right after the venue, so it is in view before anyone acts
+            on a selection. */}
         <Table.Header>
-          <Table.Column id="name" rowHeader width="2fr" minWidth={200}>
+          <Table.Column id="name" rowHeader width="3fr" minWidth={220}>
             Event
           </Table.Column>
-          <Table.Column id="date" width={120}>
-            Date
+          <Table.Column id="date" width={190}>
+            Date and time
           </Table.Column>
-          <Table.Column id="venue" width="1fr" minWidth={140}>
+          <Table.Column id="venue" width="2fr" minWidth={160}>
             Venue
-          </Table.Column>
-          <Table.Column id="category" width={110}>
-            Category
-          </Table.Column>
-          <Table.Column id="price" alignX="right" width={80}>
-            Price
           </Table.Column>
           <Table.Column id="status" width={100}>
             Status
           </Table.Column>
-          <Table.Column id="reservations" alignX="right" width={120}>
-            Reservations
+          <Table.Column id="sold" alignX="right" width={120}>
+            Tickets sold
+          </Table.Column>
+          <Table.Column id="price" alignX="right" width={100}>
+            Price
           </Table.Column>
           <Table.Column id="actions" width={56}>
             <VisuallyHidden>Actions</VisuallyHidden>

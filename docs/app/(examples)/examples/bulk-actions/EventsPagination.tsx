@@ -47,7 +47,7 @@ export const EventsPagination = () => {
         onChange={onPageChange}
       />
       <Split />
-      <Inline alignY="center" space={4}>
+      <Inline alignY="center" space="regular">
         <Text fontSize="sm">Results per page</Text>
         <Select
           width={20}

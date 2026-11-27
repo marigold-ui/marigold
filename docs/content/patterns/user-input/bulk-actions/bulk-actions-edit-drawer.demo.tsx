@@ -39,7 +39,7 @@ const initialEvents: Event[] = [
   },
   {
     id: '3',
-    name: 'Swing Evening',
+    name: 'Swing Dance Social',
     venue: 'Oak Ridge Barn',
     category: 'Concert',
     price: 24,

@@ -11,7 +11,7 @@ const events = [
   },
   {
     id: '2',
-    name: 'Open Air Kino',
+    name: 'Film Club',
     date: 'Aug 15, 2026',
     venue: 'Bloomfield Garden Lawn',
     status: 'On sale',
@@ -25,7 +25,7 @@ const events = [
   },
   {
     id: '4',
-    name: 'Herbstmarkt',
+    name: "Makers' Market",
     date: 'Sep 5, 2026',
     venue: 'Broadway Community Center',
     status: 'Draft',
@@ -39,7 +39,7 @@ const events = [
   },
   {
     id: '6',
-    name: 'Klassik im Park',
+    name: 'Strings by Candlelight',
     date: 'Sep 19, 2026',
     venue: 'Main Street Park Amphitheater',
     status: 'On sale',
