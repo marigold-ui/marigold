@@ -42,7 +42,7 @@ export const TopNavigationMiddle = ({
       ref={ref}
       aria-label={ariaLabel ?? stringFormatter.format('globalNavigation')}
       className={cn(
-        'min-w-0 [grid-area:middle]',
+        '[grid-area:middle]',
         classNames.middle,
         alignX && alignment.horizontal.alignmentX[alignX],
         alignY && alignment.horizontal.alignmentY[alignY]
