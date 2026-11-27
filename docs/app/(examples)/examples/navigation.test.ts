@@ -1,10 +1,25 @@
 import { describe, expect, it } from 'vitest';
+import type { NavNode } from '../_shared';
 import { config, examplePages } from './navigation';
 
+// Every route the shell can navigate to, from the rail and its footer.
+const leafSlugs = (items: NavNode[]): string[] =>
+  items.flatMap(item => {
+    if (item.kind !== 'Item') return [];
+    return item.children ? leafSlugs(item.children) : [item.slug];
+  });
+
+const routes = [...config.tiles, ...(config.footerTiles ?? [])].flatMap(tile =>
+  tile.kind === 'link' ? [tile.slug] : leafSlugs(tile.items)
+);
+const urls = routes.map(slug =>
+  slug ? `${config.base}/${slug}` : config.base
+);
+
 describe('examplePages', () => {
-  it('surfaces exactly the standalone demos', () => {
-    // The full contract of the docs cmdk search: one entry per standalone
-    // demo. A future nav edit that drops or duplicates a demo should break here.
+  it('lists the examples under their pattern names', () => {
+    // The full contract of the docs cmdk search: visitors search for a
+    // pattern, so the names are the patterns, not the rail labels.
     expect(examplePages()).toEqual([
       { name: 'App Shell', url: '/examples' },
       { name: 'Filter', url: '/examples/filter' },
@@ -17,37 +32,61 @@ describe('examplePages', () => {
     ]);
   });
 
-  it('collapses a self-contained app to a single entry at its landing', () => {
-    // "App Shell" has an empty-slug index child, so it collapses to one entry
-    // pointing at the base — its internal screens are not standalone examples.
-    const appShell = examplePages().filter(page => page.name === 'App Shell');
-    expect(appShell).toEqual([{ name: 'App Shell', url: config.base }]);
+  it('only links to routes the shell navigates to', () => {
+    // The list is written by hand, so this catches a renamed or removed route.
+    for (const page of examplePages()) {
+      expect(urls).toContain(page.url);
+    }
+  });
+});
+
+describe('config', () => {
+  it('names the rail after product areas', () => {
+    expect(config.tiles.map(tile => tile.label)).toEqual([
+      'Overview',
+      'Events',
+      'Venues',
+      'Reports',
+      'Organisation',
+      'Settings',
+    ]);
   });
 
-  it('does not surface the internal screens of a self-contained app', () => {
-    const names = examplePages().map(page => page.name);
-    // App Shell internal navigation (Analytics, Users, Teams, Billing, …).
-    expect(names).not.toContain('Users');
-    expect(names).not.toContain('Teams');
-    expect(names).not.toContain('Billing');
-    expect(names).not.toContain('Analytics');
-    expect(names).not.toContain('General');
-    expect(names).not.toContain('Security');
+  it('keeps every example route', () => {
+    expect([...urls].sort()).toEqual(
+      [
+        '/examples',
+        '/examples/analytics',
+        '/examples/auto-save-settings',
+        '/examples/billing',
+        '/examples/bulk-actions',
+        '/examples/event-form',
+        '/examples/filter',
+        '/examples/general',
+        '/examples/inventory',
+        '/examples/pick',
+        '/examples/security',
+        '/examples/settings-form',
+        '/examples/teams',
+        '/examples/users',
+      ].sort()
+    );
   });
 
-  it('recurses into a plain grouping section and surfaces each child', () => {
-    // "Forms" has no index leaf, so it is a grouping — each child is its own
-    // demo rather than being collapsed away.
-    const names = examplePages().map(page => page.name);
-    expect(names).not.toContain('Forms');
-    expect(names).toContain('Event Form');
-    expect(names).toContain('Settings Form');
-    expect(names).toContain('Auto-Save Settings');
-  });
-
-  it('skips non-route nodes (GroupLabel, Separator)', () => {
-    const names = examplePages().map(page => page.name);
-    // "Settings" is a GroupLabel inside App Shell, not a route.
-    expect(names).not.toContain('Settings');
+  it('gives every product page a pattern to link to', () => {
+    // The top bar shows the pattern from `docsHref` and `docsLabel`. Only the
+    // footer's Inventory has no pattern page.
+    for (const tile of config.tiles) {
+      const pages =
+        tile.kind === 'link'
+          ? [tile]
+          : tile.items.filter(item => item.kind === 'Item');
+      for (const page of pages) {
+        expect(page).toMatchObject({
+          docsHref: expect.stringMatching(/^\/patterns\//),
+          docsLabel: expect.any(String),
+        });
+      }
+    }
   });
 });

@@ -1,146 +1,140 @@
 import { people } from '@/lib/data/people';
 import {
-  ClipboardList,
+  Building2,
+  CalendarDays,
+  FileText,
   LayoutDashboard,
-  ListChecks,
-  ListFilter,
-  MousePointerClick,
+  MapPin,
   Package,
+  Settings,
 } from 'lucide-react';
-import type { NavNode, RailTile, ShellConfig } from '../_shared';
+import type { RailTile, ShellConfig } from '../_shared';
 
-const appShellDocs = {
+// The rail is the product: tiles name what a Riverside Events user manages,
+// not which pattern a page demonstrates. The pattern is shown in the top bar,
+// from each page's `docsHref` and `docsLabel`.
+
+const appFrameDocs = {
   docsHref: '/patterns/layout/app-frame',
   docsLabel: 'App Frame Pattern',
 } as const;
-
-// The App Shell demo is a self-contained app: its screens are the panel's
-// sub-navigation, not standalone examples.
-const appShellItems: NavNode[] = [
-  { kind: 'Item', slug: '', label: 'Dashboard', ...appShellDocs },
-  { kind: 'Item', slug: 'analytics', label: 'Analytics', ...appShellDocs },
-  {
-    kind: 'Item',
-    label: 'Management',
-    children: [
-      { kind: 'Item', slug: 'users', label: 'Users', ...appShellDocs },
-      { kind: 'Item', slug: 'teams', label: 'Teams', ...appShellDocs },
-      { kind: 'Item', slug: 'billing', label: 'Billing', ...appShellDocs },
-    ],
-  },
-  { kind: 'GroupLabel', label: 'Settings' },
-  { kind: 'Item', slug: 'general', label: 'General', ...appShellDocs },
-  { kind: 'Item', slug: 'security', label: 'Security', ...appShellDocs },
-];
 
 const formDocs = {
   docsHref: '/patterns/user-input/forms',
   docsLabel: 'Form Guidelines',
 } as const;
 
-const formItems: NavNode[] = [
-  { kind: 'Item', slug: 'event-form', label: 'Event Form', ...formDocs },
-  { kind: 'Item', slug: 'settings-form', label: 'Settings Form', ...formDocs },
-  {
-    kind: 'Item',
-    slug: 'auto-save-settings',
-    label: 'Auto-Save Settings',
-    ...formDocs,
-  },
-];
-
 const tiles: RailTile[] = [
   {
     kind: 'section',
-    id: 'app-shell',
-    label: 'App Shell',
+    id: 'overview',
+    label: 'Overview',
     icon: <LayoutDashboard />,
-    items: appShellItems,
+    items: [
+      { kind: 'Item', slug: '', label: 'Dashboard', ...appFrameDocs },
+      { kind: 'Item', slug: 'analytics', label: 'Analytics', ...appFrameDocs },
+    ],
+  },
+  {
+    kind: 'section',
+    id: 'events',
+    label: 'Events',
+    icon: <CalendarDays />,
+    items: [
+      {
+        kind: 'Item',
+        slug: 'bulk-actions',
+        label: 'All events',
+        docsHref: '/patterns/user-input/bulk-actions',
+        docsLabel: 'Bulk Actions Guidelines',
+      },
+      { kind: 'Item', slug: 'event-form', label: 'Create event', ...formDocs },
+    ],
   },
   {
     kind: 'link',
-    id: 'filter',
-    label: 'Filter',
-    icon: <ListFilter />,
+    id: 'venues',
+    label: 'Venues',
+    icon: <MapPin />,
     slug: 'filter',
     docsHref: '/patterns/user-input/filter',
     docsLabel: 'Filter Guidelines',
   },
   {
     kind: 'link',
-    id: 'bulk-actions',
-    label: 'Bulk Actions',
-    icon: <ListChecks />,
-    slug: 'bulk-actions',
-    docsHref: '/patterns/user-input/bulk-actions',
-    docsLabel: 'Bulk Actions Guidelines',
-  },
-  {
-    kind: 'link',
-    id: 'pick',
-    label: 'Pick',
-    icon: <MousePointerClick />,
+    id: 'reports',
+    label: 'Reports',
+    icon: <FileText />,
     slug: 'pick',
     docsHref: '/patterns/user-input/pick',
     docsLabel: 'Pick Guidelines',
   },
   {
     kind: 'section',
-    id: 'forms',
-    label: 'Forms',
-    icon: <ClipboardList />,
-    items: formItems,
+    id: 'organisation',
+    label: 'Organisation',
+    icon: <Building2 />,
+    items: [
+      { kind: 'Item', slug: 'users', label: 'Users', ...appFrameDocs },
+      { kind: 'Item', slug: 'teams', label: 'Teams', ...appFrameDocs },
+      { kind: 'Item', slug: 'billing', label: 'Billing', ...appFrameDocs },
+    ],
   },
   {
-    kind: 'link',
-    id: 'inventory',
-    label: 'Inventory',
-    icon: <Package />,
-    slug: 'inventory',
+    kind: 'section',
+    id: 'settings',
+    label: 'Settings',
+    icon: <Settings />,
+    items: [
+      { kind: 'Item', slug: 'general', label: 'General', ...appFrameDocs },
+      { kind: 'Item', slug: 'security', label: 'Security', ...appFrameDocs },
+      {
+        kind: 'Item',
+        slug: 'settings-form',
+        label: 'Event defaults',
+        ...formDocs,
+      },
+      {
+        kind: 'Item',
+        slug: 'auto-save-settings',
+        label: 'Notifications and privacy',
+        ...formDocs,
+      },
+    ],
   },
 ];
 
 export const config: ShellConfig = {
   base: '/examples',
   tiles,
+  // Not a product screen, so it sits with Docs and Help at the bottom of the
+  // rail instead of among the product tiles.
+  footerTiles: [
+    {
+      kind: 'link',
+      id: 'inventory',
+      label: 'Inventory',
+      icon: <Package />,
+      slug: 'inventory',
+    },
+  ],
   // Label the dynamic `users/[id]` segment with the member's name.
   resolveLabel: id => people.find(person => person.id === id)?.name,
 };
 
-// Flatten a section's nav tree into demo entries. Plain groupings ("Management")
-// are not routes, so we recurse; GroupLabels and Separators are skipped.
-const collectDemos = (
-  items: NavNode[],
-  base: string
-): { name: string; url: string }[] =>
-  items.flatMap(item => {
-    if (item.kind !== 'Item') return [];
-    if (item.children) return collectDemos(item.children, base);
-    return [
-      { name: item.label, url: item.slug ? `${base}/${item.slug}` : base },
-    ];
-  });
-
 /**
- * All standalone example demos as `{ name, url }` entries for the docs cmdk
- * search. Only standalone demos are surfaced — not the internal screens of a
- * larger demo.
- *
- * A link tile is one demo. A section tile with an index leaf (empty slug) is a
- * single self-contained app (e.g. "App Shell", whose Users/Billing/… screens
- * are internal navigation): it collapses to one entry pointing at its landing.
- * A section without an index (e.g. "Forms") is just a grouping — each leaf is
- * its own demo.
+ * The examples as `{ name, url }` entries for the docs cmdk search. Visitors
+ * search the docs for a pattern, not for a screen of the demo product, so the
+ * entries use the pattern names and are listed explicitly rather than derived
+ * from the rail labels.
  */
-export const examplePages = (): { name: string; url: string }[] =>
-  config.tiles.flatMap(tile => {
-    if (tile.kind === 'link') {
-      return [{ name: tile.label, url: `${config.base}/${tile.slug}` }];
-    }
-    const isSelfContainedApp = tile.items.some(
-      item => item.kind === 'Item' && !item.children && item.slug === ''
-    );
-    return isSelfContainedApp
-      ? [{ name: tile.label, url: config.base }]
-      : collectDemos(tile.items, config.base);
-  });
+export const examplePages = (): { name: string; url: string }[] => [
+  { name: 'App Shell', url: config.base },
+  { name: 'Filter', url: `${config.base}/filter` },
+  { name: 'Bulk Actions', url: `${config.base}/bulk-actions` },
+  { name: 'Pick', url: `${config.base}/pick` },
+  { name: 'Event Form', url: `${config.base}/event-form` },
+  { name: 'Settings Form', url: `${config.base}/settings-form` },
+  { name: 'Auto-Save Settings', url: `${config.base}/auto-save-settings` },
+  { name: 'Inventory', url: `${config.base}/inventory` },
+];

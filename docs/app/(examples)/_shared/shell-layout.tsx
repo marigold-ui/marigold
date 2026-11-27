@@ -9,6 +9,7 @@ import {
   Badge,
   Breadcrumbs,
   Inline,
+  LinkButton,
   RouterProvider,
   Sidebar,
   Stack,
@@ -155,13 +156,17 @@ export const ShellLayout = ({
   const pathname = usePathname();
   const router = useRouter();
 
+  const footerTiles = config.footerTiles ?? [];
   const slug = pathname.replace(config.base, '').replace(/^\//, '');
-  const { tile, leaf, ancestors, trailing } = findActive(config.tiles, slug);
+  const { tile, leaf, ancestors, trailing } = findActive(
+    [...config.tiles, ...footerTiles],
+    slug
+  );
   const leafHref = leaf?.slug ? `${config.base}/${leaf.slug}` : config.base;
-  // The contextual docs backlink: a link tile carries its own docs reference,
-  // a section tile takes it from the active leaf.
-  const docsHref =
-    (tile.kind === 'link' ? tile.docsHref : leaf?.docsHref) ?? '/';
+  // The pattern the page demonstrates: a link tile carries its own docs
+  // reference, a section tile takes it from the active leaf.
+  const pattern = tile.kind === 'link' ? tile : leaf;
+  const docsHref = pattern?.docsHref ?? '/';
 
   const trail = (
     <Breadcrumbs>
@@ -240,7 +245,19 @@ export const ShellLayout = ({
                 )
               )}
               <Sidebar.Footer>
-                {/* Pinned tiles: the docs backlink follows the active demo. */}
+                {footerTiles.map(item => (
+                  <Sidebar.RailItem
+                    key={item.id}
+                    id={item.id}
+                    icon={item.icon}
+                    href={`${config.base}/${item.slug}`}
+                  >
+                    {item.label}
+                  </Sidebar.RailItem>
+                ))}
+                {/* The docs backlink follows the active demo. On desktop the
+                    top bar names the pattern too; this tile is what remains
+                    of it in the mobile drawer. */}
                 <Sidebar.RailItem id="docs" icon={<BookOpen />} href={docsHref}>
                   Docs
                 </Sidebar.RailItem>
@@ -290,6 +307,25 @@ export const ShellLayout = ({
               {/* No room for the trail beside the user section below `sm`. */}
               <div className="w-full min-w-0 max-sm:hidden">{trail}</div>
             </TopNavigation.Start>
+            {pattern?.docsHref && pattern.docsLabel && (
+              <TopNavigation.Middle aria-label="Pattern" alignX="right">
+                {/* Below `xl` the trail and the user section fill the bar, and
+                    the link would overlap a long trail such as a user's
+                    name; the rail's Docs tile links the same page. CSS, not
+                    `useSmallScreen()`, so phones get no flash of the link
+                    before hydration. */}
+                <div className="max-xl:hidden">
+                  <LinkButton
+                    variant="ghost"
+                    size="small"
+                    href={pattern.docsHref}
+                  >
+                    <BookOpen />
+                    {pattern.docsLabel}
+                  </LinkButton>
+                </div>
+              </TopNavigation.Middle>
+            )}
             <TopNavigation.End>
               <UserSection />
             </TopNavigation.End>
