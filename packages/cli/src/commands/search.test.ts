@@ -126,6 +126,34 @@ describe('runSearch', () => {
     expect(JSON.parse(json.output)).toEqual([]);
   });
 
+  test('returns a version warning but keeps the JSON a bare array', async () => {
+    seedCache(
+      `${docsUrl()}/manifest.json`,
+      JSON.stringify({
+        baseUrl: 'https://www.marigold-ui.io',
+        packages: { '@marigold/components': '18.2.1' },
+        pages: [],
+      })
+    );
+    const app = path.join(tmpDir, 'app');
+    const pkg = path.join(app, 'node_modules', '@marigold', 'components');
+    fs.mkdirSync(pkg, { recursive: true });
+    fs.writeFileSync(
+      path.join(pkg, 'package.json'),
+      JSON.stringify({ version: '17.4.0' })
+    );
+
+    const { output, warning } = await runSearch({
+      query: 'validation',
+      format: 'json',
+      offline: true,
+      cwd: app,
+    });
+
+    expect(warning).toMatchObject({ installed: '17.4.0', docs: '18.2.1' });
+    expect(Array.isArray(JSON.parse(output))).toBe(true);
+  });
+
   test('throws on an empty query', async () => {
     await expect(runSearch({ query: '' })).rejects.toThrow(
       /Usage: marigold search/

@@ -1,5 +1,9 @@
 import { type OutputFormat, formatSearchResults } from '../lib/format.js';
 import { loadSearchIndex, searchComponentDocs } from '../lib/search.js';
+import {
+  type VersionWarning,
+  loadVersionWarning,
+} from '../lib/version-warning.js';
 
 export interface RunSearchOptions {
   query: string;
@@ -7,11 +11,16 @@ export interface RunSearchOptions {
   format?: OutputFormat;
   fresh?: boolean;
   offline?: boolean;
+  /** Where to look for the installed `@marigold/components`. */
+  cwd?: string;
 }
 
 export interface RunSearchResult {
   output: string;
   cacheHit: boolean;
+  // Set when the installed `@marigold/components` is older than the docs.
+  // Never part of `output`: the JSON there is a documented bare array.
+  warning: VersionWarning | null;
 }
 
 export const runSearch = async (
@@ -37,5 +46,10 @@ export const runSearch = async (
     options.format ?? 'markdown'
   );
 
-  return { output, cacheHit };
+  const warning = await loadVersionWarning({
+    cwd: options.cwd,
+    offline: options.offline,
+  });
+
+  return { output, cacheHit, warning };
 };

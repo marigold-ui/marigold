@@ -106,6 +106,11 @@ code fences, inline code, bold). For non-trivial docs prefer `--format json` (a
 structured payload) or `--format plain` (ANSI-stripped, ideal for piping into
 other tools).
 
+The docs describe the latest release. When the `@marigold/components` installed
+in the current directory is an older minor or major version, `docs` prints a one-line warning naming both
+versions on stderr. With `--format json` it is a `warning` field
+(`{ installed, docs, message }`) instead, and absent when the versions match.
+
 ### `marigold search <query>`
 
 Find components by **what their docs say**: title, description, section
@@ -135,6 +140,10 @@ matches and a bonus for exact phrase hits. `--format json` returns the
 `[{ name, slug, score, hits }]` contract (`hits` is the top matching section).
 A query with no matches exits `0` (printing a friendly message, or `[]` for
 `--format json`).
+
+Like `docs`, `search` warns on stderr when the installed `@marigold/components`
+is an older minor or major version than the docs. The JSON stays a bare array, so the warning is never
+part of it.
 
 The index is sourced from component docs only (not foundations, patterns, or
 getting-started pages). It ships with the docs build, so a CLI pointed at a docs
