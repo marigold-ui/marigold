@@ -1,7 +1,9 @@
-import type { DateValue } from '@internationalized/date';
-import { parseAbsoluteToLocal } from '@internationalized/date';
 import { useState } from 'react';
-import { DatePicker } from '@marigold/components';
+import {
+  DatePicker,
+  type DateValue,
+  parseAbsoluteToLocal,
+} from '@marigold/components';
 
 export default () => {
   const [value, setValue] = useState<DateValue>(() =>

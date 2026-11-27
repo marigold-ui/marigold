@@ -1,5 +1,8 @@
-import { CalendarDate } from '@internationalized/date';
-import { RangeCalendar, RangeCalendarProps } from '@marigold/components';
+import {
+  CalendarDate,
+  RangeCalendar,
+  RangeCalendarProps,
+} from '@marigold/components';
 
 export default (props: RangeCalendarProps) => (
   <RangeCalendar

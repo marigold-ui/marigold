@@ -9,7 +9,6 @@ import {
   venueTypes,
 } from '@/lib/data/venues';
 import type { VenueFacets } from '@/lib/data/venues-query';
-import { parseDate } from '@internationalized/date';
 import { useQueryClient } from '@tanstack/react-query';
 import { type SubmitEvent, useRef, useState } from 'react';
 import {
@@ -32,6 +31,7 @@ import {
   TagField,
   Text,
   VisuallyHidden,
+  parseDate,
   parseFormData,
 } from '@marigold/components';
 import { ListFilter } from '@marigold/icons';

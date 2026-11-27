@@ -67,6 +67,34 @@ export type {
   DateRangePreset,
 } from './Calendar/presets';
 
+// Date values and helpers for the date components, so an app does not need to
+// install `@internationalized/date` itself. A deliberate list, not `export *`,
+// so a new version of that package cannot add to Marigold's public API.
+export {
+  CalendarDate,
+  CalendarDateTime,
+  Time,
+  ZonedDateTime,
+  fromDate,
+  getLocalTimeZone,
+  isSameDay,
+  isWeekend,
+  maxDate,
+  minDate,
+  now,
+  parseAbsoluteToLocal,
+  parseDate,
+  parseDateTime,
+  parseTime,
+  parseZonedDateTime,
+  toCalendarDate,
+  toCalendarDateTime,
+  toTime,
+  today,
+} from '@internationalized/date';
+export type { DateDuration } from '@internationalized/date';
+export type { DateValue, TimeValue } from 'react-aria-components';
+
 export { Card } from './Card/Card';
 export type { CardProps } from './Card/Card';
 

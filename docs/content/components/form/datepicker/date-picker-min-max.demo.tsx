@@ -1,5 +1,4 @@
-import { CalendarDate } from '@internationalized/date';
-import { DatePicker } from '@marigold/components';
+import { CalendarDate, DatePicker } from '@marigold/components';
 
 export default () => (
   <DatePicker

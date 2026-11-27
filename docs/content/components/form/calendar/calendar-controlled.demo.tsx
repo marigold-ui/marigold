@@ -1,7 +1,10 @@
-import type { DateValue } from '@internationalized/date';
-import { CalendarDate } from '@internationalized/date';
 import { useState } from 'react';
-import { Calendar, Stack } from '@marigold/components';
+import {
+  Calendar,
+  CalendarDate,
+  type DateValue,
+  Stack,
+} from '@marigold/components';
 
 export default () => {
   const [value, setValue] = useState<DateValue>(

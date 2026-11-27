@@ -6,6 +6,7 @@ paths:
   - 'contributing.md'
   - 'CODE-OF-CONDUCT.md'
   - 'MIGRATION-v18.md'
+  - 'MIGRATION-v19.md'
   - 'packages/*/README.md'
   - 'themes/*/README.md'
   - 'config/*/README.md'

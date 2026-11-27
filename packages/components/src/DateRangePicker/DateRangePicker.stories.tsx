@@ -1,9 +1,3 @@
-import {
-  CalendarDate,
-  getLocalTimeZone,
-  isSameDay,
-  today,
-} from '@internationalized/date';
 import type { BoundFunctions, queries } from '@testing-library/dom';
 import { useState } from 'react';
 import type { DateValue } from 'react-aria-components';
@@ -12,6 +6,12 @@ import { expect, fn, spyOn, waitFor, within } from 'storybook/test';
 import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
 import preview from '.storybook/preview';
 import type { RangeValue } from '@react-types/shared';
+import {
+  CalendarDate,
+  getLocalTimeZone,
+  isSameDay,
+  today,
+} from '@marigold/components';
 import { theme } from '../../../../themes/theme-rui/src/index.js';
 import { Stack } from '../Stack/Stack';
 import { assertCalendarTriggerHitArea } from '../calendarTrigger.utils';

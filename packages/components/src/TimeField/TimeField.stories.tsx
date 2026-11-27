@@ -1,6 +1,6 @@
-import { parseTime } from '@internationalized/date';
 import { expect } from 'storybook/test';
 import preview from '.storybook/preview';
+import { parseTime } from '@marigold/components';
 import { TimeField } from './TimeField';
 
 const meta = preview.meta({

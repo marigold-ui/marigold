@@ -1,6 +1,5 @@
 import { people } from '@/lib/data/people';
 import { amenitiesOptions, venueTypes, venues } from '@/lib/data/venues';
-import { CalendarDate } from '@internationalized/date';
 import {
   CalendarPlus,
   CircleQuestionMark,
@@ -13,6 +12,7 @@ import {
   ActionMenu,
   Badge,
   Button,
+  CalendarDate,
   Card,
   Checkbox,
   Columns,
