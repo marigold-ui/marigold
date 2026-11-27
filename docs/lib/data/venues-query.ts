@@ -16,7 +16,8 @@ import {
 // query keys. Keeping it pure (no React, no I/O) means the same code can run on
 // the server and be unit-tested in isolation.
 
-export type VenueSortColumn = 'name' | 'capacity' | 'price';
+export type VenueSortColumn =
+  'name' | 'capacity' | 'price' | 'rating' | 'available';
 export type VenueSortDirection = 'ascending' | 'descending';
 
 export interface VenueQueryParams {
@@ -76,6 +77,11 @@ const compareVenues = (
   const dir = direction === 'ascending' ? 1 : -1;
   if (column === 'price') return dir * (a.price.to - b.price.to);
   if (column === 'capacity') return dir * (a.capacity - b.capacity);
+  if (column === 'rating') return dir * (a.rating - b.rating);
+  // ISO dates compare correctly as strings.
+  if (column === 'available') {
+    return dir * a.nextAvailable.localeCompare(b.nextAvailable);
+  }
   return dir * a.name.localeCompare(b.name);
 };
 

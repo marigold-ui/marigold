@@ -15,7 +15,7 @@ export const FetchingIndicator = () => {
   if (!fetching) return null;
 
   return (
-    <Inline space={1} alignY="center" aria-hidden>
+    <Inline space="tight" alignY="center" aria-hidden>
       <ProgressCircle size="16" isIndeterminate aria-label="Updating" />
       <Text fontSize="sm" variant="muted">
         Updating…

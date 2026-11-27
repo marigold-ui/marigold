@@ -9,14 +9,14 @@ import { useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundary } from 'react-error-boundary';
 import {
   Button,
-  Center,
   Description,
+  ErrorState,
   Page,
   Panel,
   Stack,
-  Text,
   Title,
 } from '@marigold/components';
+import { Plus } from '@marigold/icons';
 import { AppliedFilter } from './AppliedFilter';
 import { FilterBar } from './FilterBar';
 import { VenuesPagination } from './VenuesPagination';
@@ -35,21 +35,11 @@ const VenuesData = () => {
       onReset={reset}
       fallbackRender={({ resetErrorBoundary }) => (
         <Panel.Content>
-          <div className="grid min-h-64 place-items-center">
-            <Center>
-              <Stack space={2} alignX="center">
-                <Text fontSize="lg" weight="bold">
-                  Could not load venues
-                </Text>
-                <Text variant="muted">
-                  Something went wrong while fetching data.
-                </Text>
-                <Button variant="primary" onPress={resetErrorBoundary}>
-                  Try again
-                </Button>
-              </Stack>
-            </Center>
-          </div>
+          <ErrorState
+            title="Venues could not be loaded"
+            description="Check your connection and try again."
+            action={<Button onPress={resetErrorBoundary}>Try again</Button>}
+          />
         </Panel.Content>
       )}
     >
@@ -68,13 +58,15 @@ const FilterPage = () => (
     <Page>
       <Page.Header>
         <Title>Venues</Title>
-        <Description>
-          Browse and filter available venues for your events.
-        </Description>
+        <Description>Find a venue for your next event.</Description>
+        <Button variant="primary">
+          <Plus />
+          Add venue
+        </Button>
       </Page.Header>
       <Panel aria-label="Venues">
         <Panel.Content>
-          <Stack space="regular">
+          <Stack space="related">
             <FilterBar />
             <AppliedFilter />
           </Stack>

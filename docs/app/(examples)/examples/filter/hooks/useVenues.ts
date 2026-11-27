@@ -8,22 +8,17 @@ import { useSearch } from './useSearch';
 import { useSort } from './useSort';
 import { fetchVenues } from './venuesApi';
 
-// Encapsulates the venues list query. Components call `useVenues()` and stay
-// presentational — they never see fetch, query keys, or URL parsing. The query
-// key is derived from the live URL (nuqs) state plus the client-owned
-// `excludedIds`, so any change refetches the right slice and background
-// refetches/cache updates always target the correct entry.
-//
-// Safe to call from multiple components (table, pagination): react-query
-// deduplicates identical keys, so they share one request and one cache entry.
-export const useVenues = () => {
+// The query params derived from the URL state, without fetching. Imperative
+// actions outside the table's error boundary (the export in the filter bar)
+// use this to re-run the same query without subscribing to its errors.
+export const useVenueParams = (): VenueQueryParams => {
   const [search] = useSearch();
-  const { filter, hasFilter } = useFilter();
+  const { filter } = useFilter();
   const [sort] = useSort();
   const [{ page, pageSize }] = usePagination();
   const { excludedIds } = useDeletedVenues();
 
-  const params: VenueQueryParams = {
+  return {
     q: search || undefined,
     capacity: filter.capacity,
     price: filter.price,
@@ -41,6 +36,21 @@ export const useVenues = () => {
     pageSize,
     exclude: excludedIds,
   };
+};
+
+// Encapsulates the venues list query. Components call `useVenues()` and stay
+// presentational — they never see fetch, query keys, or URL parsing. The query
+// key is derived from the live URL (nuqs) state plus the client-owned
+// `excludedIds`, so any change refetches the right slice and background
+// refetches/cache updates always target the correct entry.
+//
+// Safe to call from multiple components (table, pagination): react-query
+// deduplicates identical keys, so they share one request and one cache entry.
+export const useVenues = () => {
+  const [search] = useSearch();
+  const { hasFilter } = useFilter();
+  const [{ pageSize }] = usePagination();
+  const params = useVenueParams();
 
   const query = useQuery({
     queryKey: venueKeys.list(params),
@@ -57,9 +67,6 @@ export const useVenues = () => {
   const isFiltered = search.length > 0 || hasFilter();
 
   return {
-    // `params` lets imperative actions (e.g. "export all matching") re-run the
-    // same query with a different page size.
-    params,
     items: result?.items ?? [],
     totalItems: result?.totalItems ?? 0,
     totalPages: result?.totalPages ?? 1,

@@ -1,31 +1,25 @@
 'use client';
 
-import {
-  amenitiesOptions,
-  parkingOptions,
-  venueTypes,
-} from '@/lib/data/venues';
+import { amenitiesOptions, venueTypes } from '@/lib/data/venues';
 import type { Venue } from '@/lib/data/venues';
 import {
-  ActionBar,
   Badge,
   Button,
-  Center,
+  EmptyState,
   Inline,
+  Scrollable,
   Stack,
   Table,
   Text,
   VisuallyHidden,
 } from '@marigold/components';
-import { Download, Star, Trash2 } from '@marigold/icons';
+import { Star, Trash2 } from '@marigold/icons';
 import { DateFormat, NumericFormat } from '@marigold/system';
-import { exportVenuesToCsv } from './csv';
 import { useDeleteVenue } from './hooks/useDeleteVenue';
 import { useFilter } from './hooks/useFilter';
 import { useSearch } from './hooks/useSearch';
 import { type VenueSortDescriptor, useSort } from './hooks/useSort';
 import { useVenues } from './hooks/useVenues';
-import { fetchVenues } from './hooks/venuesApi';
 
 // Anchor that VenuesPagination scrolls back to so users land on the first
 // row of the new page.
@@ -41,29 +35,20 @@ const FilterEmptyState = () => {
   };
 
   return (
-    <div className="grid min-w-xl place-items-center py-10">
-      <Center>
-        <Text fontSize="lg" weight="bold">
-          No venues match your criteria
-        </Text>
-        <Text variant="muted">Try adjusting your filters or search terms.</Text>
-        <Button variant="ghost" onPress={clearAll}>
-          Clear all filters
-        </Button>
-      </Center>
-    </div>
+    <EmptyState
+      title="No venues match your filters"
+      description="Try fewer filters or another search term."
+      action={<Button onPress={clearAll}>Clear all filters</Button>}
+    />
   );
 };
 
 const NoDataEmptyState = () => (
-  <div className="grid min-w-xl place-items-center py-10">
-    <Center>
-      <Text fontSize="lg" weight="bold">
-        No venues available
-      </Text>
-      <Text variant="muted">Add a venue to get started.</Text>
-    </Center>
-  </div>
+  <EmptyState
+    title="No venues yet"
+    description="Add a venue to start planning events there."
+    action={<Button>Add venue</Button>}
+  />
 );
 
 // Co-located skeleton that mirrors the table's row rhythm. Shown only for the
@@ -74,9 +59,9 @@ const NoDataEmptyState = () => (
 // region in VenuesTable, which outlives this subtree. See the note there.
 export const VenuesTableSkeleton = ({ rows = 5 }: { rows?: number }) => (
   <div aria-hidden>
-    <Stack space={4}>
+    <Stack space="regular">
       {Array.from({ length: rows }, (_, i) => `skeleton-${i}`).map(key => (
-        <Inline key={key} space={6} alignY="center">
+        <Inline key={key} space="regular" alignY="center">
           <div className="h-4 w-1/4 animate-pulse rounded bg-current/10" />
           <div className="h-4 w-1/6 animate-pulse rounded bg-current/10" />
           <div className="h-4 grow animate-pulse rounded bg-current/10" />
@@ -95,7 +80,7 @@ export const VenuesTableSkeleton = ({ rows = 5 }: { rows?: number }) => (
 // collapsed values stay reachable via hover and screen readers.
 const BadgeList = ({
   items,
-  max = 3,
+  max = 2,
 }: {
   items: readonly string[];
   max?: number;
@@ -103,7 +88,7 @@ const BadgeList = ({
   const hidden = items.slice(max);
 
   return (
-    <Inline space="0.5">
+    <Inline space="tight">
       {items.slice(0, max).map(item => (
         <Badge key={item}>{item}</Badge>
       ))}
@@ -117,6 +102,15 @@ const BadgeList = ({
   );
 };
 
+const euro = (value: number) => (
+  <NumericFormat
+    style="currency"
+    value={value}
+    currency="EUR"
+    maximumFractionDigits={0}
+  />
+);
+
 const VenueRow = ({
   venue,
   onDelete,
@@ -128,14 +122,19 @@ const VenueRow = ({
 }) => (
   <Table.Row id={venue.id}>
     <Table.Cell textValue={venue.name}>
-      <Text weight="medium">{venue.name}</Text>
+      <Stack>
+        <Text weight="medium">{venue.name}</Text>
+        <Text variant="muted" fontSize="sm">
+          {venue.street}
+        </Text>
+      </Stack>
     </Table.Cell>
     <Table.Cell>{venueTypes[venue.type] ?? 'Unknown'}</Table.Cell>
     <Table.Cell>
       <Stack>
-        <Text>{venue.street}</Text>
+        <Text>{venue.city}</Text>
         <Text variant="muted" fontSize="sm">
-          {venue.city}, {venue.country}
+          {venue.country}
         </Text>
       </Stack>
     </Table.Cell>
@@ -143,26 +142,12 @@ const VenueRow = ({
       <NumericFormat value={venue.capacity} />
     </Table.Cell>
     <Table.Cell>
-      <NumericFormat
-        style="currency"
-        value={venue.price.to}
-        currency="EUR"
-        maximumFractionDigits={0}
-      />
+      {euro(venue.price.from)} to {euro(venue.price.to)}
     </Table.Cell>
-    <Table.Cell>
-      <BadgeList items={venue.traits} />
-    </Table.Cell>
-    <Table.Cell>
-      <BadgeList items={venue.amenities.map(a => amenitiesOptions[a])} />
-    </Table.Cell>
-    <Table.Cell>
-      <BadgeList items={venue.parking.map(p => parkingOptions[p])} />
-    </Table.Cell>
-    <Table.Cell>
-      <Inline space="0.5" alignX="right">
-        <NumericFormat value={venue.rating} minimumFractionDigits={1} />{' '}
-        <Star className="self-center" size={14} />
+    <Table.Cell textValue={`${venue.rating} stars`}>
+      <Inline space="tight" alignX="right" alignY="center" noWrap>
+        <NumericFormat value={venue.rating} minimumFractionDigits={1} />
+        <Star size={14} aria-hidden />
       </Inline>
     </Table.Cell>
     <Table.Cell>
@@ -171,6 +156,9 @@ const VenueRow = ({
         value={new Date(`${venue.nextAvailable}T00:00:00`)}
         dateStyle="medium"
       />
+    </Table.Cell>
+    <Table.Cell>
+      <BadgeList items={venue.amenities.map(a => amenitiesOptions[a])} />
     </Table.Cell>
     <Table.Cell>
       <Button
@@ -190,8 +178,7 @@ const VenueRow = ({
 // region id so VenuesPagination can scroll back to it on page change, plus
 // the single live region (role="status" implies aria-live="polite").
 export const VenuesTable = () => {
-  const { items, params, totalItems, pageSize, isFiltered, isLoading } =
-    useVenues();
+  const { items, totalItems, pageSize, isFiltered, isLoading } = useVenues();
   const [sort, setSort] = useSort();
   const { deleteVenue, isDeleting } = useDeleteVenue();
 
@@ -210,92 +197,76 @@ export const VenuesTable = () => {
       {isLoading ? (
         <VenuesTableSkeleton rows={pageSize} />
       ) : (
-        <Table
-          aria-label="Venue list"
-          selectionMode="multiple"
-          sortDescriptor={sort}
-          onSortChange={d =>
-            setSort({
-              // RAC types `column` as `Key` (string | number); the cast is
-              // safe because the value can only be one of our Table.Column ids.
-              column: d.column as VenueSortDescriptor['column'],
-              direction: d.direction,
-            })
-          }
-          actionBar={selectedKeys => (
-            <ActionBar>
-              <Button
-                onPress={async () => {
-                  // "Select all" can span pages, so fetch the full matching set
-                  // (same query, no pagination) before exporting.
-                  const selected =
-                    selectedKeys === 'all'
-                      ? (await fetchVenues({ ...params, pageSize: 'all' }))
-                          .items
-                      : items.filter(v => selectedKeys.has(v.id));
-                  exportVenuesToCsv(selected);
-                }}
-              >
-                <Download /> Export CSV
-              </Button>
-            </ActionBar>
-          )}
-        >
-          <Table.Header>
-            <Table.Column id="name" rowHeader allowsSorting width="2fr">
-              Name
-            </Table.Column>
-            <Table.Column id="type" width="1fr">
-              Type
-            </Table.Column>
-            <Table.Column id="address" width="2fr">
-              Address
-            </Table.Column>
-            <Table.Column
-              id="capacity"
-              alignX="right"
-              allowsSorting
-              width="1fr"
-            >
-              Capacity
-            </Table.Column>
-            <Table.Column id="price" alignX="right" allowsSorting width="1fr">
-              Max. Price
-            </Table.Column>
-            <Table.Column id="traits" width="1.5fr">
-              Traits
-            </Table.Column>
-            <Table.Column id="amenities" width="1.5fr">
-              Amenities
-            </Table.Column>
-            <Table.Column id="parking" width="1fr">
-              Parking
-            </Table.Column>
-            <Table.Column id="rating" alignX="right" width="1fr">
-              Rating
-            </Table.Column>
-            <Table.Column id="available" width="1fr">
-              Available
-            </Table.Column>
-            <Table.Column id="actions" width="1fr">
-              <VisuallyHidden>Actions</VisuallyHidden>
-            </Table.Column>
-          </Table.Header>
-          <Table.Body
-            emptyState={() =>
-              isFiltered ? <FilterEmptyState /> : <NoDataEmptyState />
+        <Scrollable>
+          <Table
+            aria-label="Venue list"
+            sortDescriptor={sort}
+            onSortChange={d =>
+              setSort({
+                // RAC types `column` as `Key` (string | number); the cast is
+                // safe because the value can only be one of our Table.Column ids.
+                column: d.column as VenueSortDescriptor['column'],
+                direction: d.direction,
+              })
             }
           >
-            {items.map(venue => (
-              <VenueRow
-                key={venue.id}
-                venue={venue}
-                onDelete={deleteVenue}
-                deleteDisabled={isDeleting}
-              />
-            ))}
-          </Table.Body>
-        </Table>
+            <Table.Header>
+              <Table.Column
+                id="name"
+                rowHeader
+                sticky="start"
+                allowsSorting
+                width="2fr"
+                minWidth={240}
+              >
+                Venue
+              </Table.Column>
+              <Table.Column id="type" width={190}>
+                Type
+              </Table.Column>
+              <Table.Column id="city" width="1fr" minWidth={130}>
+                City
+              </Table.Column>
+              <Table.Column
+                id="capacity"
+                alignX="right"
+                allowsSorting
+                width={100}
+              >
+                Capacity
+              </Table.Column>
+              <Table.Column id="price" alignX="right" allowsSorting width={160}>
+                Price
+              </Table.Column>
+              <Table.Column id="rating" alignX="right" allowsSorting width={90}>
+                Rating
+              </Table.Column>
+              <Table.Column id="available" allowsSorting width={130}>
+                Available
+              </Table.Column>
+              <Table.Column id="amenities" width={200}>
+                Amenities
+              </Table.Column>
+              <Table.Column id="actions" width={56}>
+                <VisuallyHidden>Actions</VisuallyHidden>
+              </Table.Column>
+            </Table.Header>
+            <Table.Body
+              emptyState={() =>
+                isFiltered ? <FilterEmptyState /> : <NoDataEmptyState />
+              }
+            >
+              {items.map(venue => (
+                <VenueRow
+                  key={venue.id}
+                  venue={venue}
+                  onDelete={deleteVenue}
+                  deleteDisabled={isDeleting}
+                />
+              ))}
+            </Table.Body>
+          </Table>
+        </Scrollable>
       )}
     </div>
   );

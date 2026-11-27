@@ -84,4 +84,24 @@ describe('queryVenues', () => {
     expect(asc).toEqual([...asc].sort((a, b) => a - b));
     expect(desc).toEqual([...asc].reverse());
   });
+
+  it('sorts by rating, highest first when descending', () => {
+    const ratings = queryVenues({
+      pageSize: 'all',
+      column: 'rating',
+      direction: 'descending',
+    }).items.map(v => v.rating);
+
+    expect(ratings).toEqual([...ratings].sort((a, b) => b - a));
+  });
+
+  it('sorts by next available date, soonest first when ascending', () => {
+    const dates = queryVenues({
+      pageSize: 'all',
+      column: 'available',
+      direction: 'ascending',
+    }).items.map(v => v.nextAvailable);
+
+    expect(dates).toEqual([...dates].sort());
+  });
 });
