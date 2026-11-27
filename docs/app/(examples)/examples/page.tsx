@@ -22,6 +22,7 @@ import {
   Tiles,
   Title,
 } from '@marigold/components';
+import { useWorkspace } from '../_shared';
 import { businessNumbers, daysAgo } from '../_shared/demo-data';
 
 const stats = [
@@ -110,84 +111,88 @@ const Stat = ({
   </Card>
 );
 
-const DashboardPage = () => (
-  <Page>
-    <Page.Header>
-      <Title>Dashboard</Title>
-      <Description>An overview of your workspace.</Description>
-      <LinkButton variant="primary" href="/examples/event-form">
-        <CalendarPlus />
-        Create event
-      </LinkButton>
-    </Page.Header>
+const DashboardPage = () => {
+  // Follows the organizer people switch to in the command palette.
+  const { organizer } = useWorkspace();
+  return (
+    <Page>
+      <Page.Header>
+        <Title>Dashboard</Title>
+        <Description>An overview of {organizer.name}.</Description>
+        <LinkButton variant="primary" href="/examples/event-form">
+          <CalendarPlus />
+          Create event
+        </LinkButton>
+      </Page.Header>
 
-    <Tiles stretch equalHeight tilesWidth="14rem" space="regular">
-      {stats.map(stat => (
-        <Stat key={stat.label} {...stat} />
-      ))}
-    </Tiles>
+      <Tiles stretch equalHeight tilesWidth="14rem" space="regular">
+        {stats.map(stat => (
+          <Stat key={stat.label} {...stat} />
+        ))}
+      </Tiles>
 
-    <Columns columns={[2, 1]} space="group" collapseAt="60rem">
-      <Panel>
-        <Panel.Header>
-          <Title>Recent activity</Title>
-          <Description>What your team has been up to.</Description>
-        </Panel.Header>
-        <Panel.Content bleed>
-          <Scrollable>
-            <Table aria-label="Recent activity">
-              <Table.Header>
-                <Table.Column rowHeader width="1fr" minWidth={150}>
-                  Member
-                </Table.Column>
-                <Table.Column width="2fr" minWidth={200}>
-                  Activity
-                </Table.Column>
-                <Table.Column width={130}>When</Table.Column>
-              </Table.Header>
-              <Table.Body>
-                {getActivity().map(entry => (
-                  <Table.Row key={entry.id}>
-                    <Table.Cell>{byId(entry.who)?.name}</Table.Cell>
-                    <Table.Cell>{entry.action}</Table.Cell>
-                    <Table.Cell>
-                      <DateFormat value={entry.date} dateStyle="medium" />
-                    </Table.Cell>
-                  </Table.Row>
-                ))}
-              </Table.Body>
-            </Table>
-          </Scrollable>
-        </Panel.Content>
-      </Panel>
+      <Columns columns={[2, 1]} space="group" collapseAt="60rem">
+        <Panel>
+          <Panel.Header>
+            <Title>Recent activity</Title>
+            <Description>What your team has been up to.</Description>
+          </Panel.Header>
+          <Panel.Content bleed>
+            <Scrollable>
+              <Table aria-label="Recent activity">
+                <Table.Header>
+                  <Table.Column rowHeader width="1fr" minWidth={150}>
+                    Member
+                  </Table.Column>
+                  <Table.Column width="2fr" minWidth={200}>
+                    Activity
+                  </Table.Column>
+                  <Table.Column width={130}>When</Table.Column>
+                </Table.Header>
+                <Table.Body>
+                  {getActivity().map(entry => (
+                    <Table.Row key={entry.id}>
+                      <Table.Cell>{byId(entry.who)?.name}</Table.Cell>
+                      <Table.Cell>{entry.action}</Table.Cell>
+                      <Table.Cell>
+                        <DateFormat value={entry.date} dateStyle="medium" />
+                      </Table.Cell>
+                    </Table.Row>
+                  ))}
+                </Table.Body>
+              </Table>
+            </Scrollable>
+          </Panel.Content>
+        </Panel>
 
-      <Panel>
-        <Panel.Header>
-          <Title>Your team</Title>
-        </Panel.Header>
-        <Panel.Content>
-          <Stack space="regular">
-            {people.slice(0, 5).map(person => (
-              <Inline key={person.id} space="related" alignY="center" noWrap>
-                <img
-                  src={person.avatar}
-                  alt=""
-                  className="block size-8 shrink-0 rounded-full"
-                />
-                <Stack space="collapsed">
-                  <Text weight="semibold">{person.name}</Text>
-                  <Text variant="muted" fontSize="xs">
-                    {person.position}
-                  </Text>
-                </Stack>
-                <Badge>{person.role}</Badge>
-              </Inline>
-            ))}
-          </Stack>
-        </Panel.Content>
-      </Panel>
-    </Columns>
-  </Page>
-);
+        <Panel>
+          <Panel.Header>
+            <Title>Your team</Title>
+          </Panel.Header>
+          <Panel.Content>
+            <Stack space="regular">
+              {people.slice(0, 5).map(person => (
+                <Inline key={person.id} space="related" alignY="center" noWrap>
+                  <img
+                    src={person.avatar}
+                    alt=""
+                    className="block size-8 shrink-0 rounded-full"
+                  />
+                  <Stack space="collapsed">
+                    <Text weight="semibold">{person.name}</Text>
+                    <Text variant="muted" fontSize="xs">
+                      {person.position}
+                    </Text>
+                  </Stack>
+                  <Badge>{person.role}</Badge>
+                </Inline>
+              ))}
+            </Stack>
+          </Panel.Content>
+        </Panel>
+      </Columns>
+    </Page>
+  );
+};
 
 export default DashboardPage;

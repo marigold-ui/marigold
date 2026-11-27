@@ -1,0 +1,126 @@
+import { Children, useRef } from 'react';
+import { useCollator } from '@react-aria/i18n';
+import { useClassNames } from '@marigold/system';
+import {
+  MenuItemCore,
+  type MenuItemProps,
+  getItemText,
+} from '../Menu/MenuItem';
+import { useDevWarning } from '../utils/useDevWarning';
+import { useCommandPalette } from './Context';
+import { FirstRowRule } from './useActiveRow';
+
+// Props
+// ---------------
+export interface CommandPaletteItemProps extends Omit<MenuItemProps, 'id'> {
+  /**
+   * Unique id of the row. The palette passes it to `onAction`, and needs it
+   * to keep the first row active. Only `CommandPalette.Item` rows do that, so
+   * build every row of the palette with it.
+   */
+  id: NonNullable<MenuItemProps['id']>;
+}
+
+// Helpers
+// ---------------
+// First range of `text` that the default filter would match: the same
+// locale-aware, accent- and case-insensitive comparison (so "cafe" marks
+// "café"). Assumes the matched range is as long as the query, which holds for
+// precomposed text.
+const findMatch = (text: string, query: string, collator: Intl.Collator) => {
+  for (let i = 0; i + query.length <= text.length; i++) {
+    if (collator.compare(text.slice(i, i + query.length), query) === 0) {
+      return [i, i + query.length] as const;
+    }
+  }
+  return null;
+};
+
+interface HighlightProps {
+  text: string;
+  query: string;
+  collator: Intl.Collator;
+  className?: string;
+}
+
+const Highlight = ({ text, query, collator, className }: HighlightProps) => {
+  const match = findMatch(text, query, collator);
+  if (!match) return text;
+
+  const [start, end] = match;
+  // One element, so the item grid places the label as a single cell.
+  return (
+    <span>
+      {text.slice(0, start)}
+      <mark className={className}>{text.slice(start, end)}</mark>
+      {text.slice(end)}
+    </span>
+  );
+};
+
+// Component
+// ---------------
+// Shares the menu item's behaviour, not its styles: the palette's rows are
+// larger than a menu's. On top it marks the part of a plain-text label that
+// matched the query.
+export const CommandPaletteItem = ({
+  variant,
+  size,
+  children,
+  textValue,
+  ...props
+}: CommandPaletteItemProps) => {
+  const { query: term, filter } = useCommandPalette();
+  const rowRef = useRef<HTMLDivElement>(null);
+  const collator = useCollator({ usage: 'search', sensitivity: 'base' });
+  const classNames = useClassNames({
+    component: 'CommandPalette',
+    variant,
+    size,
+  });
+
+  // `MenuItemCore` only sees the highlighted label, so derive it here.
+  const text = textValue ?? getItemText(children);
+  useDevWarning(
+    text === undefined,
+    '[CommandPalette.Item] Has no `textValue`, so it can never match a ' +
+      'search query. Pass `textValue` when the children are not plain text.'
+  );
+
+  // Only the default filter has a known matching rule to highlight.
+  const query = filter === undefined ? term.trim() : '';
+  // Top-level text is the label, also next to an icon. `Children.map` keys
+  // each part by its position. Without a query there is nothing to mark.
+  const label =
+    typeof children === 'function'
+      ? children
+      : Children.map(children, part =>
+          query && (typeof part === 'string' || typeof part === 'number') ? (
+            <Highlight
+              text={String(part)}
+              query={query}
+              collator={collator}
+              className={classNames.match}
+            />
+          ) : (
+            part
+          )
+        );
+
+  return (
+    <MenuItemCore
+      {...props}
+      ref={rowRef}
+      variant={variant}
+      textValue={text}
+      classNames={classNames}
+    >
+      {renderProps => (
+        <>
+          {typeof label === 'function' ? label(renderProps) : label}
+          <FirstRowRule id={props.id} rowRef={rowRef} />
+        </>
+      )}
+    </MenuItemCore>
+  );
+};

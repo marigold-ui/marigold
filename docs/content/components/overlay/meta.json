@@ -1,10 +1,12 @@
 {
   "pages": [
     "action-menu",
+    "command-palette",
     "contextual-help",
     "dialog",
     "drawer",
     "menu",
+    "popover",
     "toast",
     "tooltip"
   ]

@@ -3,7 +3,6 @@ import { createContext, use } from 'react';
 
 export interface TrayContextProps {
   classNames: {
-    overlay: string;
     container: string;
     dragHandle: string;
     header: string;
@@ -22,13 +21,3 @@ export const TrayContext = createContext<TrayContextProps>(
 );
 
 export const useTrayContext = () => use(TrayContext);
-
-/**
- * Marks the tray's scrollable body so `TrayModal` can tell content gestures
- * from chrome gestures (DSTSUP-272). Internal, not an opt-out marker. Lives
- * here, not `TrayContent.tsx`, so `TrayModal` doesn't depend on it.
- */
-export const TRAY_CONTENT_ATTR = 'data-tray-content';
-
-export const TRAY_MAX_HEIGHT =
-  '[--tray-available:calc(var(--visual-viewport-height)*0.95)] max-h-(--tray-available)';

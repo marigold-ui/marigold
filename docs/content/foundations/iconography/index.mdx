@@ -301,3 +301,30 @@ Pass `aria-label` for icon-only interactive elements to opt out.
 ```
 
 For tap-target rules, see [Touch targets](#touch-targets) above.
+
+### Replacing `<SVG>`
+
+Version 19 removes `<SVG>` from `@marigold/system`. For icons, import the
+matching icon from `@marigold/icons`. For any other inline graphic, use a native
+`<svg>` and style it with Tailwind classes. `marigold migrate v19` does this for
+you.
+
+```tsx
+// Before
+<SVG size={32} color="info-accent" viewBox="0 0 24 24">
+  <path d="…" />
+</SVG>
+
+// After
+<svg
+  className="text-info-accent size-8 flex-none fill-current"
+  viewBox="0 0 24 24"
+>
+  <path d="…" />
+</svg>
+```
+
+`<SVG>` always added `flex-none fill-current`. Keep `flex-none` so the graphic
+does not shrink in a flex row, and `fill-current` where you relied on the
+default fill. If you did not pass `size`, `<SVG>` rendered at 24px, so add
+`size-6`.

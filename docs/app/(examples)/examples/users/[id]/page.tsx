@@ -2,7 +2,6 @@
 
 import { people } from '@/lib/data/people';
 import { teamName } from '@/lib/data/teams';
-import type { ReactNode } from 'react';
 import { notFound, useParams } from 'next/navigation';
 import {
   ActionMenu,
@@ -20,6 +19,7 @@ import {
   Text,
   Title,
 } from '@marigold/components';
+import { Field } from '../../../_shared';
 import { daysAgo, userStatus } from '../../../_shared/demo-data';
 
 // The member detail is the drill-in from the Users list (the "Detail / record"
@@ -45,15 +45,6 @@ const getActivity = () => [
     text: 'Joined the show-day briefing.',
   },
 ];
-
-const Field = ({ label, children }: { label: string; children: ReactNode }) => (
-  <Stack space="tight">
-    <Text variant="muted" fontSize="xs">
-      {label}
-    </Text>
-    <Text weight="semibold">{children}</Text>
-  </Stack>
-);
 
 const UserDetailPage = () => {
   const params = useParams<{ id: string }>();

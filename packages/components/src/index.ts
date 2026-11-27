@@ -92,6 +92,16 @@ export type { ColumnsProps } from './Columns/Columns';
 export { ComboBox } from './ComboBox/ComboBox';
 export type { ComboBoxProps } from './ComboBox/ComboBox';
 
+export { CommandPalette } from './CommandPalette/CommandPalette';
+export type {
+  CommandPaletteProps,
+  CommandPaletteSearchState,
+} from './CommandPalette/CommandPalette';
+export type { CommandPaletteButtonProps } from './CommandPalette/CommandPaletteButton';
+export type { CommandPaletteGroupProps } from './CommandPalette/CommandPaletteGroup';
+export type { CommandPaletteItemProps } from './CommandPalette/CommandPaletteItem';
+export type { CommandPaletteTriggerProps } from './CommandPalette/CommandPaletteTrigger';
+
 export { Container } from './Container/Container';
 export type { ContainerProps } from './Container/Container';
 
@@ -215,10 +225,6 @@ export { NumberField } from './NumberField/NumberField';
 export type { NumberFieldProps } from './NumberField/NumberField';
 
 /** @internal */
-export { Popover } from './Overlay/Popover';
-export type { PopoverProps } from './Overlay/Popover';
-
-/** @internal */
 export { Modal } from './Overlay/Modal';
 export type { ModalProps } from './Overlay/Modal';
 
@@ -241,6 +247,12 @@ export type { PanelProps } from './Panel/Panel';
 
 export { Pagination } from './Pagination/Pagination';
 export type { PaginationProps } from './Pagination/Pagination';
+
+export { Popover } from './Popover/Popover';
+export type { PopoverProps } from './Popover/Popover';
+export type { PopoverTriggerProps } from './Popover/PopoverTrigger';
+export type { PopoverContentProps } from './Popover/PopoverContent';
+export type { PopoverSearchProps } from './Popover/PopoverSearch';
 
 export { ProgressCircle } from './ProgressCircle/ProgressCircle';
 export type { ProgressCircleProps } from './ProgressCircle/ProgressCircle';

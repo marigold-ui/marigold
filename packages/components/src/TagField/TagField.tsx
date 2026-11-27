@@ -27,6 +27,7 @@ import { Tag } from '../TagGroup/Tag';
 import { Tray } from '../Tray/Tray';
 import { ChevronsVertical } from '../icons/ChevronsVertical';
 import { intlMessages } from '../intl/messages';
+import { useAutoFocus } from '../utils/useAutoFocus';
 
 // Props
 // ---------------
@@ -202,11 +203,14 @@ const TagFieldDropdown = ({
 }: TagFieldDropdownProps) => {
   const { contains } = useFilter({ sensitivity: 'base' });
   const stringFormatter = useLocalizedStringFormatter(intlMessages);
+  const inputRef = useRef<HTMLInputElement>(null);
+  // Not a native `autoFocus`, see `useAutoFocus`.
+  useAutoFocus(inputRef);
 
   return (
     <Autocomplete filter={contains}>
-      <SearchField aria-label={stringFormatter.format('search')} autoFocus>
-        <SearchInput placeholder={placeholder} />
+      <SearchField aria-label={stringFormatter.format('search')}>
+        <SearchInput ref={inputRef} placeholder={placeholder} />
       </SearchField>
       <ListBox
         items={items}

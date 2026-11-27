@@ -16,9 +16,11 @@ import {
   TopNavigation,
 } from '@marigold/components';
 import { Logo } from '@/ui/Logo';
-import { currentUser, organisation } from './demo-data';
+import { AppPalette } from './app-palette';
+import { currentUser } from './demo-data';
 import type { NavNode, RailTile, ShellConfig } from './shell-types';
 import { UserMenu } from './user-menu';
+import { WorkspaceProvider, useWorkspace } from './workspace';
 
 type LeafItem = Extract<NavNode, { kind: 'Item'; slug: string }>;
 type Ancestor = { label: string; slug?: string };
@@ -131,22 +133,26 @@ const renderNav = (items: NavNode[], base: string): ReactNode[] =>
     );
   });
 
-const UserSection = () => (
-  <Inline space="related" alignY="center" noWrap>
-    <Stack>
-      <Inline space="tight" alignY="center" noWrap>
-        <Text size="sm" weight="bold">
-          {currentUser.name}
+const UserSection = () => {
+  const { organizer } = useWorkspace();
+  return (
+    <Inline space="related" alignY="center" noWrap>
+      <Stack>
+        <Inline space="tight" alignY="center" noWrap>
+          <Text size="sm" weight="bold">
+            {currentUser.name}
+          </Text>
+          <Badge variant="master">Master</Badge>
+        </Inline>
+        {/* The organizer people work in. The command palette switches it. */}
+        <Text size="xs" variant="muted">
+          {organizer.name}
         </Text>
-        <Badge variant="master">Master</Badge>
-      </Inline>
-      <Text size="xs" variant="muted">
-        {organisation.name}
-      </Text>
-    </Stack>
-    <UserMenu />
-  </Inline>
-);
+      </Stack>
+      <UserMenu />
+    </Inline>
+  );
+};
 
 export const ShellLayout = ({
   config,
@@ -207,99 +213,116 @@ export const ShellLayout = ({
 
   return (
     <RouterProvider navigate={href => router.push(href)}>
-      <Sidebar.Provider defaultOpen>
-        <AppShell>
-          <Sidebar>
-            <Sidebar.Rail current={pathname}>
-              {/* Brand for the mobile drawer — on desktop it lives in the top bar. */}
-              <Sidebar.Header>
-                <Inline space="related" alignY="center" noWrap>
-                  <Logo className="size-8 shrink-0" />
-                  <Text weight="bold" fontSize="lg">
-                    Examples
-                  </Text>
-                </Inline>
-              </Sidebar.Header>
-              {config.tiles.map(item =>
-                item.kind === 'link' ? (
-                  <Sidebar.RailItem
-                    key={item.id}
-                    id={item.id}
-                    icon={item.icon}
-                    href={`${config.base}/${item.slug}`}
-                  >
-                    {item.label}
-                  </Sidebar.RailItem>
-                ) : (
-                  <Sidebar.RailItem key={item.id} id={item.id} icon={item.icon}>
-                    {item.label}
-                    <Sidebar.Nav aria-label={item.label}>
-                      {renderNav(item.items, config.base)}
-                    </Sidebar.Nav>
-                  </Sidebar.RailItem>
-                )
-              )}
-              <Sidebar.Footer>
-                {/* Pinned tiles: the docs backlink follows the active demo. */}
-                <Sidebar.RailItem id="docs" icon={<BookOpen />} href={docsHref}>
-                  Docs
-                </Sidebar.RailItem>
-                <Sidebar.RailItem
-                  id="help"
-                  icon={<LifeBuoy />}
-                  href="/getting-started/get-in-touch"
-                >
-                  Help
-                </Sidebar.RailItem>
-                {/* The examples are public pages, so they need the legal links
-                    the docs footer carries elsewhere. Cookie settings exist
-                    only where the consent banner runs. */}
-                <Sidebar.RailItem id="legal" icon={<Scale />}>
-                  Legal
-                  <Sidebar.Nav aria-label="Legal">
-                    <Sidebar.Item href="/impressum">Impressum</Sidebar.Item>
-                    <Sidebar.Item href="/datenschutz">Datenschutz</Sidebar.Item>
-                    {CONSENT_BANNER_ENABLED && (
-                      <Sidebar.Item onPress={openConsentSettings}>
-                        Cookie settings
-                      </Sidebar.Item>
-                    )}
-                  </Sidebar.Nav>
-                </Sidebar.RailItem>
-              </Sidebar.Footer>
-            </Sidebar.Rail>
-          </Sidebar>
-          <TopNavigation>
-            <TopNavigation.Start>
-              {/* The bar spans the full width; the brand holds the fixed
-                  top-left spot and never moves when the panel collapses. */}
-              {/* Keeps the first row at bar height when the trail wraps below. */}
-              <div className="min-h-topbar flex items-center">
-                <Inline space="related" alignY="center" noWrap>
-                  <Logo className="size-8 shrink-0" />
-                  {/* `max-sm:hidden`, not `hidden sm:block`: the theme's scoped
-                      `.hidden` outranks the docs' unscoped `sm:block`. */}
-                  <div className="max-sm:hidden">
+      <WorkspaceProvider>
+        <Sidebar.Provider defaultOpen>
+          <AppShell>
+            <Sidebar>
+              <Sidebar.Rail current={pathname}>
+                {/* Brand for the mobile drawer — on desktop it lives in the top bar. */}
+                <Sidebar.Header>
+                  <Inline space="related" alignY="center" noWrap>
+                    <Logo className="size-8 shrink-0" />
                     <Text weight="bold" fontSize="lg">
                       Examples
                     </Text>
-                  </div>
-                </Inline>
-              </div>
-              <Sidebar.Toggle variant="rail" />
-              {/* No room for the trail beside the user section below `sm`. */}
-              <div className="w-full min-w-0 max-sm:hidden">{trail}</div>
-            </TopNavigation.Start>
-            <TopNavigation.End>
-              <UserSection />
-            </TopNavigation.End>
-            {/* Relies on TopNavigation's single-row grid: `col-span-full`
+                  </Inline>
+                </Sidebar.Header>
+                {config.tiles.map(item =>
+                  item.kind === 'link' ? (
+                    <Sidebar.RailItem
+                      key={item.id}
+                      id={item.id}
+                      icon={item.icon}
+                      href={`${config.base}/${item.slug}`}
+                    >
+                      {item.label}
+                    </Sidebar.RailItem>
+                  ) : (
+                    <Sidebar.RailItem
+                      key={item.id}
+                      id={item.id}
+                      icon={item.icon}
+                    >
+                      {item.label}
+                      <Sidebar.Nav aria-label={item.label}>
+                        {renderNav(item.items, config.base)}
+                      </Sidebar.Nav>
+                    </Sidebar.RailItem>
+                  )
+                )}
+                <Sidebar.Footer>
+                  {/* Pinned tiles: the docs backlink follows the active demo. */}
+                  <Sidebar.RailItem
+                    id="docs"
+                    icon={<BookOpen />}
+                    href={docsHref}
+                  >
+                    Docs
+                  </Sidebar.RailItem>
+                  <Sidebar.RailItem
+                    id="help"
+                    icon={<LifeBuoy />}
+                    href="/getting-started/get-in-touch"
+                  >
+                    Help
+                  </Sidebar.RailItem>
+                  {/* The examples are public pages, so they need the legal links
+                      the docs footer carries elsewhere. Cookie settings exist
+                      only where the consent banner runs. */}
+                  <Sidebar.RailItem id="legal" icon={<Scale />}>
+                    Legal
+                    <Sidebar.Nav aria-label="Legal">
+                      <Sidebar.Item href="/impressum">Impressum</Sidebar.Item>
+                      <Sidebar.Item href="/datenschutz">
+                        Datenschutz
+                      </Sidebar.Item>
+                      {CONSENT_BANNER_ENABLED && (
+                        <Sidebar.Item onPress={openConsentSettings}>
+                          Cookie settings
+                        </Sidebar.Item>
+                      )}
+                    </Sidebar.Nav>
+                  </Sidebar.RailItem>
+                </Sidebar.Footer>
+              </Sidebar.Rail>
+            </Sidebar>
+            <TopNavigation>
+              <TopNavigation.Start>
+                {/* The bar spans the full width; the brand holds the fixed
+                  top-left spot and never moves when the panel collapses. */}
+                {/* Keeps the first row at bar height when the trail wraps below. */}
+                <div className="min-h-topbar flex items-center">
+                  <Inline space="related" alignY="center" noWrap>
+                    <Logo className="size-8 shrink-0" />
+                    {/* `max-sm:hidden`, not `hidden sm:block`: the theme's scoped
+                      `.hidden` outranks the docs' unscoped `sm:block`. */}
+                    <div className="max-sm:hidden">
+                      <Text weight="bold" fontSize="lg">
+                        Examples
+                      </Text>
+                    </div>
+                  </Inline>
+                </div>
+                <Sidebar.Toggle variant="rail" />
+                {/* No room for the trail beside the user section below `sm`. */}
+                <div className="w-full min-w-0 max-sm:hidden">{trail}</div>
+              </TopNavigation.Start>
+              <TopNavigation.Middle alignX="center">
+                <AppPalette config={config} docsHref={docsHref} />
+              </TopNavigation.Middle>
+              <TopNavigation.End>
+                <UserSection />
+              </TopNavigation.End>
+              {/* Relies on TopNavigation's single-row grid: `col-span-full`
                 auto-places this into an implicit second row. */}
-            <div className="col-span-full min-w-0 pb-2 sm:hidden">{trail}</div>
-          </TopNavigation>
-          {children}
-        </AppShell>
-      </Sidebar.Provider>
+              <div className="col-span-full min-w-0 pb-2 sm:hidden">
+                {trail}
+              </div>
+            </TopNavigation>
+            {children}
+          </AppShell>
+        </Sidebar.Provider>
+      </WorkspaceProvider>
     </RouterProvider>
   );
 };

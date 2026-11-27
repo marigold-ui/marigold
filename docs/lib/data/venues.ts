@@ -1126,6 +1126,8 @@ export const venues = rawVenues.map((venue, index) => ({
 
 export type Venue = (typeof venues)[number];
 
+export const venueById = (id: string) => venues.find(venue => venue.id === id);
+
 export const venueTraits = Array.from(
   new Set(venues.flatMap(venue => venue.traits))
 ).sort();

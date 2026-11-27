@@ -20,6 +20,18 @@ The persistent furniture around an application's content — the sidebar, the to
 
 Not to be confused with a frame, which is a specific component. Chrome is a _role_ something plays and never a component name — see [ADR-0002](adr/0002-app-chrome-vs-frame.md).
 
+### Command menu
+
+A `Menu` (or `ActionMenu`) whose items run actions rather than select a value, so it has no selection mode and no checkmarks. It opens from a trigger next to the thing it acts on.
+
+Not to be confused with a command palette, which is one app-wide, searchable overlay opened with ⌘K and is a component of its own.
+
+### Command palette
+
+`<CommandPalette>`: one app-wide overlay, opened with ⌘K or its trigger, with a search input over a list of pages and actions. The first row is always active, so Enter runs the top match. It reuses the menu item behaviour through the internal `MenuItemCore`, with its own theme.
+
+Not to be confused with a command menu, which is a plain `Menu` of actions anchored to a trigger, with no search.
+
 ### Compound component
 
 A component whose parts are named exports on the parent and rendered explicitly by the consumer: `Panel.Header`, `Dialog.Trigger`, `Table.Row`. The structure is visible in the JSX and each part carries its own typed props. An individual part is a _compound part_.
@@ -53,6 +65,12 @@ Not to be confused with a blanket ban on `@react-aria/*`. `packages/system` has 
 ### Role primitive
 
 A standalone component that carries a _role_ rather than a position — `<Title>`, `<Description>`, `<TextValue>` — and picks up its appearance, semantics and placement from whichever container it is rendered in. The same `<Title>` is an `<h2>` in a `<Panel>` and a `<span>` inside `Panel.CollapsibleHeader`'s button.
+
+### Sheet
+
+The internal overlay primitive in `packages/components/src/Overlay/` that small-screen edge overlays render through. It wraps react-aria's `SheetOverlay`, `SheetBackdrop`, `Sheet` and `SheetContent`, and owns the backdrop, swipe-to-dismiss, the single `dismissable` flag and the `z-50` layer. Its `position` is the edge it comes from: `bottom` for `Tray`, `start` for the mobile `Sidebar`. The mobile `Drawer` is meant to follow ([ADR-0007](adr/0007-mobile-overlays-on-sheet.md)).
+
+Not to be confused with `Tray`, which renders its own parts inside a Sheet, or with react-aria's `Sheet`, the single upstream part the primitive is named after. There is no public `Sheet` component.
 
 ### Slot config
 

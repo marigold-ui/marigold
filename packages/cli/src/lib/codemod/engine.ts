@@ -173,12 +173,13 @@ export const ensureCvaImport = (s: MagicString, file: AnyNode): string => {
 export const codeList = (names: string[]): string =>
   names.map(name => `\`${name}\``).join(', ');
 
-/** the empty-stub property line shared by restructure and stubbing */
+/** the stub property line shared by restructure and stubbing */
 export const stubSlotLine = (
   slot: string,
   indent: string,
-  cva: string
-): string => `${indent}${asPropertyKey(slot)}: ${cva}({}),`;
+  cva: string,
+  arg = '{}'
+): string => `${indent}${asPropertyKey(slot)}: ${cva}(${arg}),`;
 
 /** deep link to the default theme's styles for a component, if configured */
 export const stylesReference = (

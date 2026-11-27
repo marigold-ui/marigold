@@ -1,7 +1,7 @@
 import type RAC from 'react-aria-components';
 import { ProgressBar } from 'react-aria-components/ProgressBar';
 import { useLocalizedStringFormatter } from '@react-aria/i18n';
-import { SVG, cn, useClassNames } from '@marigold/system';
+import { cn, useClassNames } from '@marigold/system';
 import { intlMessages } from '../intl/messages';
 
 export interface ProgressCircleProps extends RAC.ProgressBarProps {
@@ -24,13 +24,13 @@ export const ProgressCircleSvg = ({
   });
 
   // `size` may be a named token whose rendered dimensions come from the theme
-  // classes above. The <SVG> element still needs a numeric intrinsic size for
+  // classes above. The <svg> element still needs a numeric intrinsic size for
   // its `width`/`height` attributes and the stroke math — passing a token
   // straight through renders an invalid `width="<token>px"` attribute (e.g.
   // `defaultpx`). Resolve named tokens to the pixel dimension of their theme
   // `size-*` class so the stroke stays proportionate to the rendered circle;
   // `fit` is content-sized and has no intrinsic dimension, so it (and any other
-  // non-numeric token) falls back to the <SVG> default of 24.
+  // non-numeric token) falls back to 24.
   const NAMED_SIZE_DIMENSIONS: Record<string, number> = {
     default: 80, // size-20
     large: 144, // size-36
@@ -51,12 +51,13 @@ export const ProgressCircleSvg = ({
   const radius = `calc(50% - ${strokeWidth / 2}px)`;
 
   return (
-    <SVG
+    <svg
       className={cn(
-        'animate-rotate-spinner origin-center fill-none',
+        'animate-rotate-spinner flex-none origin-center fill-none',
         classNames.loader
       )}
-      size={svgSize}
+      width={`${svgSize}px`}
+      height={`${svgSize}px`}
       aria-hidden="true"
       role="img"
     >
@@ -81,7 +82,7 @@ export const ProgressCircleSvg = ({
           classNames.container
         )}
       />
-    </SVG>
+    </svg>
   );
 };
 

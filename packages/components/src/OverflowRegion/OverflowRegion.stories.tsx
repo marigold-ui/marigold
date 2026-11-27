@@ -1,7 +1,8 @@
 import { type FormEvent, useState } from 'react';
 import { type Key } from 'react-aria-components/Select';
 import { expect, waitFor, within } from 'storybook/test';
-import preview from '.storybook/preview';
+import { keepSheetsOpenInChromatic } from '.storybook/chromatic';
+import preview, { smallScreenWidth } from '.storybook/preview';
 import { Badge } from '../Badge/Badge';
 import { Button } from '../Button/Button';
 import { Drawer } from '../Drawer/Drawer';
@@ -74,7 +75,7 @@ export const Basic = meta.story({
 export const Demotion = meta.story({
   tags: ['component-test'],
   globals: { viewport: { value: 'smallScreen' } },
-  parameters: { chromatic: { viewports: [639] } },
+  parameters: { chromatic: { viewports: [smallScreenWidth] } },
   render: () => <DemoRow />,
 });
 
@@ -221,6 +222,7 @@ const navLinks = [
 // A phone-width viewport forces several links to demote; interaction-only, so
 // no snapshot (the "More" menu is exercised by the play test).
 export const PriorityNavigation = meta.story({
+  beforeEach: keepSheetsOpenInChromatic,
   tags: ['component-test'],
   globals: { viewport: { value: 'extraSmallScreen' } },
   parameters: { chromatic: { disableSnapshot: true } },
@@ -264,10 +266,13 @@ PriorityNavigation.test(
 
     await step('Every hidden link is reachable through the menu', async () => {
       await userEvent.click(canvas.getByRole('button', { name: /more/i }));
-      expect(
-        await canvas.findByRole('menuitem', { name: 'Team' })
-      ).toBeVisible();
-      expect(canvas.getByRole('menuitem', { name: 'Settings' })).toBeVisible();
+      // Small screens open the menu in a sliding tray.
+      await waitFor(() => {
+        expect(canvas.getByRole('menuitem', { name: 'Team' })).toBeVisible();
+        expect(
+          canvas.getByRole('menuitem', { name: 'Settings' })
+        ).toBeVisible();
+      });
       // Visible links do not show up in the menu.
       expect(canvas.queryByRole('menuitem', { name: 'Dashboard' })).toBeNull();
     });
