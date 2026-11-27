@@ -47,6 +47,14 @@ export interface SheetProps extends Omit<
   position?: 'bottom' | 'start';
 
   /**
+   * How tall a `bottom` sheet is: `content` sizes it to its content,
+   * `full` fills the space available to it. Both stay below the visible
+   * viewport. Ignored for `start`, which always fills the viewport.
+   * @default 'content'
+   */
+  height?: 'content' | 'full';
+
+  /**
    * Whether swiping it away, pressing Escape and pressing outside close the
    * overlay. The three can't be set separately.
    * @default true
@@ -204,6 +212,7 @@ export const Sheet = ({
   open,
   onOpenChange,
   position = 'bottom',
+  height = 'content',
   dismissable = true,
   children,
   ref,
@@ -211,6 +220,7 @@ export const Sheet = ({
 }: SheetProps) => {
   const classNames = useClassNames({ component: 'Sheet' });
   const layout = SHEET_LAYOUT[position];
+  const isBottom = position === 'bottom';
   const overlayRef = useRef<HTMLDivElement>(null);
   const overlayCallbackRef = useCallback((overlay: HTMLDivElement | null) => {
     overlayRef.current = overlay;
@@ -254,9 +264,25 @@ export const Sheet = ({
             {...props}
             // RAC types the dialog as a div, consumers hold an HTMLElement ref.
             ref={ref as Ref<HTMLDivElement>}
-            className={cn('flex flex-col', layout.content, classNames.content)}
+            className={cn(
+              'flex flex-col',
+              layout.content,
+              // `!` beats RAC's inline `height: 100%`.
+              isBottom && height === 'full' && 'h-(--sheet-available)!',
+              classNames.content
+            )}
           >
-            {children}
+            {renderProps => (
+              <>
+                {/* Visual cue only, the whole sheet is swipeable. */}
+                {isBottom && (
+                  <div className={cn('shrink-0', classNames.dragHandle)} />
+                )}
+                {typeof children === 'function'
+                  ? children(renderProps)
+                  : children}
+              </>
+            )}
           </SheetContent>
         </ResetButtonContext>
       </RACSheet>

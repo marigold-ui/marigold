@@ -13,11 +13,12 @@ import { v18 } from './v18.js';
 //   style moves into `container`, the new slots are stubbed.
 // - `Tray` renders inside a new `Sheet` (DST-1865), which is scaffolded, and
 //   its `overlay` slot is gone. Its `group/tray` moved off the dialog, so
-//   `tray-group-selector` rewrites the old theme selector.
+//   `tray-group-selector` rewrites the old theme selector. Its `dragHandle`
+//   moved to `Sheet.dragHandle` (DST-1866), which every bottom sheet shares.
 // - The mobile `Sidebar` renders through the same `Sheet` from the start edge
 //   (DST-1867), so its `overlay` and `modal` slots are gone.
-// - The mobile `Drawer` renders through `Sheet` from the bottom (DST-1866) and
-//   gained a `dragHandle` slot. Its `container` is layout only below `sm`.
+// - The mobile `Drawer` renders through `Sheet` from the bottom (DST-1866). Its
+//   `container` is layout only below `sm`, the handle comes from `Sheet`.
 // - `Stepper` gained the slots of its small-screen layout (DST-1839). The
 //   component hides the new parts by default, so only `summary` needs a
 //   `slotDefaults` entry: it keeps the `hideLabels` counter visible.
@@ -51,16 +52,8 @@ export const v19: MigrationManifest = {
       'progressFill',
       'currentIndicator',
     ],
-    Tray: [
-      'container',
-      'dragHandle',
-      'header',
-      'title',
-      'description',
-      'content',
-      'actions',
-    ],
-    Sheet: ['backdrop', 'container', 'content'],
+    Tray: ['container', 'header', 'title', 'description', 'content', 'actions'],
+    Sheet: ['backdrop', 'container', 'content', 'dragHandle'],
     Sidebar: (v18.slots.Sidebar ?? []).filter(
       slot => slot !== 'overlay' && slot !== 'modal'
     ),
@@ -84,7 +77,6 @@ export const v19: MigrationManifest = {
       'tray',
     ],
     NumberField: ['group', 'stepper', 'input', 'maxValue'],
-    Drawer: [...(v18.slots.Drawer ?? []), 'dragHandle'],
   },
   restructures: [{ component: 'Popover', primarySlot: 'container' }],
   scaffolds: [
@@ -107,6 +99,10 @@ export const v19: MigrationManifest = {
   ],
 }`,
         content: `{ base: 'outline-hidden' }`,
+        // The swipe cue on every bottom sheet (Tray, the mobile Drawer).
+        dragHandle: `{
+  base: 'bg-border mx-auto mt-2 h-1.5 w-12 rounded-full',
+}`,
       },
     },
   ],
@@ -115,7 +111,7 @@ export const v19: MigrationManifest = {
   structureWarnings: [
     {
       component: 'Tray',
-      text: "v19 builds Tray on a `Sheet` (DST-1865). `Tray.overlay` is gone: the backdrop moved to `Sheet.backdrop` and the surface (background, shadow, rounding) to `Sheet.container`. `Tray.container` is layout only now. Move customized overlay or surface styles to `Sheet` and remove them from `Tray`. The backdrop fades through the theme's `@keyframes fade-in`, kept in the CSS by `--animate-fade-in`.",
+      text: "v19 builds Tray on a `Sheet` (DST-1865). `Tray.overlay` is gone: the backdrop moved to `Sheet.backdrop` and the surface (background, shadow, rounding) to `Sheet.container`. `Tray.container` is layout only now. Move customized overlay or surface styles to `Sheet` and remove them from `Tray`. `Tray.dragHandle` moved to `Sheet.dragHandle` too, and the handle no longer sits in the container's grid: move a customized handle to `Sheet` and give `Tray.container` three rows (title, content, actions), for example `grid-rows-[auto_1fr_auto]`, or the content row stops stretching. The backdrop fades through the theme's `@keyframes fade-in`, kept in the CSS by `--animate-fade-in`.",
     },
     {
       component: 'Sidebar',
@@ -123,7 +119,7 @@ export const v19: MigrationManifest = {
     },
     {
       component: 'Drawer',
-      text: "v19 renders the Drawer on small screens as a bottom sheet through `Sheet` (DST-1866). `Sheet.container` draws its surface there, so keep the surface styles of `Drawer.container` (background, ring, rounding, shadow, height, the `size` widths) behind `sm:`, or the sheet shows a second frame inside it. The new `dragHandle` slot is the bar above the title on small screens. It starts empty, so copy it from theme-rui's `Drawer.styles.ts` to show it. The desktop Drawer is unchanged.",
+      text: "v19 renders the Drawer on small screens as a bottom sheet through `Sheet` (DST-1866). `Sheet.container` draws its surface there, so keep the surface styles of `Drawer.container` (background, ring, rounding, shadow, height, the `size` widths) behind `sm:`, or the sheet shows a second frame inside it. The bar above the title on small screens is `Sheet.dragHandle`, the same as the Tray's. The desktop Drawer is unchanged.",
     },
     {
       component: 'Stepper',

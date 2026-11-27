@@ -869,10 +869,11 @@ FlushSmallScreen.test(
       const surface = dialog.getBoundingClientRect();
       const viewport = window.visualViewport?.height ?? window.innerHeight;
 
-      expect(surface.left).toBeCloseTo(0, 0);
-      expect(surface.width).toBeCloseTo(window.innerWidth, 0);
-      expect(surface.bottom).toBeCloseTo(window.innerHeight, 0);
-      // Capped at 95% of the visible viewport, like Tray.
+      expect(surface.left).toBeCloseTo(0, 1);
+      expect(surface.width).toBeCloseTo(window.innerWidth, 1);
+      expect(surface.bottom).toBeCloseTo(window.innerHeight, 1);
+      // Capped at 95% of the visible viewport, like Tray. 95% of the viewport
+      // is fractional and the browser rounds it, so allow half a pixel here.
       expect(surface.height).toBeCloseTo(viewport * 0.95, 0);
 
       // The close button shows without `closeButton`.

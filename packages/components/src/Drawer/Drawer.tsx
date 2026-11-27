@@ -13,6 +13,7 @@ import { cn, useClassNames, useSmallScreen } from '@marigold/system';
 import { ResetButtonContext } from '../Button/ResetButtonContext';
 import { CloseButton } from '../CloseButton/CloseButton';
 import { ActionMenuContext } from '../Menu/ActionMenuContext';
+import { Sheet } from '../Overlay/Sheet';
 import { useOverlayState } from '../Overlay/useOverlayState';
 import { intlMessages } from '../intl/messages';
 import { useOverlayRootSlotProps } from '../utils/useOverlayRootSlotProps';
@@ -22,7 +23,7 @@ import { DrawerActions } from './DrawerActions';
 import { DrawerContent } from './DrawerContent';
 import { DrawerDescription } from './DrawerDescription';
 import { DrawerHeader } from './DrawerHeader';
-import { DrawerModal, DrawerSheet } from './DrawerModal';
+import { DrawerModal } from './DrawerModal';
 import { DrawerTitle } from './DrawerTitle';
 import { DrawerTrigger } from './DrawerTrigger';
 import { useDrawerCoordination } from './useDrawerCoordination';
@@ -142,8 +143,7 @@ export const Drawer = ({
    * so the landmark role does not apply there.
    */
   const isSmallScreen = useSmallScreen();
-  const landmarkAria = useLandmark({ ...props, role }, ref);
-  const landmarkProps = isSmallScreen ? {} : landmarkAria.landmarkProps;
+  const { landmarkProps } = useLandmark({ ...props, role }, ref);
 
   const { headingProps: rootHeadingProps, textProps } = useOverlayRootSlotProps(
     { classNames, titleId, titleSlotRef }
@@ -190,32 +190,28 @@ export const Drawer = ({
         <DrawerNestingContext value={true}>
           <DrawerContext value={drawerContextValue}>
             {isSmallScreen ? (
-              <DrawerSheet
+              // A bottom sheet (ADR-0007). It is the dialog itself, so dialog
+              // props go here, and it reads the open state from the context.
+              <Sheet
                 {...props}
                 {...name}
+                height="full"
                 dismissable={keyboardDismissable}
-                data-testid="drawer-modal"
               >
                 <div
-                  data-drawer
                   className={cn(
-                    'h-(--sheet-available) outline-none',
-                    "grid [grid-template-areas:'drag'_'title'_'content'_'actions']",
+                    'min-h-0 flex-1 outline-none',
+                    "grid [grid-template-areas:'title'_'content'_'actions']",
                     classNames.container
                   )}
                 >
-                  {/* Visual cue only, the whole sheet is swipeable. */}
-                  <div
-                    className={cn('[grid-area:drag]', classNames.dragHandle)}
-                  />
                   {body}
                 </div>
-              </DrawerSheet>
+              </Sheet>
             ) : (
               <DrawerModal
                 className={classNames.overlay}
                 keyboardDismissable={keyboardDismissable}
-                data-testid="drawer-modal"
               >
                 <Dialog
                   {...props}

@@ -10,8 +10,9 @@ export const Drawer: ThemeComponent<'Drawer'> = {
   }),
   container: cva({
     base: [
-      'w-full relative grid-rows-[auto_auto_1fr_auto] sm:grid-rows-[auto_1fr_auto]',
-      // On small screens the Drawer sits in a `Sheet`, which draws the surface.
+      'w-full relative grid-rows-[auto_1fr_auto]',
+      // On small screens the Drawer sits in a `Sheet`, which draws the surface
+      // and the drag handle above it.
       'sm:rounded-xl sm:ui-surface sm:shadow-elevation-overlay sm:h-full ui-scrollbar',
       '[--ui-border-color:oklch(from_var(--ui-divider-solid)_calc(l-0.1)_c_h)]',
       'has-[>[data-slot=close]]:**:data-[slot=header]:pe-12',
@@ -24,12 +25,13 @@ export const Drawer: ThemeComponent<'Drawer'> = {
       },
     },
   }),
-  dragHandle: cva({
-    base: 'bg-border mx-auto mt-2 h-1.5 w-12 rounded-full',
-  }),
-  // Below the drag handle on small screens.
+  // On small screens it is the one exit that always stays, so it gets a full
+  // touch target there, centred where the small one sits.
   closeButton: cva({
-    base: ['absolute top-3.5 max-sm:top-5 right-3', 'size-7'],
+    base: [
+      'absolute top-3.5 right-3 size-7',
+      'max-sm:top-1.5 max-sm:right-1 max-sm:size-touch-target',
+    ],
   }),
   header: cva({ base: 'ui-surface-header' }),
   title: cva({ base: 'font-semibold text-base' }),

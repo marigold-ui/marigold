@@ -4,7 +4,6 @@ import { createContext, use } from 'react';
 export interface TrayContextProps {
   classNames: {
     container: string;
-    dragHandle: string;
     header: string;
     title: string;
     description: string;

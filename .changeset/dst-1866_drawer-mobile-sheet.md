@@ -15,7 +15,9 @@ What changes for users on small screens:
 - A swipe down closes the drawer. When the content scrolls, the first swipe scrolls it back to the top and the next one closes it.
 - Escape and a press on the dimmed page close it too. Before, only Escape and the close button did.
 - `keyboardDismissable={false}` now works on small screens and turns off the swipe, Escape and the press outside together. Before, it was ignored there.
-- The close button always shows, whatever `closeButton` is set to, so there is always a one-tap way out.
+- The close button always shows, whatever `closeButton` is set to, so there is always a one-tap way out. It has a full touch target there.
+
+Check two kinds of drawers. A drawer with its own close control in its content now shows two on small screens, so remove one or hide yours there. A drawer with a form now closes on a swipe or a press outside, so set `keyboardDismissable={false}` while the form has unsaved changes.
 
 The docs describe how to protect unsaved changes: set `keyboardDismissable={false}` while a form is dirty and confirm with `useConfirmation` on the close button and "Cancel".
 
@@ -25,10 +27,10 @@ Update `@marigold/theme-rui` together with `@marigold/components`.
 
 ### Custom theme migration
 
-The `Drawer` theme component gains a `dragHandle` slot, and on small screens `Sheet.container` draws the drawer's surface.
+On small screens `Sheet` draws the drawer's surface and its drag handle. The handle of every bottom sheet is now one `Sheet.dragHandle` slot, so the Tray's moves there too.
 
-1. Add `dragHandle` to your `Drawer` theme component. theme-rui uses `cva({ base: 'bg-border mx-auto mt-2 h-1.5 w-12 rounded-full' })`.
-2. Keep the surface styles of `Drawer.container` (background, ring, rounding, shadow, `h-full` and the `size` widths) behind `sm:`, or the sheet shows a second frame inside it. Below `sm`, `Drawer.container` lays out a four-row grid: handle, title, content and actions.
-3. If your close button is positioned from the top, move it down below `sm` to clear the handle. theme-rui uses `max-sm:top-5`.
+1. Keep the surface styles of `Drawer.container` (background, ring, rounding, shadow, `h-full` and the `size` widths) behind `sm:`, or the sheet shows a second frame inside it.
+2. Move a customized `Tray.dragHandle` to `Sheet.dragHandle` and remove it from `Tray`. The handle no longer sits in the tray's grid, so give `Tray.container` three rows (title, content, actions), for example `grid-rows-[auto_1fr_auto]`.
+3. Below `sm` the close button is a full touch target. theme-rui uses `max-sm:top-1.5 max-sm:right-1 max-sm:size-touch-target`.
 
-`marigold migrate v19` adds an empty `dragHandle` slot, adds a `Sheet` theme component when your theme has none, and warns about the surface styles. Steps 1 to 3 depend on your customizations, so make them by hand.
+`marigold migrate v19` adds a `Sheet` theme component with theme-rui's handle when your theme has none, and warns about the surface styles and the moved handle. Steps 1 to 3 depend on your customizations, so make them by hand.

@@ -121,7 +121,6 @@ export type Theme = {
       | 'overlay'
       | 'closeButton'
       | 'container'
-      | 'dragHandle'
       | 'header'
       | 'title'
       | 'description'
@@ -130,13 +129,7 @@ export type Theme = {
       ComponentStyleFunction<string, string>
     >;
     Tray?: Record<
-      | 'container'
-      | 'dragHandle'
-      | 'header'
-      | 'title'
-      | 'description'
-      | 'content'
-      | 'actions',
+      'container' | 'header' | 'title' | 'description' | 'content' | 'actions',
       ComponentStyleFunction<string, string>
     >;
     Field?: ComponentStyleFunction<string, string>;
@@ -272,7 +265,7 @@ export type Theme = {
       count?: ComponentStyleFunction<string, string>;
     };
     Sheet?: Record<
-      'backdrop' | 'container' | 'content',
+      'backdrop' | 'container' | 'content' | 'dragHandle',
       ComponentStyleFunction<string, string>
     >;
     NumberField?: Record<
