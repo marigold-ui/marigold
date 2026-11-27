@@ -92,10 +92,14 @@ cause a version bump.
 
 #### Prereleases
 
-Prereleases use [changesets pre mode](https://github.com/changesets/changesets/blob/main/docs/prereleases.md),
-which lives on `main` (there is no separate release branch). The mode is recorded in
-`.changeset/pre.json`, and `pnpm changeset publish` derives the npm dist-tag from its `tag` field,
-so while pre mode is active, everything publishes to that tag instead of `latest`.
+Prereleases use [changesets pre mode](https://github.com/changesets/changesets/blob/main/docs/prereleases.md).
+The mode is recorded in `.changeset/pre.json`, and `pnpm changeset publish` derives the npm dist-tag
+from its `tag` field, so while pre mode is active, everything publishes to that tag instead of `latest`.
+
+The next major is developed on its own branch (`v19`), which sits in pre mode with the `beta` tag.
+`release.yml` runs on pushes to that branch as well, so it gets its own "release: version packages"
+PR and publishes `19.0.0-beta.x` while `main` keeps shipping 18.x on `latest`. Only `main` rebuilds
+the docs site and its search index.
 
 ```sh
 pnpm changeset pre enter rc   # start publishing 18.0.0-rc.x to the "rc" dist-tag
