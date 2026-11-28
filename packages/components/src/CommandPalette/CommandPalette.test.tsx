@@ -6,6 +6,7 @@ import { renderWithOverlay } from '../test.utils';
 import {
   Basic,
   MoreWithoutPrefix,
+  MoreWithoutRows,
   PreviousResultsWhileLoading,
 } from './CommandPalette.stories';
 import { press, typeChar } from './realEvents';
@@ -48,6 +49,18 @@ test('warns when a group sets more without a prefix', async () => {
     expect.stringContaining('sets `more` without a `prefix`')
   );
   expect(screen.queryByRole('menuitem', { name: /More events/ })).toBeNull();
+});
+
+test('a group without rows still shows its more row', async () => {
+  renderWithOverlay(<MoreWithoutRows.Component defaultOpen />);
+
+  const more = await screen.findByRole('menuitem', {
+    name: /More organizers…/,
+  });
+  expect(more).toHaveTextContent('or type o:');
+  expect(
+    screen.getByRole('group', { name: /^Organizers/ })
+  ).toBeInTheDocument();
 });
 
 // Typing without user-event, see `realEvents`. Each key in its own `act`, so
@@ -139,4 +152,34 @@ test('a pointer on a row drops an Enter that waits for results', async () => {
   await pause(300);
   expect(onAction).not.toHaveBeenCalled();
   expect(screen.getByRole('dialog')).toBeInTheDocument();
+});
+
+test('the more row of a group without rows narrows the search, keeping the term', async () => {
+  const user = userEvent.setup();
+  renderWithOverlay(<MoreWithoutRows.Component defaultOpen />);
+
+  const input = await screen.findByRole<HTMLInputElement>('searchbox');
+  type(input, 'jazz');
+  await user.click(
+    await screen.findByRole('menuitem', { name: /More organizers…/ })
+  );
+
+  await waitFor(() => expect(input).toHaveValue('o:jazz'));
+  expect(screen.getByRole('dialog')).toBeInTheDocument();
+});
+
+test('a group without rows renders nothing once the search is narrowed to it', async () => {
+  renderWithOverlay(<MoreWithoutRows.Component defaultOpen />);
+
+  const input = await screen.findByRole<HTMLInputElement>('searchbox');
+  type(input, 'o:');
+
+  await waitFor(() =>
+    expect(screen.queryByRole('group', { name: /^Organizers/ })).toBeNull()
+  );
+  expect(
+    screen.queryByRole('menuitem', { name: /More organizers/ })
+  ).toBeNull();
+  // The empty state shows instead.
+  expect(screen.getByText('Type to search.')).toBeInTheDocument();
 });
