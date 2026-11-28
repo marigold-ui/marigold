@@ -96,7 +96,7 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
             variant="error"
             open={emptyAttempts > 0 && staged.length === 0}
           >
-            <SectionMessage.Title>Nothing staged yet</SectionMessage.Title>
+            <SectionMessage.Title>No venues selected</SectionMessage.Title>
             <SectionMessage.Content>
               Tick at least one venue to add it.
             </SectionMessage.Content>
@@ -133,13 +133,13 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
               so staging the first venue never shifts the table. Removing a tag
               unstages that venue. */}
           <Tag.Group
-            label={`Staged (${staged.length})`}
+            label={`Selected (${staged.length})`}
             selectionMode="none"
             onRemove={unstage}
             collapseAt={6}
             emptyState={() => (
               <Text variant="muted" fontSize="sm">
-                No venues staged yet. Tick a row to add it.
+                No venues selected yet. Tick a row to add it.
               </Text>
             )}
           >
@@ -167,7 +167,7 @@ const PickVenuesBody = ({ initial, onConfirm }: PickBodyProps) => {
               emptyState={() => (
                 <EmptyState
                   title="No venues match"
-                  description="Try a different search, or switch the type back to All types. Anything you already staged stays listed above."
+                  description="Try a different search, or switch the type back to All types. Anything you already selected stays listed above."
                 />
               )}
             >

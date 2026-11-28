@@ -107,18 +107,30 @@ export const statusVariant: Record<
   Booked: 'default',
 };
 
-// Column widths for the venue tables, shared so the picker and the committed
-// report stay in step. Set at all because a column without a width falls back
-// to react-aria's 75px default, which squeezes every column under its content
-// until neighbouring cells paint over each other.
-export const venueColumnWidths = {
-  name: { width: '2fr', minWidth: 200 },
+// Column widths. Set at all because a column without a width falls back to
+// react-aria's 75px default, which squeezes every column under its content
+// until neighbouring cells paint over each other. The two tables show
+// different columns, so each has its own set, sized so no value wraps.
+
+// The picker: what tells venues apart while choosing.
+export const pickerColumnWidths = {
+  name: { width: '2fr', minWidth: 220 },
   city: { width: 130 },
-  country: { width: 120 },
-  type: { width: 200 },
-  capacity: { width: 110 },
-  rating: { width: 100 },
-  upcoming: { width: 110 },
-  status: { width: 130 },
-  rate: { width: 110 },
+  type: { width: 210 },
+  capacity: { width: 100 },
+  rating: { width: 80 },
+  status: { width: 120 },
+  rate: { width: 100 },
+} as const;
+
+// The report: what the report is about, booking activity and cost.
+export const reportColumnWidths = {
+  name: { width: '2fr', minWidth: 220 },
+  city: { width: 130 },
+  type: { width: 210 },
+  capacity: { width: 100 },
+  upcoming: { width: 150 },
+  status: { width: 120 },
+  rate: { width: 100 },
+  remove: { width: 56 },
 } as const;
