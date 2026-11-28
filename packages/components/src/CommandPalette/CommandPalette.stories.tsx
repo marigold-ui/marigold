@@ -406,6 +406,32 @@ export const MoreWithoutPrefix = meta.story({
   ),
 });
 
+// More on a server-searched group
+// ---------------
+// A group whose rows come from a server search has none before people narrow
+// to it. Its `more` row still shows, so they can find the search.
+export const MoreWithoutRows = meta.story({
+  ...noSnapshot,
+  render: args => (
+    <CommandPalette.Trigger {...args}>
+      <CommandPalette.Button />
+      <CommandPalette>
+        <CommandPalette.Group title="Pages">
+          <CommandPalette.Item id="events">Events</CommandPalette.Item>
+        </CommandPalette.Group>
+        <CommandPalette.Group
+          title="Organizers"
+          prefix="o:"
+          more="More organizers…"
+          filter={false}
+        >
+          {[]}
+        </CommandPalette.Group>
+      </CommandPalette>
+    </CommandPalette.Trigger>
+  ),
+});
+
 // Custom empty state
 // ---------------
 // Replaces the built-in "No results" message, for example to point people to

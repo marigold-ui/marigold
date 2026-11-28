@@ -36,7 +36,8 @@ export interface CommandPaletteGroupProps extends Omit<
    * example "More events…". Set it whenever the group shows only some of its
    * records: before people type, when it lists a few recent ones, and when
    * the server has more matches than the group shows. Needs a `prefix`, and
-   * hides once the search is narrowed.
+   * hides once the search is narrowed. The row shows even while the group has
+   * no rows, so set it only when there are more records to find.
    */
   more?: string;
 
@@ -85,12 +86,28 @@ export const CommandPaletteGroup = ({
 
   // While the search is narrowed to one group, the others step aside.
   if (scope && scope !== prefix) return null;
+  const moreRow =
+    more && prefix && !scope ? (
+      // Keeps the palette open: it narrows the search, with the term.
+      <CommandPaletteItem
+        id={`${MORE_KEY}${prefix}`}
+        textValue={`${more} ${query}`}
+        shouldCloseOnSelect={false}
+        onAction={() => narrowTo(prefix)}
+      >
+        <ChevronRight />
+        <TextValue>{more}</TextValue>
+        <Description>
+          {stringFormatter.format('commandPaletteOrType', { prefix })}
+        </Description>
+      </CommandPaletteItem>
+    ) : null;
   // The built-in match drops groups without matches. With `filter={false}`,
   // here or on the palette, the app filters, and a group it leaves empty
   // (e.g. while server results load) would show a lone title, so it renders
-  // nothing.
+  // nothing. A more row is not lone: it leads to the group's search.
   // `toArray`, not `count`: `count` also counts `false` from `{cond && …}`.
-  if (Children.toArray(children).length === 0) return null;
+  if (!moreRow && Children.toArray(children).length === 0) return null;
   return (
     <MenuSection {...props} id={id}>
       <Header className={classNames.group}>
@@ -107,21 +124,7 @@ export const CommandPaletteGroup = ({
         )}
       </Header>
       {children}
-      {more && prefix && !scope && (
-        // Keeps the palette open: it narrows the search, with the term.
-        <CommandPaletteItem
-          id={`${MORE_KEY}${prefix}`}
-          textValue={`${more} ${query}`}
-          shouldCloseOnSelect={false}
-          onAction={() => narrowTo(prefix)}
-        >
-          <ChevronRight />
-          <TextValue>{more}</TextValue>
-          <Description>
-            {stringFormatter.format('commandPaletteOrType', { prefix })}
-          </Description>
-        </CommandPaletteItem>
-      )}
+      {moreRow}
     </MenuSection>
   );
 };
