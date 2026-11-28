@@ -1,17 +1,20 @@
 title: Pick records from a collection into a report
 brief: >-
-  A report that owns the venues picked for it. A trigger opens a Dialog with a
-  search field, three filter facets (type, city, availability) whose options
-  show how many venues each leaves, and a wide nine-column multi-select Table (city, country, type,
-  capacity, rating, upcoming events, availability badge, day rate) over
-  about fifty venues in a bounded, sticky Scrollable region. Venue figures are
-  raw numbers formatted with NumericFormat at render, and availability refers to
-  the date window the report states in its header. Staged venues stay
-  visible as a removable Tag.Group rail through every search and filter, so
-  narrowing the list never drops a pick. The commit footer carries the staged
-  count, and confirming persists the set on the report, which can be re-opened
-  pre-staged to edit. It opens in a fullscreen dialog, the size this width and
-  density needs.
+  A quarterly venue report that owns the venues picked for it. The empty
+  report offers "Add venues" inside its EmptyState; once filled, the Venues
+  panel header carries the count and total capacity and an "Edit venues"
+  trigger. The trigger opens a fullscreen Dialog with a search field, three
+  filter facets (type, city, availability) whose options show how many venues
+  each leaves, a running "Showing n of 50 venues" count, and a compact
+  seven-column multi-select Table with a pinned name column in a bounded,
+  sticky Scrollable region. Selected venues stay visible as a removable
+  Tag.Group rail ("Selected (n)") through every search and filter, so
+  narrowing the list never drops a pick. The commit reads "Add 4 venues" on
+  the first pick and "Update venues" when editing, and refuses an empty set
+  with a message instead of a disabled button. The report shows its own
+  table (upcoming events, availability, day rate) with a totals footer and a
+  per-row remove button. Venue figures are raw numbers formatted with
+  NumericFormat at render.
 patterns:
   - user-input/pick
 mock_data:
@@ -38,4 +41,6 @@ key_files:
 scaffolding_files:
   - page.tsx
 peer_deps:
+  - '@internationalized/date'
+  - '@marigold/icons'
   - '@react-types/shared'

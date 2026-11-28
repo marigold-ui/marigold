@@ -21,8 +21,8 @@ import {
 } from '@marigold/components';
 import {
   type Venue,
+  pickerColumnWidths,
   statusVariant,
-  venueColumnWidths,
   venueStatuses,
   venues,
 } from './venues';
@@ -122,17 +122,19 @@ const FilterSelect = ({
 
 interface PickBodyProps {
   title: string;
-  confirmLabel: string;
   initial: string[];
   onConfirm: (ids: string[]) => void;
 }
 
-const PickBody = ({
-  title,
-  confirmLabel,
-  initial,
-  onConfirm,
-}: PickBodyProps) => {
+// The commit names its outcome: the first pick adds venues to the report,
+// a later one replaces the set, so it updates it.
+const commitLabel = (count: number, editing: boolean) => {
+  if (editing) return 'Update venues';
+  if (count === 0) return 'Add venues';
+  return `Add ${count} ${count === 1 ? 'venue' : 'venues'}`;
+};
+
+const PickBody = ({ title, initial, onConfirm }: PickBodyProps) => {
   const [search, setSearch] = useState('');
   const [type, setType] = useState<Key | null>('all');
   const [city, setCity] = useState<Key | null>('all');
@@ -222,7 +224,7 @@ const PickBody = ({
             variant="error"
             open={emptyAttempts > 0 && ids.length === 0}
           >
-            <SectionMessage.Title>Nothing staged yet</SectionMessage.Title>
+            <SectionMessage.Title>No venues selected</SectionMessage.Title>
             <SectionMessage.Content>
               Tick at least one venue to add it to the report.
             </SectionMessage.Content>
@@ -231,42 +233,48 @@ const PickBody = ({
           {/* A real find-and-collect task: search plus several filter facets
               narrow a wide, detail-rich table. This density is what outgrows a
               large dialog and earns a fullscreen surface. */}
-          <Inline space="related" alignY="input">
-            <SearchField
-              aria-label="Search venues"
-              placeholder="Search by name or city"
-              value={search}
-              onChange={setSearch}
-              width={56}
-            />
-            <FilterSelect
-              label="Filter by type"
-              allLabel="All types"
-              value={type}
-              onChange={setType}
-              options={types}
-              counts={counts.type}
-              width={56}
-            />
-            <FilterSelect
-              label="Filter by city"
-              allLabel="All cities"
-              value={city}
-              onChange={setCity}
-              options={cities}
-              counts={counts.city}
-              width={48}
-            />
-            <FilterSelect
-              label="Filter by availability"
-              allLabel="Any availability"
-              value={status}
-              onChange={setStatus}
-              options={statuses}
-              counts={counts.status}
-              width={40}
-            />
-          </Inline>
+          <Stack space="related">
+            <Inline space="related" alignY="input">
+              <SearchField
+                aria-label="Search venues"
+                placeholder="Search by name or city"
+                value={search}
+                onChange={setSearch}
+                width={56}
+              />
+              <FilterSelect
+                label="Filter by type"
+                allLabel="All types"
+                value={type}
+                onChange={setType}
+                options={types}
+                counts={counts.type}
+                width={56}
+              />
+              <FilterSelect
+                label="Filter by city"
+                allLabel="All cities"
+                value={city}
+                onChange={setCity}
+                options={cities}
+                counts={counts.city}
+                width={48}
+              />
+              <FilterSelect
+                label="Filter by availability"
+                allLabel="Any availability"
+                value={status}
+                onChange={setStatus}
+                options={statuses}
+                counts={counts.status}
+                width={40}
+              />
+            </Inline>
+            {/* Says how much is in view, and so what "select all" covers. */}
+            <Text variant="muted" fontSize="sm">
+              Showing {results.length} of {venues.length} venues
+            </Text>
+          </Stack>
 
           {/* The staged set stays visible as removable tags through every
               search and filter, so picks never scroll out of sight or vanish
@@ -274,13 +282,13 @@ const PickBody = ({
               muted hint when empty, so staging the first venue never shifts the
               table below it. */}
           <Tag.Group
-            label={`Staged (${stagedVenues.length})`}
+            label={`Selected (${stagedVenues.length})`}
             selectionMode="none"
             onRemove={unstage}
-            collapseAt={6}
+            collapseAt={8}
             emptyState={() => (
               <Text variant="muted" fontSize="sm">
-                No venues staged yet. Tick a row to add it.
+                No venues selected yet. Tick a row to add it.
               </Text>
             )}
           >
@@ -296,35 +304,34 @@ const PickBody = ({
               filters do the narrowing. In a fullscreen dialog the region grows
               to fill the viewport minus the surrounding chrome (title, filters,
               staged rail, footer) instead of stopping at a fixed height. */}
-          <Scrollable height="calc(100dvh - 22rem)">
+          <Scrollable height="calc(100dvh - 23rem)">
             <Table
               aria-label="Venues"
+              size="compact"
               selectionMode="multiple"
               selectedKeys={selected}
               onSelectionChange={onSelectionChange}
             >
               <Table.Header sticky>
-                <Table.Column rowHeader {...venueColumnWidths.name}>
+                <Table.Column
+                  rowHeader
+                  sticky="start"
+                  {...pickerColumnWidths.name}
+                >
                   Venue
                 </Table.Column>
-                <Table.Column {...venueColumnWidths.city}>City</Table.Column>
-                <Table.Column {...venueColumnWidths.country}>
-                  Country
-                </Table.Column>
-                <Table.Column {...venueColumnWidths.type}>Type</Table.Column>
-                <Table.Column alignX="right" {...venueColumnWidths.capacity}>
+                <Table.Column {...pickerColumnWidths.city}>City</Table.Column>
+                <Table.Column {...pickerColumnWidths.type}>Type</Table.Column>
+                <Table.Column alignX="right" {...pickerColumnWidths.capacity}>
                   Capacity
                 </Table.Column>
-                <Table.Column alignX="right" {...venueColumnWidths.rating}>
+                <Table.Column alignX="right" {...pickerColumnWidths.rating}>
                   Rating
                 </Table.Column>
-                <Table.Column alignX="right" {...venueColumnWidths.upcoming}>
-                  Upcoming
-                </Table.Column>
-                <Table.Column {...venueColumnWidths.status}>
+                <Table.Column {...pickerColumnWidths.status}>
                   Availability
                 </Table.Column>
-                <Table.Column alignX="right" {...venueColumnWidths.rate}>
+                <Table.Column alignX="right" {...pickerColumnWidths.rate}>
                   Day rate
                 </Table.Column>
               </Table.Header>
@@ -333,7 +340,7 @@ const PickBody = ({
                 emptyState={() => (
                   <EmptyState
                     title="No venues match"
-                    description="Try a different search or filter. Staged venues stay listed above."
+                    description="Try a different search or filter. Your selected venues stay listed above."
                   />
                 )}
               >
@@ -341,7 +348,6 @@ const PickBody = ({
                   <Table.Row id={venue.id}>
                     <Table.Cell>{venue.name}</Table.Cell>
                     <Table.Cell>{venue.city}</Table.Cell>
-                    <Table.Cell>{venue.country}</Table.Cell>
                     <Table.Cell>{venue.type}</Table.Cell>
                     <Table.Cell alignX="right">
                       <NumericFormat value={venue.capacity} />
@@ -352,7 +358,6 @@ const PickBody = ({
                         minimumFractionDigits={1}
                       />
                     </Table.Cell>
-                    <Table.Cell alignX="right">{venue.events}</Table.Cell>
                     <Table.Cell>
                       <Badge variant={statusVariant[venue.status]}>
                         {venue.status}
@@ -389,9 +394,7 @@ const PickBody = ({
             onConfirm(ids);
           }}
         >
-          {ids.length === 0
-            ? `${confirmLabel} venues`
-            : `${confirmLabel} ${ids.length} ${ids.length === 1 ? 'venue' : 'venues'}`}
+          {commitLabel(ids.length, initial.length > 0)}
         </Button>
       </Dialog.Actions>
     </>
@@ -401,10 +404,13 @@ const PickBody = ({
 interface PickVenuesDialogProps {
   /** Text on the trigger button. */
   trigger: string;
+  /**
+   * Trigger emphasis. Set it explicitly: inside a `Panel.Header` a button
+   * defaults to ghost.
+   */
+  variant?: ComponentProps<typeof Button>['variant'];
   /** Dialog title. */
   title: string;
-  /** Verb shown in the commit button, e.g. "Add". */
-  confirmLabel?: string;
   /** Venue ids to open with already staged. */
   initial: string[];
   /** Called with the committed venue ids when the user confirms. */
@@ -413,20 +419,19 @@ interface PickVenuesDialogProps {
 
 export const PickVenuesDialog = ({
   trigger,
+  variant = 'primary',
   title,
-  confirmLabel = 'Add',
   initial,
   onConfirm,
 }: PickVenuesDialogProps) => (
   <Dialog.Trigger>
-    <Button variant="primary">{trigger}</Button>
+    <Button variant={variant}>{trigger}</Button>
     {/* This pick is content-heavy (a wide table over ~50 rows), so it fills
         the viewport with a fullscreen dialog. */}
     <Dialog size="fullscreen" closeButton>
       {({ close }) => (
         <PickBody
           title={title}
-          confirmLabel={confirmLabel}
           initial={initial}
           onConfirm={ids => {
             onConfirm(ids);

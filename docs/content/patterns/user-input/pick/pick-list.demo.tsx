@@ -175,7 +175,7 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
             variant="error"
             open={emptyAttempts > 0 && staged.length === 0}
           >
-            <SectionMessage.Title>No one staged yet</SectionMessage.Title>
+            <SectionMessage.Title>No one selected</SectionMessage.Title>
             <SectionMessage.Content>
               Tick at least one person to grant access.
             </SectionMessage.Content>
@@ -212,13 +212,13 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
               so staging the first person never shifts the list. Removing a tag
               unstages that person. */}
           <Tag.Group
-            label={`Staged (${staged.length})`}
+            label={`Selected (${staged.length})`}
             selectionMode="none"
             onRemove={unstage}
             collapseAt={6}
             emptyState={() => (
               <Text variant="muted" fontSize="sm">
-                No people staged yet. Tick a name to add them.
+                No people selected yet. Tick a name to add them.
               </Text>
             )}
           >
@@ -246,7 +246,7 @@ const PickPeopleBody = ({ initial, onConfirm }: PickBodyProps) => {
             emptyState={
               <EmptyState
                 title="No people match"
-                description="Try a different search or team. Anyone you already staged stays listed above."
+                description="Try a different search or team. Anyone you already selected stays listed above."
               />
             }
           >
